@@ -25,6 +25,12 @@ The API powers a multi-sided marketplace connecting **creators** (influencers, m
 
 ---
 
+<p align="center">
+  <img src="system-architecture.png" alt="My3PAI System Architecture" width="800"/>
+</p>
+
+---
+
 ## ✨ Why My3PAI?
 
 | Problem | My3PAI Solution |
