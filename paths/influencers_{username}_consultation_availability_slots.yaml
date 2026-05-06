@@ -1,0 +1,54 @@
+get:
+  tags:
+    - Public
+    - Consultations
+  summary: Get available time slots for a specific date
+  description: >-
+    Get available time slots for a specific date, showing which times are
+    available and which are booked. All times are returned in UTC. The working hours are configured by the influencer (typically in their local timezone); the frontend should interpret these times using the influencer's timezone preference.
+  security: []
+  parameters:
+    - name: username
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Influencer username
+    - name: date
+      in: query
+      required: true
+      schema:
+        type: string
+        format: date
+      description: Date in YYYY-MM-DD format (UTC)
+      example: '2024-02-15'
+  responses:
+    '200':
+      description: Time slots data
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/ConsultationTimeSlots.yaml
+    '400':
+      description: No working hours available for this day
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Consultation not found or not active
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

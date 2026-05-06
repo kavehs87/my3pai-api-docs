@@ -1,0 +1,9 @@
+type: object
+properties:
+  tags:
+    type: array
+    maxItems: 20
+    items:
+      type: string
+      maxLength: 64
+    description: Custom tag keys

@@ -1,0 +1,18 @@
+type: object
+properties:
+  id:
+    type: integer
+  languageCode:
+    type: string
+    description: ISO 639-1 code (e.g., "en", "de")
+  languageName:
+    type: string
+  level:
+    type: string
+    enum:
+      - native
+      - fluent
+      - conversational
+      - basic
+  sortOrder:
+    type: integer

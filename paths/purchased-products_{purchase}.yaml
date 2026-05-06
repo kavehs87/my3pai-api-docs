@@ -1,0 +1,42 @@
+get:
+  tags:
+    - Billing
+  summary: Get purchased digital product
+  description: Retrieve a specific purchased media asset belonging to the authenticated user.
+  parameters:
+    - name: purchase
+      in: path
+      description: Purchase ID
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Purchased product
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  item:
+                    oneOf:
+                      - $ref: ../components/schemas/MediaAssetPurchase.yaml
+                      - $ref: ../components/schemas/MapPurchase.yaml
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+

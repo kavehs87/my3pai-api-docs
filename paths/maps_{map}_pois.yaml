@@ -1,0 +1,45 @@
+post:
+  tags:
+    - Maps
+    - POIs
+  summary: Create POI in map
+  description: Add a new POI to a map. Owner-only.
+  parameters:
+    - name: map
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/CreatePoiRequest.yaml
+  responses:
+    '201':
+      description: POI created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  poi:
+                    $ref: ../components/schemas/PoiResource.yaml
+    '403':
+      description: Forbidden - not owner
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

@@ -1,0 +1,74 @@
+get:
+  tags:
+    - Influencers
+    - Consultations
+  summary: Get consultation bookings (influencer)
+  description: Get all bookings for current user (as influencer)
+  parameters:
+    - name: status
+      in: query
+      schema:
+        type: string
+        description: Comma-separated statuses (pending,confirmed,completed,cancelled)
+    - name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+    - name: per_page
+      in: query
+      schema:
+        type: integer
+        default: 20
+        maximum: 100
+        minimum: 1
+    - name: sort_by
+      in: query
+      schema:
+        type: string
+        enum:
+          - scheduled_at
+          - created_at
+          - customer_name
+          - status
+        default: scheduled_at
+      description: Field to sort by
+    - name: sort_order
+      in: query
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+        default: desc
+      description: Sort direction (ascending or descending)
+  responses:
+    '200':
+      description: List of bookings
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  upcoming:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/ConsultationBooking.yaml
+                  past:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/ConsultationBooking.yaml
+              meta:
+                $ref: ../components/schemas/PaginationMeta.yaml
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

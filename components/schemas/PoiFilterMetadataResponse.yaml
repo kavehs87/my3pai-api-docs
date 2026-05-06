@@ -1,0 +1,58 @@
+type: object
+properties:
+  success:
+    type: boolean
+    example: true
+  data:
+    type: object
+    properties:
+      activities:
+        type: array
+        items:
+          $ref: ./PoiFilterActivity.yaml
+      amenities:
+        type: array
+        items:
+          $ref: ./PoiFilterAmenity.yaml
+      terrains:
+        type: array
+        items:
+          $ref: ./PoiFilterTerrain.yaml
+      audiences:
+        type: array
+        items:
+          $ref: ./PoiFilterAudience.yaml
+      accessibilities:
+        type: array
+        items:
+          $ref: ./PoiFilterAccessibility.yaml
+      tags:
+        type: array
+        items:
+          $ref: ./PoiFilterTag.yaml
+      placeTypes:
+        type: array
+        items:
+          $ref: ./PoiFilterEnumValue.yaml
+      difficultyLevels:
+        type: array
+        items:
+          $ref: ./PoiFilterEnumValue.yaml
+      costTypes:
+        type: array
+        items:
+          $ref: ./PoiFilterEnumValue.yaml
+      countries:
+        type: array
+        items:
+          $ref: ./PoiFilterCountry.yaml
+  meta:
+    type: object
+    properties:
+      version:
+        type: string
+        example: '1.0'
+      lastUpdated:
+        type: string
+        format: date-time
+        example: '2025-01-27T12:00:00Z'

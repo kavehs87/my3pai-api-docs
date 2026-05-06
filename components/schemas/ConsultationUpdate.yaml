@@ -1,0 +1,137 @@
+type: object
+required:
+  - title
+  - description
+  - duration_minutes
+  - price
+  - currency
+properties:
+  title:
+    type: string
+    maxLength: 255
+  description:
+    type: string
+    maxLength: 1000
+  duration_minutes:
+    type: integer
+    minimum: 15
+    maximum: 240
+  price:
+    type: number
+    format: float
+    minimum: 0
+  currency:
+    type: string
+    minLength: 3
+    maxLength: 3
+  is_active:
+    type: boolean
+  working_hours:
+    type: object
+    description: Working hours configuration for each day of the week
+    properties:
+      monday:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+          start:
+            type: string
+            pattern: ^\d{2}:\d{2}$
+            nullable: true
+            example: '09:00'
+          end:
+            type: string
+            pattern: ^\d{2}:\d{2}$
+            nullable: true
+            example: '17:00'
+      tuesday:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+          start:
+            type: string
+            pattern: ^\d{2}:\d{2}$
+            nullable: true
+            example: '09:00'
+          end:
+            type: string
+            pattern: ^\d{2}:\d{2}$
+            nullable: true
+            example: '17:00'
+      wednesday:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+          start:
+            type: string
+            pattern: ^\d{2}:\d{2}$
+            nullable: true
+            example: '09:00'
+          end:
+            type: string
+            pattern: ^\d{2}:\d{2}$
+            nullable: true
+            example: '17:00'
+      thursday:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+          start:
+            type: string
+            pattern: ^\d{2}:\d{2}$
+            nullable: true
+            example: '09:00'
+          end:
+            type: string
+            pattern: ^\d{2}:\d{2}$
+            nullable: true
+            example: '17:00'
+      friday:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+          start:
+            type: string
+            pattern: ^\d{2}:\d{2}$
+            nullable: true
+            example: '09:00'
+          end:
+            type: string
+            pattern: ^\d{2}:\d{2}$
+            nullable: true
+            example: '17:00'
+      saturday:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+          start:
+            type: string
+            pattern: ^\d{2}:\d{2}$
+            nullable: true
+            example: null
+          end:
+            type: string
+            pattern: ^\d{2}:\d{2}$
+            nullable: true
+            example: null
+      sunday:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+          start:
+            type: string
+            pattern: ^\d{2}:\d{2}$
+            nullable: true
+            example: null
+          end:
+            type: string
+            pattern: ^\d{2}:\d{2}$
+            nullable: true
+            example: null

@@ -1,0 +1,68 @@
+put:
+  tags:
+    - Influencers
+    - Podcast
+  summary: Update podcast episode
+  description: Update an existing podcast episode
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/PodcastEpisodeCreate.yaml
+  responses:
+    '200':
+      description: Podcast episode updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/PodcastEpisodeFull.yaml
+              message:
+                type: string
+    '404':
+      description: Podcast episode not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+delete:
+  tags:
+    - Influencers
+    - Podcast
+  summary: Delete podcast episode
+  description: Delete a podcast episode
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Podcast episode deleted
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+    '404':
+      description: Podcast episode not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

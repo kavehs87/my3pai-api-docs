@@ -1,0 +1,65 @@
+get:
+  tags:
+    - Influencers
+    - Consultations
+  summary: Get own consultation settings
+  description: Get current user's consultation settings
+  responses:
+    '200':
+      description: Consultation settings
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                allOf:
+                  - $ref: ../components/schemas/Consultation.yaml
+                  - type: object
+                    nullable: true
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+put:
+  tags:
+    - Influencers
+    - Consultations
+  summary: Update consultation settings
+  description: Update or create consultation settings
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/ConsultationUpdate.yaml
+  responses:
+    '200':
+      description: Consultation settings updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/Consultation.yaml
+              message:
+                type: string
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

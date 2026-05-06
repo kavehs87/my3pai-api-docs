@@ -1,0 +1,46 @@
+delete:
+  tags:
+    - Profile
+  summary: Delete account
+  description: Delete user account
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            password:
+              type: string
+              description: Required if user has a password
+            providerReauthToken:
+              type: string
+              description: >-
+                Required if user has no password (Google OAuth users). Google ID
+                token.
+  responses:
+    '200':
+      description: Account deleted successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+    '400':
+      description: Password is incorrect or provider reauthentication failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

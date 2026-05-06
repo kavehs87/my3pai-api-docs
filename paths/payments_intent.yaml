@@ -1,0 +1,57 @@
+post:
+  tags:
+    - Billing
+  summary: Create checkout session
+  description: >
+    Create a Stripe Checkout Session for an order.
+    
+    The frontend should redirect the user to the `redirect_url` in the response data to complete payment on Stripe's hosted checkout page.
+    
+    After successful payment, Stripe will redirect back to `{FRONTEND_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}&order_id={ORDER_ID}`.
+    
+    If the user cancels, Stripe will redirect to `{FRONTEND_URL}/checkout/cancel?order_id={ORDER_ID}`.
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - order_id
+          properties:
+            order_id:
+              type: integer
+  responses:
+    '200':
+      description: Checkout session created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  redirect_url:
+                    type: string
+                    format: uri
+                    description: Stripe Checkout Session URL - redirect user to this URL to complete payment
+                  checkout_session_id:
+                    type: string
+                    description: Stripe Checkout Session ID
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Order not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

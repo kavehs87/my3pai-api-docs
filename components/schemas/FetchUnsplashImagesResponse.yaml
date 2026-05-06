@@ -1,0 +1,20 @@
+type: object
+description: Response containing the created POI media records
+properties:
+  success:
+    type: boolean
+    example: true
+    description: Indicates if the request was successful
+  data:
+    type: object
+    properties:
+      images:
+        type: array
+        items:
+          $ref: './PoiMediaResource.yaml'
+        description: Array of created media records (may be empty if no images found)
+      attribution:
+        type: string
+        example: "Photos from Unsplash"
+        description: Attribution text for Unsplash photos
+

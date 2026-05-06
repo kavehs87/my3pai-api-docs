@@ -1,0 +1,21 @@
+allOf:
+  - $ref: ./MasterclassPublic.yaml
+  - type: object
+    properties:
+      content:
+        type: string
+        description: >-
+          Full course content (HTML/Markdown) - null if premium and not
+          purchased
+        nullable: true
+      isLocked:
+        type: boolean
+        description: True if premium and user hasn't purchased
+      isPublished:
+        type: boolean
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time

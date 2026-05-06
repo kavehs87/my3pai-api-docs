@@ -1,0 +1,73 @@
+get:
+  tags:
+    - Public
+    - Podcast
+  summary: Get public podcast episodes for an influencer
+  description: Get paginated list of published podcast episodes for an influencer
+  security: []
+  parameters:
+    - name: username
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+    - name: per_page
+      in: query
+      schema:
+        type: integer
+        default: 10
+        maximum: 50
+        minimum: 1
+  responses:
+    '200':
+      description: List of podcast episodes
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  podcastTitle:
+                    type: string
+                    nullable: true
+                    description: Custom title for the podcast section in themes
+                    example: "My Travel Podcast"
+                  podcastDescription:
+                    type: string
+                    nullable: true
+                    description: Description of the podcast section
+                    example: "Weekly episodes covering solo travel safety, budgeting, and creator tips."
+                  applePodcastUrl:
+                    type: string
+                    nullable: true
+                    format: uri
+                    description: Apple Podcast URL
+                    example: "https://podcasts.apple.com/us/podcast/my-travel-podcast/id123456789"
+                  spotifyUrl:
+                    type: string
+                    nullable: true
+                    format: uri
+                    description: Spotify URL
+                    example: "https://open.spotify.com/show/1234567890abcdef"
+                  episodes:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/PodcastEpisodePublic.yaml
+              meta:
+                $ref: ../components/schemas/PaginationMeta.yaml
+    '404':
+      description: Influencer not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

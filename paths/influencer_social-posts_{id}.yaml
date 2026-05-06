@@ -1,0 +1,129 @@
+put:
+  tags:
+    - Influencers
+  summary: Update social post
+  description: Update an existing social post
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - youtube
+                - short-form
+            platform:
+              type: string
+              enum:
+                - YouTube
+                - Instagram
+                - TikTok
+                - Facebook
+                - YouTube Shorts
+            title:
+              type: string
+              maxLength: 255
+            caption:
+              type: string
+              maxLength: 2000
+            thumbnail:
+              type: string
+              format: uri
+              maxLength: 500
+            url:
+              type: string
+              format: uri
+              maxLength: 500
+            views:
+              type: string
+              maxLength: 50
+            duration:
+              type: string
+              maxLength: 20
+            status:
+              type: string
+              enum:
+                - published
+                - draft
+            published_at:
+              type: string
+              format: date-time
+            order:
+              type: integer
+              minimum: 0
+  responses:
+    '200':
+      description: Social post updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/SocialPost.yaml
+              message:
+                type: string
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Social post not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+delete:
+  tags:
+    - Influencers
+  summary: Delete social post
+  description: Delete a social post
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Social post deleted
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Social post not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

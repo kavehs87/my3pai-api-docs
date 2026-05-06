@@ -1,0 +1,39 @@
+type: object
+properties:
+  wearAndTake:
+    type: string
+    maxLength: 65000
+    nullable: true
+    description: >
+      HTML-formatted text for what to wear and bring.
+      HTML is sanitized before storage to prevent XSS attacks.
+      Allowed tags: `p`, `br`, `b`, `strong`, `i`, `em`, `u`, `ul`, `ol`, `li`, `a[href|title|target]`, `span`.
+      Dangerous tags like `<script>`, `<iframe>`, and event handlers are automatically removed.
+      Examples: `"<b>Wear boots</b> and <a href='https://example.com'>bring water</a>"`, `"<ul><li>Item 1</li><li>Item 2</li></ul>"`.
+  nearby:
+    type: string
+    maxLength: 65000
+    nullable: true
+    description: >
+      HTML-formatted text for nearby attractions or places to visit.
+      HTML is sanitized before storage to prevent XSS attacks.
+      Allowed tags: `p`, `br`, `b`, `strong`, `i`, `em`, `u`, `ul`, `ol`, `li`, `a[href|title|target]`, `span`.
+      Dangerous tags like `<script>`, `<iframe>`, and event handlers are automatically removed.
+  insiderTips:
+    type: string
+    maxLength: 65000
+    nullable: true
+    description: >
+      HTML-formatted text for insider tips and recommendations.
+      HTML is sanitized before storage to prevent XSS attacks.
+      Allowed tags: `p`, `br`, `b`, `strong`, `i`, `em`, `u`, `ul`, `ol`, `li`, `a[href|title|target]`, `span`.
+      Dangerous tags like `<script>`, `<iframe>`, and event handlers are automatically removed.
+  safetyNotes:
+    type: string
+    maxLength: 65000
+    nullable: true
+    description: >
+      HTML-formatted text for safety warnings and important notes.
+      HTML is sanitized before storage to prevent XSS attacks.
+      Allowed tags: `p`, `br`, `b`, `strong`, `i`, `em`, `u`, `ul`, `ol`, `li`, `a[href|title|target]`, `span`.
+      Dangerous tags like `<script>`, `<iframe>`, and event handlers are automatically removed.

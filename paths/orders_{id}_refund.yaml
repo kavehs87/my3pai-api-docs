@@ -1,0 +1,68 @@
+post:
+  tags:
+    - Billing
+  summary: Process refund for order
+  description: Admin-only endpoint to process a refund for an order. Buyers/sellers cannot call this route directly.
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - reason
+          properties:
+            reason:
+              type: string
+              enum:
+                - requested_by_customer
+                - duplicate
+                - fraudulent
+                - other
+            reason_description:
+              type: string
+              nullable: true
+  responses:
+    '200':
+      description: Refund processed successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/Payment.yaml
+    '400':
+      description: Order cannot be refunded
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Only administrators are authorized to refund orders
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Order not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

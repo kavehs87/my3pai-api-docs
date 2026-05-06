@@ -1,0 +1,58 @@
+get:
+  tags:
+    - Public
+    - Consultations
+  summary: Get day-level calendar availability
+  description: >-
+    Get day-level availability status for a consultation calendar view. Returns
+    status (available/limited/full/unavailable) and slot counts for each day in
+    the requested month. All calculations and dates are in UTC. Working hours are configured by the influencer (typically in their local timezone); the frontend should interpret these using the influencer's timezone preference.
+  security: []
+  parameters:
+    - name: username
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Influencer username
+    - name: month
+      in: query
+      required: false
+      schema:
+        type: string
+        pattern: ^\d{4}-\d{2}$
+      description: Month in YYYY-MM format (defaults to current month, in UTC)
+      example: '2024-02'
+    - name: year
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 2020
+        maximum: 2100
+      description: Year (defaults to current year, in UTC)
+      example: 2024
+  responses:
+    '200':
+      description: Calendar availability data
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/ConsultationCalendarAvailability.yaml
+    '404':
+      description: Consultation not found or not active
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

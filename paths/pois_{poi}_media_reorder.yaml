@@ -1,0 +1,63 @@
+patch:
+  tags:
+    - POIs
+    - Media
+  summary: Reorder POI images
+  description: Reorder images for a POI. Order must include all media items for the POI.
+  parameters:
+    - name: poi
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - order
+          properties:
+            order:
+              type: array
+              minItems: 1
+              items:
+                type: integer
+              description: Array of media IDs in desired order
+        examples:
+          default:
+            value:
+              order:
+                - 3
+                - 1
+                - 2
+  responses:
+    '200':
+      description: Images reordered successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  images:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/PoiMediaResource.yaml
+    '403':
+      description: Forbidden - not owner
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed - invalid IDs or not all items included
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

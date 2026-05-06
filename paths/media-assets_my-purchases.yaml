@@ -1,0 +1,28 @@
+get:
+  tags:
+    - Media Assets
+  summary: Get my purchased assets
+  description: Get all media assets purchased by current user
+  responses:
+    '200':
+      description: List of purchases
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/MediaAssetPurchase.yaml
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

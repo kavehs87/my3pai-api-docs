@@ -1,0 +1,58 @@
+post:
+  tags:
+    - POIs
+    - Media
+  summary: Upload POI PDF
+  description: >
+    Upload a PDF document for a POI. Only one PDF is stored per POI; uploading a
+    new PDF replaces the existing one.
+
+    Authorization: requester must own the POI or its map.
+  parameters:
+    - name: poi
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          required:
+            - pdf
+          properties:
+            pdf:
+              type: string
+              format: binary
+              description: PDF file (max 20MB)
+  responses:
+    '201':
+      description: PDF uploaded successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  pdf:
+                    $ref: ../components/schemas/PoiMediaResource.yaml
+              message:
+                type: string
+    '403':
+      description: Forbidden - not owner
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed or invalid PDF file type
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

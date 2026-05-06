@@ -1,0 +1,25 @@
+type: object
+required:
+  - title
+properties:
+  title:
+    type: string
+    maxLength: 255
+  description:
+    type: string
+    maxLength: 2000
+    nullable: true
+  duration:
+    type: string
+    maxLength: 32
+    nullable: true
+  durationSeconds:
+    type: integer
+    minimum: 0
+    nullable: true
+  isPremium:
+    type: boolean
+    default: false
+  isPublished:
+    type: boolean
+    default: false

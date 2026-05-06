@@ -1,0 +1,92 @@
+get:
+  tags:
+    - Public
+  summary: Get public map page
+  description: >
+    Retrieve a published map page by username and slug. Returns user profile,
+    map details, and all publishable POIs.
+
+
+    Only returns POIs that are **publishable** (meet completeness requirements).
+
+
+    ### Freemium / Paywall Model
+
+    This endpoint implements a freemium model for maps that are for sale:
+
+    - **Free maps**: All POIs are fully visible.
+
+    - **Paid maps (without access)**: Featured POIs (up to 2 per map) are fully visible
+    as a preview, while all remaining POIs are "locked" (returning only ID, name, and
+    coordinates). If no POIs are marked as featured, ALL POIs are locked until featured
+    POIs are set.
+
+    - **Paid maps (with access)**: All POIs are fully visible if the user has
+    purchased the map or is the creator.
+
+
+    ### Authentication & Sessions
+
+    Access is determined by:
+
+    1. **Authorization Header**: Bearer token for authenticated users.
+
+    2. **X-Session-ID Header**: For guest users to track their purchases/access.
+
+
+    This endpoint is public but responds dynamically based on these identifiers.
+  security:
+    - BearerAuth: []
+    - {}
+  parameters:
+    - name: X-Session-ID
+      in: header
+      required: false
+      schema:
+        type: string
+      description: Session ID for guest users to check access to paid content.
+    - name: username
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The user's username
+    - name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The map's slug
+  responses:
+    '200':
+      description: Map page data
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  user:
+                    $ref: ../components/schemas/PublicUser.yaml
+                  map:
+                    $ref: ../components/schemas/MapResource.yaml
+                  pois:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/PoiResource.yaml
+    '404':
+      description: User or map not found, or map is not published
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '429':
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

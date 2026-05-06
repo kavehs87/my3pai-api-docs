@@ -1,0 +1,49 @@
+get:
+  tags:
+    - Billing
+  summary: Get invoice summary
+  description: Get invoice summary statistics for the current user
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: from_date
+      in: query
+      schema:
+        type: string
+        format: date
+    - name: to_date
+      in: query
+      schema:
+        type: string
+        format: date
+  responses:
+    '200':
+      description: Invoice summary retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  total_paid:
+                    type: number
+                    format: float
+                  total_received:
+                    type: number
+                    format: float
+                  paid_count:
+                    type: integer
+                  received_count:
+                    type: integer
+                  status_breakdown:
+                    type: object
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

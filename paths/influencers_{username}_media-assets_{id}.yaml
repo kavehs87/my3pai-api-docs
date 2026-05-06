@@ -1,0 +1,36 @@
+get:
+  tags:
+    - Public
+    - Media Assets
+  summary: Get single public media asset
+  description: Get detailed information about a single media asset
+  security: []
+  parameters:
+    - name: username
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Media asset details
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/MediaAsset.yaml
+    '404':
+      description: Asset not found or not active
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

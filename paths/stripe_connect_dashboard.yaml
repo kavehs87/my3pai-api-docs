@@ -1,0 +1,35 @@
+post:
+  tags:
+    - Stripe
+  summary: Get Stripe Express Dashboard login link
+  description: >-
+    Returns a URL to the Stripe Express Dashboard where users can manage
+    payouts, view balance, etc.
+  responses:
+    '200':
+      description: Dashboard URL
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  dashboardUrl:
+                    type: string
+                    format: uri
+    '400':
+      description: User has no connected Stripe account
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '500':
+      description: Stripe API error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

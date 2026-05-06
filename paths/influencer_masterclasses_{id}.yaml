@@ -1,0 +1,68 @@
+put:
+  tags:
+    - Influencers
+    - Masterclasses
+  summary: Update masterclass
+  description: Update an existing masterclass
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/MasterclassCreate.yaml
+  responses:
+    '200':
+      description: Masterclass updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/MasterclassFull.yaml
+              message:
+                type: string
+    '404':
+      description: Masterclass not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+delete:
+  tags:
+    - Influencers
+    - Masterclasses
+  summary: Delete masterclass
+  description: Delete a masterclass
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Masterclass deleted
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+    '404':
+      description: Masterclass not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

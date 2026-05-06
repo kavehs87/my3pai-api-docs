@@ -1,0 +1,99 @@
+post:
+  tags:
+    - Influencers
+    - Media Assets
+  summary: Upload asset file
+  description: Upload the actual asset file (zip, video, etc.)
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            file:
+              type: string
+              format: binary
+              description: >-
+                Asset file (max 200MB). Supported formats zip, mp4, mov, jpg,
+                png
+  responses:
+    '200':
+      description: File uploaded
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  fileUrl:
+                    type: string
+                    format: uri
+                  fileSize:
+                    type: integer
+                  fileFormat:
+                    type: string
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Asset not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation error (file too large, wrong format)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+delete:
+  tags:
+    - Influencers
+    - Media Assets
+  summary: Delete asset file
+  description: Remove the asset file
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: File deleted
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Asset or file not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

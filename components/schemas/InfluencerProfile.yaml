@@ -1,0 +1,89 @@
+type: object
+properties:
+  id:
+    type: integer
+  username:
+    type: string
+  firstName:
+    type: string
+  lastName:
+    type: string
+  avatar:
+    type: string
+    format: uri
+    nullable: true
+  coverImage:
+    type: string
+    format: uri
+    nullable: true
+  logo:
+    type: string
+    format: uri
+    nullable: true
+    description: Logo image URL for the influencer's public profile
+  bio:
+    type: string
+    nullable: true
+  tagline:
+    type: string
+    nullable: true
+  location:
+    type: string
+    nullable: true
+  subLocation:
+    type: string
+    nullable: true
+  theme:
+    type: string
+    maxLength: 50
+    nullable: true
+    enum:
+      - modern
+      - minimal
+      - basic
+      - dark-blue
+    description: >-
+      Profile theme for public influencer profile page (defaults to 'modern' if
+      not set)
+  verified:
+    type: boolean
+  stats:
+    $ref: ./InfluencerStats.yaml
+  socials:
+    type: array
+    items:
+      $ref: ./UserSocial.yaml
+  languages:
+    type: array
+    items:
+      $ref: ./UserLanguage.yaml
+  skills:
+    type: array
+    items:
+      type: string
+  certifications:
+    type: array
+    items:
+      $ref: ./UserCertification.yaml
+  externalLinks:
+    type: array
+    items:
+      $ref: ./UserExternalLink.yaml
+  introVideoUrl:
+    type: string
+    format: uri
+    nullable: true
+    description: URL to the intro video
+  introVideoThumbnail:
+    type: string
+    format: uri
+    nullable: true
+    description: URL to the intro video thumbnail
+  introVideoDuration:
+    type: integer
+    nullable: true
+    description: Duration in seconds
+  creatorToolsVisibility:
+    $ref: ./CreatorToolsVisibility.yaml
+    nullable: true
+    description: Creator tools visibility settings for public profile (defaults to all enabled if not set)

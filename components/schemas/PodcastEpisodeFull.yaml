@@ -1,0 +1,20 @@
+allOf:
+  - $ref: ./PodcastEpisodePublic.yaml
+  - type: object
+    properties:
+      audioUrl:
+        type: string
+        format: uri
+        description: Null if premium and not purchased
+        nullable: true
+      durationSeconds:
+        type: integer
+        nullable: true
+      isLocked:
+        type: boolean
+        description: True if premium and user hasn't purchased
+      isPublished:
+        type: boolean
+      playsCount:
+        type: integer
+        minimum: 0

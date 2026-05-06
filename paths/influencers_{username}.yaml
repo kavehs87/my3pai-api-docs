@@ -1,0 +1,31 @@
+get:
+  tags:
+    - Public
+    - Influencers
+  summary: Get public influencer profile
+  description: Get public influencer profile by username
+  security: []
+  parameters:
+    - name: username
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Influencer profile
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/InfluencerProfile.yaml
+    '404':
+      description: Influencer not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

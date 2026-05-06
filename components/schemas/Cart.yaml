@@ -1,0 +1,38 @@
+type: object
+properties:
+  id:
+    type: integer
+  cart_id:
+    type: integer
+    description: Alias for id
+  session_id:
+    type: string
+    nullable: true
+  user_id:
+    type: integer
+    nullable: true
+  status:
+    type: string
+    enum:
+      - active
+      - abandoned
+      - converted
+  expires_at:
+    type: string
+    format: date-time
+    nullable: true
+  items:
+    type: array
+    items:
+      $ref: ./CartItem.yaml
+  item_count:
+    type: integer
+  total_cents:
+    type: integer
+    description: Total amount in cents
+  total_formatted:
+    type: string
+    description: Total amount formatted as dollars (e.g., "150.00")
+  currency:
+    type: string
+    default: USD

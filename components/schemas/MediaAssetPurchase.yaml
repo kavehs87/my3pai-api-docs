@@ -1,0 +1,37 @@
+type: object
+properties:
+  id:
+    type: integer
+  mediaAsset:
+    type: object
+    nullable: true
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+      type:
+        type: string
+      image:
+        type: string
+        format: uri
+        nullable: true
+  influencer:
+    type: object
+    nullable: true
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      username:
+        type: string
+  downloadUrl:
+    type: string
+    format: uri
+  downloadExpiresAt:
+    type: string
+    format: date-time
+  purchasedAt:
+    type: string
+    format: date-time

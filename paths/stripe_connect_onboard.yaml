@@ -1,0 +1,44 @@
+post:
+  tags:
+    - Stripe
+  summary: Start Stripe Connect onboarding
+  description: |
+    Creates a Stripe Connect Express account and returns an onboarding URL.
+    User will be redirected back to the app after completing onboarding.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/StripeConnectOnboardRequest.yaml
+  responses:
+    '200':
+      description: Onboarding URL created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  onboardingUrl:
+                    type: string
+                    format: uri
+                    description: Redirect user to this Stripe-hosted URL
+                  accountId:
+                    type: string
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '500':
+      description: Stripe API error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

@@ -1,0 +1,60 @@
+delete:
+  tags:
+    - POIs
+    - Media
+  summary: Delete POI media
+  description: >
+    Delete a media item (image or audio) from a POI. Authorization: requester
+    must own the POI or its map.
+  parameters:
+    - name: poi
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: media
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Media deleted successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  images:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/PoiMediaResource.yaml
+                  audio:
+                    allOf:
+                      - $ref: ../components/schemas/PoiMediaResource.yaml
+                      - type: object
+                        nullable: true
+                    description: Remaining audio file, if any
+                  pdf:
+                    allOf:
+                      - $ref: ../components/schemas/PoiMediaResource.yaml
+                      - type: object
+                        nullable: true
+                    description: Remaining PDF document, if any
+    '403':
+      description: Forbidden - not owner
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: POI or media not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

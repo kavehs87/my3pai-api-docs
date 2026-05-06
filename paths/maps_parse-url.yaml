@@ -1,0 +1,118 @@
+post:
+  tags:
+    - Maps
+  summary: Parse Google Maps URL
+  description: |
+    Parse a Google Maps URL (long or short link) and extract latitude and longitude coordinates.
+    
+    Supports multiple URL formats:
+    - Standard `@lat,lng` format: `https://www.google.com/maps/@25.0921297,55.176079,15z`
+    - Query parameter format: `https://www.google.com/maps?q=25.0921297,55.176079`
+    - Place URL format with `!3d` and `!4d`: `https://www.google.com/maps/place/.../data=!3d25.0921297!4d55.176079`
+    - Legacy `ll` parameter: `https://www.google.com/maps?ll=25.0921297,55.176079`
+    
+    Automatically expands short URLs from:
+    - `goo.gl`
+    - `maps.app.goo.gl`
+    - `bit.ly`
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - url
+          properties:
+            url:
+              type: string
+              format: uri
+              description: Google Maps URL (long or short link)
+              example: https://www.google.com/maps/@25.0921297,55.176079,15z
+        examples:
+          long_url:
+            summary: Long URL with @ format
+            value:
+              url: https://www.google.com/maps/@25.0921297,55.176079,15z
+          short_url:
+            summary: Short URL (goo.gl)
+            value:
+              url: https://goo.gl/maps/abc123
+          query_format:
+            summary: Query parameter format
+            value:
+              url: https://www.google.com/maps?q=25.0921297,55.176079
+  responses:
+    '200':
+      description: Coordinates extracted successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              lat:
+                type: number
+                format: float
+                description: Latitude coordinate
+                example: 25.0921297
+              lng:
+                type: number
+                format: float
+                description: Longitude coordinate
+                example: 55.176079
+              original_url:
+                type: string
+                format: uri
+                description: The original URL provided in the request
+                example: https://www.google.com/maps/@25.0921297,55.176079,15z
+              expanded_url:
+                type: string
+                format: uri
+                description: The expanded URL (same as original_url if not a short link)
+                example: https://www.google.com/maps/@25.0921297,55.176079,15z
+          examples:
+            long_url:
+              summary: Response for long URL
+              value:
+                success: true
+                lat: 25.0921297
+                lng: 55.176079
+                original_url: https://www.google.com/maps/@25.0921297,55.176079,15z
+                expanded_url: https://www.google.com/maps/@25.0921297,55.176079,15z
+            short_url:
+              summary: Response for short URL
+              value:
+                success: true
+                lat: 25.0921297
+                lng: 55.176079
+                original_url: https://goo.gl/maps/abc123
+                expanded_url: https://www.google.com/maps/@25.0921297,55.176079,15z
+    '400':
+      description: Could not extract coordinates from the URL
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Could not extract coordinates from the provided URL
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+

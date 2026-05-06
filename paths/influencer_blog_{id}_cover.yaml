@@ -1,0 +1,48 @@
+post:
+  tags:
+    - Influencers
+    - Blog
+    - Media
+  summary: Upload cover image
+  description: Upload a cover image for a blog post
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            cover:
+              type: string
+              format: binary
+              description: Image file (JPEG, PNG, WebP, max 10MB)
+  responses:
+    '200':
+      description: Cover image uploaded
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  coverImage:
+                    type: string
+                    format: uri
+              message:
+                type: string
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

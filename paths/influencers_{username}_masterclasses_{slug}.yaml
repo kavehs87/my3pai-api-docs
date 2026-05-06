@@ -1,0 +1,51 @@
+get:
+  tags:
+    - Public
+    - Masterclasses
+  summary: Get single masterclass
+  description: Get a single masterclass by slug. Premium content requires purchase.
+  security: []
+  parameters:
+    - name: username
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Masterclass retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/MasterclassFull.yaml
+    '402':
+      description: Premium content requires purchase
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              error:
+                type: string
+              requiresPurchase:
+                type: boolean
+              data:
+                $ref: ../components/schemas/MasterclassFull.yaml
+    '404':
+      description: Masterclass not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

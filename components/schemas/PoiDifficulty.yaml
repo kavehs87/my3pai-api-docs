@@ -1,0 +1,43 @@
+type: object
+properties:
+  difficulty:
+    type: string
+    enum:
+      - very-easy
+      - easy
+      - moderate
+      - challenging
+      - hard
+      - extreme
+    nullable: true
+  fitness:
+    type: string
+    enum:
+      - casual
+      - active
+      - fit
+      - athletic
+      - elite
+    nullable: true
+  nearestPublicTransport:
+    type: string
+    maxLength: 128
+    nullable: true
+    description: >
+      Name or description of the nearest public transport station/stop.
+      Examples: "Paddington Station", "Central Bus Stop", "Metro Station A", "Train Station".
+      This field stores the station name or identifier, not distance or time.
+      Maximum 128 characters.
+    example: "Paddington Station"
+  terrain:
+    type: array
+    maxItems: 20
+    items:
+      type: string
+    description: >
+      Array of terrain keys (kebab-case) from the terrains table.
+      Valid keys: `paved`, `gravel`, `forest-trail`, `rocky`, `exposed`, `narrow-path`, `steps`.
+      Each key must exist in the `terrains` table (validated via `exists:terrains,key`).
+      Keys are seeded via PoiReferenceSeeder.
+      All keys use kebab-case format (e.g., `forest-trail`, `narrow-path`).
+    example: ["paved", "gravel"]

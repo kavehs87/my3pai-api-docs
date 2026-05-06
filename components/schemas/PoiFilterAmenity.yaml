@@ -1,0 +1,12 @@
+type: object
+properties:
+  key:
+    type: string
+    example: restaurant
+  label:
+    type: string
+    example: Restaurant
+  category:
+    type: string
+    nullable: true
+    description: Placeholder for future expansion

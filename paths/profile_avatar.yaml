@@ -1,0 +1,42 @@
+post:
+  tags:
+    - Profile
+  summary: Upload avatar
+  description: Upload and update user avatar image
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          required:
+            - avatar
+          properties:
+            avatar:
+              type: string
+              format: binary
+              description: Image file (jpeg, jpg, png, webp, max 2MB)
+  responses:
+    '200':
+      description: Avatar updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  avatar:
+                    type: string
+                    format: uri
+              message:
+                type: string
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

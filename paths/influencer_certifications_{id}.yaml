@@ -1,0 +1,88 @@
+put:
+  tags:
+    - Influencers
+  summary: Update certification
+  description: Update an existing certification
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              maxLength: 255
+            issuer:
+              type: string
+              maxLength: 255
+              nullable: true
+            issuedAt:
+              type: string
+              format: date
+              nullable: true
+            sortOrder:
+              type: integer
+              minimum: 0
+              nullable: true
+  responses:
+    '200':
+      description: Certification updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/UserCertification.yaml
+              message:
+                type: string
+    '404':
+      description: Certification not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+delete:
+  tags:
+    - Influencers
+  summary: Delete certification
+  description: Delete a certification
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Certification deleted
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+    '404':
+      description: Certification not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

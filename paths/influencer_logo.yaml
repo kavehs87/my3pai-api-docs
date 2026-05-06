@@ -1,0 +1,74 @@
+post:
+  tags:
+    - Influencers
+    - Media
+  summary: Upload influencer logo
+  description: Upload a logo image for the influencer's public profile. The logo will be displayed in the navigation/header section of the public profile page.
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            logo:
+              type: string
+              format: binary
+              description: Logo image file (JPEG, PNG, WebP, SVG). Recommended square aspect ratio (1:1). Max 2MB.
+  responses:
+    '200':
+      description: Logo uploaded successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  logo:
+                    type: string
+                    format: uri
+                    description: URL to the uploaded logo image
+              message:
+                type: string
+    '422':
+      description: Validation error (file too large, wrong format)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+
+delete:
+  tags:
+    - Influencers
+    - Media
+  summary: Delete influencer logo
+  description: Remove the logo from the influencer profile. The logo will be removed from the public profile navigation/header.
+  responses:
+    '200':
+      description: Logo removed successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+

@@ -1,0 +1,103 @@
+get:
+  tags:
+    - Maps
+  summary: List maps
+  description: List maps created by the authenticated user
+  responses:
+    '200':
+      description: List of maps
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  maps:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/MapResource.yaml
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+post:
+  tags:
+    - Maps
+  summary: Create map
+  description: >
+    Create a new map.
+
+
+    **Stripe Account Requirement:**
+
+    If `isForSale` or `is_for_sale` is set to `true`, the authenticated user must
+    have an active Stripe Connect account. The request will fail with a 422 error
+    if the user has not connected their Stripe account. Free maps (where
+    `isForSale` is false) do not require a Stripe account.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - title
+          properties:
+            title:
+              type: string
+              maxLength: 255
+            isPublished:
+              type: boolean
+              default: false
+            is_published:
+              type: boolean
+              default: false
+            isForSale:
+              type: boolean
+              default: false
+            is_for_sale:
+              type: boolean
+              default: false
+            price:
+              type: number
+              format: decimal
+              minimum: 0
+              nullable: true
+              description: Required if isForSale or is_for_sale is true
+        examples:
+          default:
+            value:
+              title: Autumn in Bern
+          with_pricing:
+            value:
+              title: Premium Travel Map
+              isPublished: true
+              isForSale: true
+              price: 29.99
+  responses:
+    '201':
+      description: Map created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  map:
+                    $ref: ../components/schemas/MapResource.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

@@ -1,0 +1,156 @@
+put:
+  tags:
+    - Maps
+    - POIs
+  summary: Update draft POI in map
+  description: >
+    Update a draft POI with minimal validation. Allows auto-saving incomplete data
+    without hitting 422 validation errors. All fields are optional (nullable).
+    
+    The POI's status will be set to (or remain) `'draft'` after update.
+    
+    **Optimistic Locking:**
+    This endpoint uses optimistic locking to prevent concurrent edit conflicts. The `draft_version`
+    field is required and must match the current database version exactly.
+    
+    - **Version Matching:** Client must send the exact current `draftVersion` from the last response
+    - **On Success:** Server increments the version atomically and returns the new version in response
+    - **On Conflict (409):** If versions don't match, returns current POI state with current `draftVersion`
+    - **Version Flow:** 
+      1. Read POI → Get `draftVersion: 0`
+      2. Update with `draft_version: 0` → Success, response `draftVersion: 1`
+      3. Update with `draft_version: 1` → Success, response `draftVersion: 2`
+      4. If another client updated → `draft_version: 1` fails with 409, response shows `draftVersion: 2`
+    
+    **Field Deletion Behavior:**
+    - Sending `null` for a nullable field will **clear** that field (set to NULL in database)
+    - Sending `""` (empty string) for a nullable field will also **clear** that field (normalized to null)
+    - Not including a field in the request will **not update** that field (partial update)
+    - The response will return `null` for cleared fields
+    
+    **Use Case:** Frontend auto-save functionality for work-in-progress POIs with conflict prevention.
+  parameters:
+    - name: map
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The map ID
+    - name: poi
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The POI ID
+  requestBody:
+    required: false
+    description: >
+      Partial POI data. All fields are optional. Only provided fields will be updated.
+      
+      **Field Update Rules:**
+      - Fields included with values → Updated with new value
+      - Fields included with `null` → Cleared (set to NULL)
+      - Fields included with `""` (empty string) → Cleared (normalized to NULL)
+      - Fields not included → Not updated (remains unchanged)
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/UpdatePoiDraftRequest.yaml
+        examples:
+          minimal:
+            summary: Minimal update (first update after creation)
+            description: >
+              After creating a POI with draft_version: 0, the response contains draftVersion: 0.
+              For the first update, send draft_version: 0. The response will contain draftVersion: 1.
+            value:
+              draft_version: 0
+              basic:
+                name: "Updated Name"
+          subsequent:
+            summary: Subsequent update
+            description: >
+              After the first update, the response contained draftVersion: 1.
+              For the next update, send draft_version: 1. The response will contain draftVersion: 2.
+            value:
+              draft_version: 1
+              basic:
+                tagline: "Updated tagline"
+              category:
+                placeType: "culture"
+          clearFields:
+            summary: Clear fields (field deletion)
+            description: >
+              Example showing how to clear fields by sending null or empty string.
+              Both null and empty string will clear the field.
+              Note: draft_version must still match the current POI version.
+            value:
+              draft_version: 2
+              basic:
+                summary: null
+                tagline: ""
+                phone: null
+                website: null
+                myScore: null
+                googleRating: null
+  responses:
+    '200':
+      description: Draft POI updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  poi:
+                    $ref: ../components/schemas/PoiResource.yaml
+    '403':
+      description: Forbidden - not owner
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: POI or map not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '409':
+      description: >
+        Version conflict - the POI has been modified by another session.
+        
+        The `draft_version` in the request does not match the current database version.
+        This can happen when:
+        - Another client/tab updated the POI between your read and write
+        - The version you sent is stale (lower or higher than current)
+        
+        The response includes the current POI state with the current `draftVersion`.
+        You should refresh your local state and retry the update with the new version.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: "Version conflict - the POI has been modified by another session"
+              data:
+                type: object
+                properties:
+                  poi:
+                    $ref: ../components/schemas/PoiResource.yaml
+    '422':
+      description: Validation failed (invalid enum values, type mismatches, etc.)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+

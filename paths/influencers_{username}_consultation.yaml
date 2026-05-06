@@ -1,0 +1,33 @@
+get:
+  tags:
+    - Public
+    - Consultations
+  summary: Get consultation details for an influencer
+  description: >-
+    Get consultation details for a specific influencer's public profile. All times and dates are returned in UTC. The frontend is responsible for converting UTC timestamps to the user's local timezone using the influencer's timezone preference (from their profile settings).
+  security: []
+  parameters:
+    - name: username
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Influencer username
+  responses:
+    '200':
+      description: Consultation details
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/Consultation.yaml
+    '404':
+      description: Consultation not found or not active
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

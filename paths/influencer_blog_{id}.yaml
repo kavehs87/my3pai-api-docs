@@ -1,0 +1,68 @@
+put:
+  tags:
+    - Influencers
+    - Blog
+  summary: Update blog post
+  description: Update an existing blog post
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/BlogPostCreate.yaml
+  responses:
+    '200':
+      description: Blog post updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/BlogPostFull.yaml
+              message:
+                type: string
+    '404':
+      description: Blog post not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+delete:
+  tags:
+    - Influencers
+    - Blog
+  summary: Delete blog post
+  description: Delete a blog post
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Blog post deleted
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+    '404':
+      description: Blog post not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

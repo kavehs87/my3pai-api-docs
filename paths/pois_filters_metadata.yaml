@@ -1,0 +1,35 @@
+get:
+  tags:
+    - Public
+    - POIs
+  summary: Get POI filter metadata
+  description: >
+    Returns all available filter options for POI-related frontend components.
+    This includes:
+
+    - Activities, amenities, terrains, audiences, accessibilities, and tags from
+    the database
+
+    - Static enum values for place types, difficulty levels, and cost types
+
+    - Country list with ISO codes
+
+
+    This endpoint is specifically for POI filtering. Data is cached for 1 hour
+    to improve performance.
+
+    This endpoint is public and does not require authentication.
+  security: []
+  responses:
+    '200':
+      description: POI filter metadata
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/PoiFilterMetadataResponse.yaml
+    '429':
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

@@ -1,0 +1,67 @@
+post:
+  tags:
+    - Billing
+  summary: Merge guest cart with user cart
+  description: >
+    Merge a guest cart (identified by session_id) with the authenticated user's
+    cart. 
+
+    Typically called after user login to preserve items added while browsing as
+    a guest.
+
+
+    **Authentication Required**: This endpoint requires authentication. The
+    guest cart will be merged into the authenticated user's cart.
+
+
+    **Behavior:**
+
+    - Items from the guest cart are added to the user's cart
+
+    - Duplicate items (same item_type, item_id, and metadata) will have their
+    quantities combined
+
+    - The guest cart is deleted after successful merge
+
+    - If the user already has a cart, items are merged into it; otherwise, a new
+    cart is created
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - guest_session_id
+          properties:
+            guest_session_id:
+              type: string
+              description: Session ID of the guest cart to merge
+              example: 550e8400-e29b-41d4-a716-446655440000
+  responses:
+    '200':
+      description: Carts merged successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Cart merged successfully
+              cart:
+                $ref: ../components/schemas/Cart.yaml
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Guest cart not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

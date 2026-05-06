@@ -1,0 +1,34 @@
+type: object
+properties:
+  connected:
+    type: boolean
+  accountId:
+    type: string
+    nullable: true
+  status:
+    type: string
+    enum:
+      - pending
+      - active
+      - restricted
+      - disabled
+    nullable: true
+  chargesEnabled:
+    type: boolean
+  payoutsEnabled:
+    type: boolean
+  requiresAction:
+    type: boolean
+    description: True if user needs to complete more onboarding steps
+  requirements:
+    type: object
+    nullable: true
+    properties:
+      currentlyDue:
+        type: array
+        items:
+          type: string
+      eventuallyDue:
+        type: array
+        items:
+          type: string

@@ -1,0 +1,32 @@
+post:
+  tags:
+    - Stripe
+  summary: Handle Stripe webhooks
+  description: >
+    Webhook endpoint for Stripe events. Signature is verified automatically.
+
+    Handles: account.updated, account.application.deauthorized, payout.created,
+    payout.paid, payout.failed
+  security: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+  responses:
+    '200':
+      description: Webhook received
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              received:
+                type: boolean
+    '400':
+      description: Invalid payload or signature
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

@@ -1,0 +1,42 @@
+type: object
+properties:
+  id:
+    type: integer
+  type:
+    type: string
+    enum:
+      - image
+      - video
+      - audio
+      - pdf
+  url:
+    type: string
+    format: uri
+    description: The direct URL to the media asset.
+  thumbnail_url:
+    type: string
+    format: uri
+    nullable: true
+    description: The URL to the video thumbnail (if type is video).
+  processing_status:
+    type: string
+    enum:
+      - pending
+      - processing
+      - ready
+      - failed
+    description: The status of asynchronous video processing.
+  duration:
+    type: integer
+    nullable: true
+    description: Video duration in seconds.
+  error_message:
+    type: string
+    nullable: true
+    description: Error message if processing failed.
+  mime_type:
+    type: string
+  size_bytes:
+    type: integer
+  sort_order:
+    type: integer

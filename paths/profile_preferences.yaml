@@ -1,0 +1,54 @@
+get:
+  tags:
+    - Profile
+  summary: Get user preferences
+  description: Get user preferences
+  responses:
+    '200':
+      description: User preferences
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  preferences:
+                    $ref: ../components/schemas/UserPreferences.yaml
+put:
+  tags:
+    - Profile
+  summary: Update user preferences
+  description: Update user preferences
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/UpdatePreferencesRequest.yaml
+  responses:
+    '200':
+      description: Preferences updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  preferences:
+                    $ref: ../components/schemas/UserPreferences.yaml
+              message:
+                type: string
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

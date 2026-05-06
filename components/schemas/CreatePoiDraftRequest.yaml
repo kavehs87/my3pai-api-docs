@@ -1,0 +1,332 @@
+type: object
+required:
+  - draft_version
+description: >
+  Draft POI creation request. All fields are optional (nullable) to allow
+  creating POIs with incomplete data without validation errors.
+  
+  **Note:** For creation, only fields explicitly provided will be set.
+  Fields not included will use database defaults (if any) or remain NULL.
+  
+  While all fields are optional, type validation still applies
+  (e.g., `country` must be 2 characters if provided, `placeType` must be
+  a valid enum value if provided).
+  
+  The POI will be created with `status = 'draft'`.
+properties:
+  basic:
+    type: object
+    nullable: true
+    description: Basic POI information (all fields optional)
+    properties:
+      name:
+        type: string
+        maxLength: 255
+        nullable: true
+      tagline:
+        type: string
+        maxLength: 255
+        nullable: true
+      summary:
+        type: string
+        maxLength: 2000
+        nullable: true
+      estimatedDuration:
+        type: string
+        maxLength: 64
+        nullable: true
+      country:
+        type: string
+        minLength: 2
+        maxLength: 2
+        nullable: true
+      region:
+        type: string
+        maxLength: 128
+        nullable: true
+      address:
+        type: string
+        maxLength: 500
+        nullable: true
+      pinAccuracy:
+        type: string
+        enum: [exact, approximate, estimate]
+        nullable: true
+      phone:
+        type: string
+        maxLength: 64
+        nullable: true
+      website:
+        type: string
+        format: uri
+        maxLength: 255
+        nullable: true
+      openingHours:
+        type: string
+        maxLength: 512
+        nullable: true
+      placeId:
+        type: string
+        maxLength: 255
+        nullable: true
+      myScore:
+        type: number
+        format: float
+        minimum: 0
+        maximum: 10
+        nullable: true
+        description: User's personal rating (0.00-10.00 scale)
+      googleRating:
+        type: number
+        format: float
+        minimum: 0
+        maximum: 5
+        nullable: true
+        description: Google Places API rating (0-5 scale)
+      googleRatingCount:
+        type: integer
+        minimum: 0
+        nullable: true
+        description: Number of Google reviews/ratings
+      latitude:
+        type: number
+        format: double
+        minimum: -90
+        maximum: 90
+        nullable: true
+      longitude:
+        type: number
+        format: double
+        minimum: -180
+        maximum: 180
+        nullable: true
+  category:
+    type: object
+    nullable: true
+    description: Category and classification (all fields optional)
+    properties:
+      placeType:
+        type: string
+        enum: [food_drink, nature, culture, adventure, nightlife, shopping, wellness, accommodation, transportation, instagrammable, other]
+        nullable: true
+      activities:
+        type: array
+        maxItems: 20
+        nullable: true
+        items:
+          type: string
+      audience:
+        type: array
+        maxItems: 20
+        nullable: true
+        items:
+          type: string
+      ageRequirement:
+        type: array
+        maxItems: 5
+        nullable: true
+        items:
+          type: string
+          enum: [infant, kids, teens, adults, none]
+      elevation:
+        type: integer
+        minimum: 0
+        maximum: 9000
+        nullable: true
+  difficulty:
+    type: object
+    nullable: true
+    description: Difficulty and fitness level (all fields optional)
+    properties:
+      difficulty:
+        type: string
+        enum: [very-easy, easy, moderate, challenging, hard, extreme]
+        nullable: true
+      fitness:
+        type: string
+        enum: [casual, active, fit, athletic, elite]
+        nullable: true
+      nearestPublicTransport:
+        type: string
+        maxLength: 128
+        nullable: true
+      terrain:
+        type: array
+        maxItems: 20
+        nullable: true
+        items:
+          type: string
+  pricing:
+    type: object
+    nullable: true
+    description: Pricing information (all fields optional)
+    properties:
+      costType:
+        type: string
+        enum: [free, paid, mixed]
+        nullable: true
+      priceChargedAs:
+        type: string
+        enum: [per_person, per_group, per_day, per_activity, other]
+        nullable: true
+      currency:
+        type: string
+        minLength: 3
+        maxLength: 3
+        nullable: true
+      estimatedMinPrice:
+        type: number
+        format: double
+        minimum: 0
+        nullable: true
+      estimatedMaxPrice:
+        type: number
+        format: double
+        minimum: 0
+        nullable: true
+      bookingLink:
+        type: string
+        format: uri
+        maxLength: 255
+        nullable: true
+      priceNotes:
+        type: string
+        nullable: true
+      voucher:
+        type: boolean
+        nullable: true
+      voucherCode:
+        type: string
+        maxLength: 64
+        nullable: true
+      voucherPartner:
+        type: string
+        maxLength: 128
+        nullable: true
+      voucherConditions:
+        type: string
+        nullable: true
+      voucherLink:
+        type: string
+        format: uri
+        maxLength: 255
+        nullable: true
+  regions:
+    type: object
+    nullable: true
+    description: Regional tags (all fields optional)
+    properties:
+      tags:
+        type: array
+        maxItems: 20
+        nullable: true
+        items:
+          type: string
+          maxLength: 64
+  amenities:
+    type: object
+    nullable: true
+    description: Amenities and accessibility (all fields optional)
+    properties:
+      amenities:
+        type: array
+        maxItems: 20
+        nullable: true
+        items:
+          type: string
+      nearbyServices:
+        type: string
+        nullable: true
+      petFriendly:
+        type: boolean
+        nullable: true
+      petNotes:
+        type: string
+        nullable: true
+      accessibility:
+        type: array
+        maxItems: 20
+        nullable: true
+        items:
+          type: string
+  tips:
+    type: object
+    nullable: true
+    description: Tips and recommendations (HTML allowed, all fields optional)
+    properties:
+      wearAndTake:
+        type: string
+        maxLength: 65000
+        nullable: true
+      nearby:
+        type: string
+        maxLength: 65000
+        nullable: true
+      insiderTips:
+        type: string
+        maxLength: 65000
+        nullable: true
+      safetyNotes:
+        type: string
+        maxLength: 65000
+        nullable: true
+  media:
+    type: object
+    nullable: true
+    description: Media information (all fields optional)
+    properties:
+      imageCredit:
+        type: string
+        nullable: true
+      videos:
+        type: array
+        maxItems: 5
+        nullable: true
+        items:
+          type: object
+          properties:
+            url:
+              type: string
+              format: uri
+              maxLength: 255
+              nullable: true
+            startTime:
+              type: string
+              maxLength: 16
+              nullable: true
+            endTime:
+              type: string
+              maxLength: 16
+              nullable: true
+            caption:
+              type: string
+              maxLength: 255
+              nullable: true
+      socialPosts:
+        type: array
+        maxItems: 3
+        nullable: true
+        items:
+          type: string
+          format: uri
+          maxLength: 255
+          nullable: true
+  experience:
+    type: object
+    nullable: true
+    description: Experience description (optional)
+    properties:
+      experience:
+        type: string
+        maxLength: 2000
+        nullable: true
+  draft_version:
+    type: integer
+    minimum: 0
+    description: >
+      Initial version number for optimistic locking (required).
+      
+      For new POI creation, always use `0` as the initial version.
+      The server will set the POI's `draftVersion` to `0` in the response.
+      
+      Subsequent updates must use the exact `draftVersion` from the last response.

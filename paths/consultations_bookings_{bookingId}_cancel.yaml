@@ -1,0 +1,189 @@
+patch:
+  tags:
+    - Consultations
+  summary: Cancel booking
+  description: >-
+    Cancel a booking (customer or influencer). Customers can cancel up to 24
+    hours before scheduled time. Influencers can cancel anytime.
+  parameters:
+    - name: bookingId
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            reason:
+              type: string
+              maxLength: 500
+              nullable: true
+              description: Optional cancellation reason
+  responses:
+    '200':
+      description: Booking cancelled
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/ConsultationBooking.yaml
+              message:
+                type: string
+    '400':
+      description: Booking cannot be cancelled
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Cannot cancel (e.g., customer trying to cancel <24h before)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Booking not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+post:
+  tags:
+    - Consultations
+  summary: Cancel consultation booking (with refund calculation)
+  description: |
+    Cancel a consultation booking using the ConsultationCancellationService.
+    This endpoint handles refund calculations based on cancellation policy:
+    
+    **Influencer cancellation:**
+    - Always 100% refund (regardless of timing)
+    
+    **Customer cancellation:**
+    - More than 48 hours: 100% refund
+    - 24-48 hours: 50% refund
+    - Less than 24 hours: 0% refund
+
+    Both customers and influencers can cancel bookings.
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: bookingId
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Booking ID
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - reason
+          properties:
+            reason:
+              type: string
+              maxLength: 500
+              description: Cancellation reason
+            description:
+              type: string
+              maxLength: 1000
+              nullable: true
+              description: Optional detailed description
+  responses:
+    '200':
+      description: Booking cancelled successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              booking:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  status:
+                    type: string
+                  cancellation_reason:
+                    type: string
+                  cancelled_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+              refund:
+                type: object
+                nullable: true
+                description: Refund information if applicable
+                properties:
+                  id:
+                    type: integer
+                  amount_cents:
+                    type: integer
+                    description: Refund amount in cents
+                  amount_formatted:
+                    type: string
+                    description: Formatted refund amount (e.g., "10.50")
+                  currency:
+                    type: string
+                  reason:
+                    type: string
+                  status:
+                    type: string
+                  stripe_refund_id:
+                    type: string
+                    nullable: true
+    '400':
+      description: Booking cannot be cancelled
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Booking not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+    '500':
+      description: Failed to cancel booking
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

@@ -1,0 +1,75 @@
+post:
+  tags:
+    - Billing
+  summary: Add item to cart
+  description: >
+    Add an item (consultation, masterclass, media asset, or map) to the cart.
+
+
+    **Authentication Options:**
+
+    - **Authenticated users**: Include `Authorization: Bearer <token>` header
+
+    - **Guest users**: Include `X-Session-ID: <session-id>` header, or omit both
+    headers to auto-generate a session
+
+
+    **Item Types:**
+
+    - `consultation`: Requires `metadata.scheduled_at` (ISO 8601 format, must be
+    in the future)
+
+    - `masterclass`: Optional `metadata.access_type` (lifetime, yearly, monthly)
+
+    - `media_asset`: No special metadata required
+
+    - `map`: No special metadata required. **Note:** Paid maps can only be added
+    to cart if the map's creator has an active Stripe Connect account.
+
+
+    **Stripe Account Requirement for Maps:**
+
+    Paid maps (where `is_for_sale` is true and `price` > 0) can only be added to
+    the cart if the influencer who created the map has a connected and active
+    Stripe account. If the creator has not set up payments, the request will fail
+    with a 422 error. Free maps are not affected by this restriction.
+  security: []
+  parameters:
+    - name: X-Session-ID
+      in: header
+      required: false
+      description: >-
+        Session ID for guest cart access. Required for guests, optional for
+        authenticated users.
+      schema:
+        type: string
+        example: 550e8400-e29b-41d4-a716-446655440000
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/StoreCartItemRequest.yaml
+  responses:
+    '201':
+      description: Item added to cart successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Item added to cart successfully
+              cart_id:
+                type: integer
+              cart_item:
+                $ref: ../components/schemas/CartItem.yaml
+              cart:
+                $ref: ../components/schemas/Cart.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

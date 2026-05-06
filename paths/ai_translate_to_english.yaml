@@ -1,0 +1,112 @@
+post:
+  tags:
+    - AI
+  summary: Translate text to English
+  description: >
+    Translate input text to English using Google Vertex AI Gemini model.
+    This endpoint is specifically designed for translating travel content and POI descriptions to English.
+
+    **Authentication:**
+    Requires valid Sanctum authentication token.
+
+    **Rate Limiting:**
+    Subject to standard API rate limiting.
+
+    **Use Case:**
+    Used by the Rich Text Editor in Map Creator v2 to translate content to English only.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - text
+          properties:
+            text:
+              type: string
+              description: The text content to translate to English
+              maxLength: 5000
+              example: "Esta es una descripción en español de un lugar turístico."
+            context:
+              type: string
+              description: Optional context about the content (e.g., field name, POI type)
+              maxLength: 200
+              example: "POI description for a restaurant"
+  responses:
+    '200':
+      description: Text successfully translated to English
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  translatedText:
+                    type: string
+                    description: The translated text in English (sanitized to remove any JSON/markdown artifacts)
+                    example: "This is a Spanish description of a tourist spot. It has great views and is perfect for photos."
+                  originalLanguage:
+                    type: string
+                    description: Detected original language code (if available)
+                    example: "es"
+          examples:
+            spanish-to-english:
+              summary: Spanish text translation
+              value:
+                success: true
+                data:
+                  translatedText: "This is a beautiful square in the heart of Istanbul, perfect for taking photos and enjoying the atmosphere."
+                  originalLanguage: "es"
+            french-to-english:
+              summary: French text with HTML translation
+              value:
+                success: true
+                data:
+                  translatedText: "This restaurant offers <strong>traditional cuisine</strong> with a modern twist."
+                  originalLanguage: "fr"
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Validation failed
+              errors:
+                type: object
+                properties:
+                  text:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                      - "The text field is required."
+                      - "The text field must not exceed 5000 characters."
+    '500':
+      description: Server error or AI translation failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Failed to translate text
+              error:
+                type: string
+                description: Error message (only shown in local/development environments)
+                example: "Translation service unavailable"

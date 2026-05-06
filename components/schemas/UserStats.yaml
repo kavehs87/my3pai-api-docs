@@ -1,0 +1,43 @@
+type: object
+description: User statistics and metrics
+properties:
+  maps:
+    type: integer
+    description: Count of user's maps
+    example: 5
+  places:
+    type: integer
+    description: Count of POIs across all user's maps
+    example: 42
+  views:
+    type: integer
+    description: Total view count of user's maps/profile
+    example: 0
+  followers:
+    type: integer
+    description: Follower count
+    example: 0
+  totalTrips:
+    type: integer
+    description: Count of trips/itineraries
+    example: 3
+  totalMaps:
+    type: integer
+    description: Same as maps (count of user's maps)
+    example: 5
+  countriesVisited:
+    type: integer
+    description: Unique countries from POIs
+    example: 12
+  totalDaysTraveled:
+    type: integer
+    description: Sum of trip durations or calculated from itineraries
+    example: 45
+  consultationBookings:
+    type: integer
+    description: Total count of consultation bookings made by the user (as customer)
+    example: 3
+  consultationsHosted:
+    type: integer
+    description: Total count of consultation bookings where the user is the influencer/host
+    example: 5

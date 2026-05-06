@@ -1,0 +1,66 @@
+get:
+  tags:
+    - Influencers
+    - Billing
+  summary: Get influencer earnings summary
+  description: >-
+    Get aggregated earnings summary for the authenticated influencer with totals
+    and breakdowns. All amounts are in USD.
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: period
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - all_time
+          - this_month
+          - last_month
+          - this_year
+        default: all_time
+      description: Time period for summary
+  responses:
+    '200':
+      description: Earnings summary
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  total_earnings:
+                    type: number
+                    format: float
+                    description: >-
+                      Total earnings in dollars (sum of all paid and pending
+                      payouts minus any reversed payouts)
+                  total_payouts:
+                    type: number
+                    format: float
+                    description: >-
+                      Total payouts in dollars (sum of paid payouts minus
+                      reversed payouts)
+                  pending_payouts:
+                    type: number
+                    format: float
+                    description: >-
+                      Pending payouts in dollars (pending/processing payouts
+                      minus reversed payouts, never below zero)
+                  platform_fees_paid:
+                    type: number
+                    format: float
+                    description: >-
+                      Platform fees collected in dollars (15% commission from
+                      collected platform earnings minus reversals)
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

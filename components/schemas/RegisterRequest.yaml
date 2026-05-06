@@ -1,0 +1,24 @@
+type: object
+required:
+  - first_name
+  - last_name
+  - email
+  - password
+  - password_confirmation
+properties:
+  first_name:
+    type: string
+    maxLength: 255
+  last_name:
+    type: string
+    maxLength: 255
+  email:
+    type: string
+    format: email
+    maxLength: 255
+  password:
+    type: string
+    minLength: 8
+  password_confirmation:
+    type: string
+    minLength: 8

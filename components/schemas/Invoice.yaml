@@ -1,0 +1,95 @@
+type: object
+properties:
+  id:
+    type: integer
+  invoice_number:
+    type: string
+    example: INV-2025-000001
+  order_id:
+    type: integer
+  user_id:
+    type: integer
+    description: Customer ID
+  influencer_id:
+    type: integer
+    description: Seller/Influencer ID
+  status:
+    type: string
+    enum:
+      - draft
+      - issued
+      - paid
+      - overdue
+      - cancelled
+  perspective:
+    type: string
+    enum:
+      - paid
+      - received
+    description: '''paid'' for customer view, ''received'' for influencer view'
+  subtotal_cents:
+    type: integer
+  subtotal_formatted:
+    type: string
+  tax_amount_cents:
+    type: integer
+  tax_amount_formatted:
+    type: string
+  discount_amount_cents:
+    type: integer
+  discount_amount_formatted:
+    type: string
+  total_amount_cents:
+    type: integer
+  total_amount_formatted:
+    type: string
+  platform_fee_amount_cents:
+    type: integer
+  platform_fee_amount_formatted:
+    type: string
+  influencer_payout_amount_cents:
+    type: integer
+  influencer_payout_amount_formatted:
+    type: string
+  currency:
+    type: string
+  order:
+    allOf:
+      - $ref: ./Order.yaml
+      - type: object
+        nullable: true
+  customer:
+    type: object
+    nullable: true
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      email:
+        type: string
+  influencer:
+    type: object
+    nullable: true
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      email:
+        type: string
+  issued_at:
+    type: string
+    format: date-time
+    nullable: true
+  due_at:
+    type: string
+    format: date-time
+    nullable: true
+  paid_at:
+    type: string
+    format: date-time
+    nullable: true
+  notes:
+    type: string
+    nullable: true

@@ -1,0 +1,10 @@
+type: object
+properties:
+  password:
+    type: string
+    description: Required if user has a password
+    nullable: true
+  providerReauthToken:
+    type: string
+    description: Required if user has no password (Google OAuth users). Google ID token.
+    nullable: true

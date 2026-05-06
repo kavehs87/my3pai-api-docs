@@ -1,0 +1,23 @@
+type: object
+properties:
+  key:
+    type: string
+    example: hotel
+    description: Unique identifier matching Google Place ID
+  label:
+    type: string
+    example: Hotel
+    description: Human-readable label
+  parentCategory:
+    type: string
+    nullable: true
+    example: accommodation
+    description: Parent category grouping (accommodation, food_drink, nature, culture, adventure, nightlife, shopping, wellness, transportation, instagrammable)
+  description:
+    type: string
+    nullable: true
+    description: Placeholder for future expansion
+  icon:
+    type: string
+    nullable: true
+    description: Placeholder for future expansion

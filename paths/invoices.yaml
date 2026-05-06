@@ -1,0 +1,72 @@
+get:
+  tags:
+    - Billing
+  summary: List invoices
+  description: >-
+    List user's invoices (both paid and received). Supports filtering and
+    pagination.
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    - name: per_page
+      in: query
+      schema:
+        type: integer
+        default: 15
+    - name: status
+      in: query
+      schema:
+        type: string
+        enum:
+          - draft
+          - issued
+          - paid
+          - overdue
+          - cancelled
+    - name: type
+      in: query
+      schema:
+        type: string
+        enum:
+          - paid
+          - received
+        description: >-
+          Filter by invoice type (paid = user is customer, received = user is
+          influencer)
+    - name: from_date
+      in: query
+      schema:
+        type: string
+        format: date
+    - name: to_date
+      in: query
+      schema:
+        type: string
+        format: date
+  responses:
+    '200':
+      description: Invoices retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/Invoice.yaml
+              meta:
+                $ref: ../components/schemas/PaginationMeta.yaml
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

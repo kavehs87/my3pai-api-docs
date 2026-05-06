@@ -1,0 +1,54 @@
+get:
+  tags:
+    - Public
+    - Blog
+  summary: Get single blog post (premium content gated)
+  description: Get a single blog post. Premium content requires purchase.
+  security: []
+  parameters:
+    - name: username
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Blog post
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/BlogPostFull.yaml
+    '402':
+      description: Premium content - payment required
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: Premium content
+              requiresPurchase:
+                type: boolean
+                example: true
+              data:
+                $ref: ../components/schemas/BlogPostFull.yaml
+    '404':
+      description: Blog post not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

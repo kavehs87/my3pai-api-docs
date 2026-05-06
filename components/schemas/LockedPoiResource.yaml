@@ -1,0 +1,26 @@
+type: object
+description: Redacted POI data for locked/paywalled content
+properties:
+  id:
+    type: integer
+  isLocked:
+    type: boolean
+    description: Always true for this resource
+    example: true
+  basic:
+    type: object
+    properties:
+      name:
+        type: string
+        description: The title of the POI
+      latitude:
+        type: number
+        format: float
+      longitude:
+        type: number
+        format: float
+required:
+  - id
+  - isLocked
+  - basic
+

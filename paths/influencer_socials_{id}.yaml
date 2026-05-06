@@ -1,0 +1,95 @@
+put:
+  tags:
+    - Influencers
+  summary: Update social link
+  description: Update an existing social link
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            platform:
+              type: string
+              enum:
+                - instagram
+                - youtube
+                - tiktok
+                - twitter
+                - facebook
+                - linkedin
+                - other
+            url:
+              type: string
+              format: uri
+              maxLength: 500
+            handle:
+              type: string
+              maxLength: 255
+              nullable: true
+            sortOrder:
+              type: integer
+              minimum: 0
+              nullable: true
+  responses:
+    '200':
+      description: Social link updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/UserSocial.yaml
+              message:
+                type: string
+    '404':
+      description: Social link not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+delete:
+  tags:
+    - Influencers
+  summary: Delete social link
+  description: Delete a social link
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Social link deleted
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+    '404':
+      description: Social link not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

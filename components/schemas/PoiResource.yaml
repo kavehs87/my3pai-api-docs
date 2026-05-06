@@ -1,0 +1,67 @@
+type: object
+properties:
+  id:
+    type: integer
+  completenessScore:
+    type: integer
+    description: POI completeness score (0-100)
+  isPublishable:
+    type: boolean
+    description: Whether the POI meets all requirements to be published
+  isLocked:
+    type: boolean
+    description: Whether the POI content is locked (always false in this resource)
+  basic:
+    $ref: ./PoiBasic.yaml
+  category:
+    $ref: ./PoiCategory.yaml
+  difficulty:
+    $ref: ./PoiDifficulty.yaml
+  pricing:
+    $ref: ./PoiPricing.yaml
+  regions:
+    $ref: ./PoiRegions.yaml
+  amenities:
+    $ref: ./PoiAmenities.yaml
+  tips:
+    $ref: ./PoiTips.yaml
+  media:
+    $ref: ./PoiMedia.yaml
+  experience:
+    $ref: ./PoiExperience.yaml
+  sortOrder:
+    type: integer
+  status:
+    type: string
+    enum:
+      - draft
+      - published
+  isVisible:
+    type: boolean
+    description: >
+      Whether this POI is visible to the public.
+
+      When `false`, the POI is hidden from public map views and explore results,
+      but remains visible to the map owner in their private management interface.
+  isFeatured:
+    type: boolean
+    description: >
+      Whether this POI is marked as featured.
+
+      Featured POIs (up to 2 per map) are shown as a free preview for maps that are for sale,
+      even when the user hasn't purchased access to the full map content.
+  draftVersion:
+    type: integer
+    minimum: 0
+    description: >
+      Current version number for optimistic locking.
+
+      This version must be sent with every draft update request as `draft_version`.
+      The version increments automatically on each successful update to prevent
+      concurrent edit conflicts.
+
+      **Usage:**
+      - Store this value when reading/creating a POI
+      - Send it as `draft_version` in update requests
+      - Update your local state with the new `draftVersion` from responses
+      - On 409 Conflict, use the `draftVersion` from the error response to retry

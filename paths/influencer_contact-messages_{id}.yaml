@@ -1,0 +1,60 @@
+get:
+  tags:
+    - Influencers
+  summary: Get single contact message
+  description: Get details of a specific contact message. Automatically marks the message as read.
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Contact message details
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/ContactMessage.yaml
+    '404':
+      description: Message not found or doesn't belong to influencer
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+delete:
+  tags:
+    - Influencers
+  summary: Delete contact message
+  description: Delete a contact message
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Message deleted successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+                example: "Contact message deleted successfully"
+    '404':
+      description: Message not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+

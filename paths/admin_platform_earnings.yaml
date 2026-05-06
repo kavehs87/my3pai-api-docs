@@ -1,0 +1,125 @@
+get:
+  tags:
+    - Admin
+  summary: List platform earnings
+  description: List platform earnings with pagination and filtering (admin only)
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: influencer_id
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: Filter by influencer ID
+    - name: from_date
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date
+      description: Filter earnings from this date (inclusive)
+    - name: to_date
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date
+      description: Filter earnings up to this date (inclusive)
+    - name: status
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - collected
+          - reversed
+          - pending
+      description: Filter by status (comma-separated for multiple)
+    - name: per_page
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 15
+      description: Number of items per page
+    - name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number
+  responses:
+    '200':
+      description: Platform earnings list
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    order_id:
+                      type: integer
+                      nullable: true
+                    payment_id:
+                      type: integer
+                      nullable: true
+                    influencer_id:
+                      type: integer
+                    influencer_name:
+                      type: string
+                      nullable: true
+                    amount_cents:
+                      type: integer
+                      description: Amount in cents
+                    amount_formatted:
+                      type: string
+                      description: Formatted amount (e.g., "10.50")
+                    currency:
+                      type: string
+                    fee_percentage:
+                      type: number
+                    type:
+                      type: string
+                    status:
+                      type: string
+                      enum:
+                        - collected
+                        - reversed
+                        - pending
+                    collected_at:
+                      type: string
+                      format: date-time
+                      nullable: true
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+              links:
+                $ref: ../components/schemas/PaginationLinks.yaml
+              meta:
+                $ref: ../components/schemas/PaginationMeta.yaml
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

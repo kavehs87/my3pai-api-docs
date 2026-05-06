@@ -1,0 +1,8 @@
+type: object
+properties:
+  key:
+    type: string
+    example: instagrammable
+  label:
+    type: string
+    example: Instagrammable

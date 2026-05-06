@@ -1,0 +1,65 @@
+type: object
+required:
+  - costType
+properties:
+  costType:
+    type: string
+    enum:
+      - free
+      - paid
+      - mixed
+  priceChargedAs:
+    type: string
+    enum:
+      - per_person
+      - per_group
+      - per_day
+      - per_activity
+      - other
+    nullable: true
+  currency:
+    type: string
+    minLength: 3
+    maxLength: 3
+    nullable: true
+  estimatedMinPrice:
+    type: number
+    format: float
+    minimum: 0
+    nullable: true
+  estimatedMaxPrice:
+    type: number
+    format: float
+    minimum: 0
+    nullable: true
+  bookingLink:
+    type: string
+    format: uri
+    maxLength: 255
+    nullable: true
+  priceNotes:
+    type: string
+    nullable: true
+  voucher:
+    type: boolean
+    nullable: true
+    description: >
+      Whether a voucher is available for this POI.
+      Stored as a boolean in the database (true/false).
+      Examples: `true`, `false`.
+  voucherCode:
+    type: string
+    maxLength: 64
+    nullable: true
+  voucherPartner:
+    type: string
+    maxLength: 128
+    nullable: true
+  voucherConditions:
+    type: string
+    nullable: true
+  voucherLink:
+    type: string
+    format: uri
+    maxLength: 255
+    nullable: true

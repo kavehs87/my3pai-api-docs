@@ -1,0 +1,117 @@
+get:
+  tags:
+    - Consultations
+  summary: Get cancellation policy and refund amount
+  description: |
+    Get the cancellation policy and calculate the refund amount for a booking.
+    Returns information about:
+    - Whether the booking can be cancelled
+    - Refund percentage based on who is cancelling and time until booking
+    - Refund amount in cents and formatted
+    - Policy rules and which rule applies
+
+    Policy rules:
+    - Influencer cancellation: Always 100% refund (regardless of timing)
+    - Customer cancellation:
+      - More than 48 hours: 100% refund
+      - 24-48 hours: 50% refund
+      - Less than 24 hours: 0% refund
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: bookingId
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Booking ID
+  responses:
+    '200':
+      description: Cancellation policy information
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              booking_id:
+                type: integer
+              booking_status:
+                type: string
+                description: Current status of the booking (pending, confirmed, etc.)
+              scheduled_at:
+                type: string
+                format: date-time
+              hours_until_booking:
+                type: integer
+                description: Hours until the scheduled booking time
+              can_cancel:
+                type: boolean
+                description: Whether the booking can be cancelled
+              refund_percentage:
+                type: number
+                format: float
+                description: Refund percentage (0, 50, or 100)
+              refund_amount_cents:
+                type: integer
+                description: Calculated refund amount in cents
+              refund_amount_formatted:
+                type: string
+                description: Formatted refund amount (e.g., "10.50")
+              reason:
+                type: string
+                description: Reason for the refund calculation
+              cancelled_by_role:
+                type: string
+                enum:
+                  - influencer
+                  - customer
+                description: Role of the user viewing the policy (influencer or customer)
+              policy:
+                type: object
+                properties:
+                  rules:
+                    type: object
+                    description: Policy rules. For influencers, only 'influencer_cancellation' rule is shown. For customers, time-based rules are shown.
+                    additionalProperties:
+                      type: object
+                      properties:
+                        refund_percentage:
+                          type: number
+                          format: float
+                        description:
+                          type: string
+                    example:
+                      influencer_cancellation:
+                        refund_percentage: 100.0
+                        description: Full refund (100%) always when influencer cancels
+                      more_than_48_hours:
+                        refund_percentage: 100.0
+                        description: Full refund (100%) if cancelled more than 48 hours before scheduled time
+                      24_to_48_hours:
+                        refund_percentage: 50.0
+                        description: Partial refund (50%) if cancelled 24-48 hours before scheduled time
+                      less_than_24_hours:
+                        refund_percentage: 0.0
+                        description: No refund if cancelled less than 24 hours before scheduled time
+                  current_applicable_rule:
+                    type: string
+                    enum:
+                      - influencer_cancellation
+                      - more_than_48_hours
+                      - 24_to_48_hours
+                      - less_than_24_hours
+                    description: Which policy rule currently applies
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Booking not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

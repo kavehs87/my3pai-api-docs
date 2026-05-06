@@ -1,0 +1,25 @@
+type: object
+properties:
+  id:
+    type: integer
+  title:
+    type: string
+  slug:
+    type: string
+  description:
+    type: string
+    nullable: true
+  coverImage:
+    type: string
+    format: uri
+    nullable: true
+  duration:
+    type: string
+    description: 45 min
+    nullable: true
+  isPremium:
+    type: boolean
+  publishedAt:
+    type: string
+    format: date-time
+    nullable: true

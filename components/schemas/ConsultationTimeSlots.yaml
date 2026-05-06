@@ -1,0 +1,46 @@
+type: object
+description: Available time slots for a specific date
+properties:
+  date:
+    type: string
+    format: date
+    description: Date in YYYY-MM-DD format (UTC)
+    example: '2024-02-15'
+  consultationId:
+    type: integer
+    description: The consultation ID
+  durationMinutes:
+    type: integer
+    description: Duration of the consultation in minutes
+  workingHours:
+    type: object
+    description: Working hours for this day (times are stored in the working hours format as configured by the influencer; frontend should interpret based on influencer's timezone)
+    properties:
+      start:
+        type: string
+        pattern: ^\d{2}:\d{2}$
+        description: Start time in HH:MM format
+        example: '09:00'
+      end:
+        type: string
+        pattern: ^\d{2}:\d{2}$
+        description: End time in HH:MM format
+        example: '17:00'
+  timeSlots:
+    type: array
+    description: Array of available time slots
+    items:
+      type: object
+      properties:
+        time:
+          type: string
+          pattern: ^\d{2}:\d{2}$
+          description: Time in HH:MM format
+          example: '09:00'
+        available:
+          type: boolean
+          description: Whether this time slot is available
+        formatted:
+          type: string
+          description: Formatted time string (e.g., "09:00 AM")
+          example: 09:00 AM

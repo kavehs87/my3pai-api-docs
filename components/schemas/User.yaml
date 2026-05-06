@@ -1,0 +1,52 @@
+type: object
+properties:
+  id:
+    type: integer
+  name:
+    type: string
+  first_name:
+    type: string
+  last_name:
+    type: string
+  email:
+    type: string
+    format: email
+  username:
+    type: string
+    nullable: true
+  avatar:
+    type: string
+    format: uri
+    nullable: true
+  cover_image:
+    type: string
+    format: uri
+    nullable: true
+  bio:
+    type: string
+    nullable: true
+  location:
+    type: string
+    nullable: true
+  verified:
+    type: boolean
+  role:
+    type: string
+    enum:
+      - user
+      - admin
+  email_verified_at:
+    type: string
+    format: date-time
+    nullable: true
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
+  preferences:
+    allOf:
+      - $ref: ./UserPreferences.yaml
+      - type: object
+        nullable: true

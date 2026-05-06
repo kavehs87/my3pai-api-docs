@@ -1,0 +1,45 @@
+type: object
+description: Consultation availability data for calendar widgets (all times in UTC)
+properties:
+  consultationId:
+    type: integer
+    description: The consultation ID
+  durationMinutes:
+    type: integer
+    description: Duration of the consultation in minutes
+  bookedSlots:
+    type: array
+    description: Array of booked time slots (only pending and confirmed bookings)
+    items:
+      type: object
+      properties:
+        start:
+          type: string
+          format: date-time
+          description: Start time of the booked slot (UTC, ISO 8601)
+          example: '2024-02-15T14:00:00Z'
+        end:
+          type: string
+          format: date-time
+          description: End time of the booked slot (start + duration, UTC, ISO 8601)
+          example: '2024-02-15T15:00:00Z'
+        status:
+          type: string
+          enum:
+            - pending
+            - confirmed
+          description: Booking status (only pending and confirmed are included)
+  dateRange:
+    type: object
+    description: The date range that was queried (UTC)
+    properties:
+      start:
+        type: string
+        format: date-time
+        description: Start of the queried date range (UTC, ISO 8601)
+        example: '2024-02-01T00:00:00Z'
+      end:
+        type: string
+        format: date-time
+        description: End of the queried date range (UTC, ISO 8601)
+        example: '2024-02-29T23:59:59Z'

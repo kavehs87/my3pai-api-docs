@@ -1,0 +1,16 @@
+type: object
+required:
+  - scheduled_at
+properties:
+  scheduled_at:
+    type: string
+    format: date-time
+    description: >-
+      Scheduled time in ISO 8601 format (UTC). Frontend should convert the
+      selected time to UTC before sending.
+    example: '2024-02-15T14:30:00Z'
+  notes:
+    type: string
+    maxLength: 1000
+    nullable: true
+    description: Optional notes for the booking

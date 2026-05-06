@@ -1,0 +1,76 @@
+get:
+  tags:
+    - Influencers
+  summary: Get all social links
+  description: Get all social links for authenticated user
+  responses:
+    '200':
+      description: List of social links
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/UserSocial.yaml
+post:
+  tags:
+    - Influencers
+  summary: Create social link
+  description: Create a new social link
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - platform
+            - url
+          properties:
+            platform:
+              type: string
+              enum:
+                - instagram
+                - youtube
+                - tiktok
+                - twitter
+                - facebook
+                - linkedin
+                - other
+            url:
+              type: string
+              format: uri
+              maxLength: 500
+            handle:
+              type: string
+              maxLength: 255
+              nullable: true
+            sortOrder:
+              type: integer
+              minimum: 0
+              nullable: true
+  responses:
+    '201':
+      description: Social link created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/UserSocial.yaml
+              message:
+                type: string
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

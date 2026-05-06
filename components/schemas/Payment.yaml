@@ -1,0 +1,48 @@
+type: object
+properties:
+  id:
+    type: integer
+  order_id:
+    type: integer
+  stripe_payment_intent_id:
+    type: string
+  status:
+    type: string
+    enum:
+      - pending
+      - processing
+      - succeeded
+      - failed
+      - refunded
+      - free
+    description: >-
+      Payment status ('free' for free orders, 'succeeded' for completed paid
+      orders)
+  amount_cents:
+    type: integer
+  amount_formatted:
+    type: string
+  currency:
+    type: string
+  payment_method:
+    type: string
+    enum:
+      - card
+      - free
+      - paypal
+    description: Payment method ('free' for free orders, 'card' for Stripe payments)
+  order:
+    allOf:
+      - $ref: ./Order.yaml
+      - type: object
+        nullable: true
+  processed_at:
+    type: string
+    format: date-time
+    nullable: true
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time

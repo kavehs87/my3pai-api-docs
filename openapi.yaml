@@ -1,0 +1,393 @@
+openapi: 3.0.3
+info:
+  title: My3PAI API
+  version: 1.0.0
+  description: >
+    API for My3PAI - A platform for creating and sharing travel maps and points
+    of interest (POIs).
+
+
+    ## Authentication
+
+    The API uses Laravel Sanctum for token-based authentication. Include the
+    token in the Authorization header:
+
+    ```
+
+    Authorization: Bearer <token>
+
+    ```
+
+
+    ## Guest Cart Support
+
+    Shopping cart endpoints support both authenticated users and guest visitors:
+
+    - **Authenticated users**: Include `Authorization: Bearer <token>` header
+
+    - **Guest users**: Include `X-Session-ID: <session-id>` header (or omit both
+    headers to auto-generate a session)
+
+    - Guest carts expire after 7 days, user carts expire after 30 days
+
+    - Guest carts can be merged into user carts upon login using `/cart/merge`
+    endpoint
+
+
+    ## Rate Limiting
+
+    - Authentication endpoints: 5 requests per minute per IP
+
+    - Public map endpoint: 60 requests per minute per IP
+
+    - Rate limit exceeded returns HTTP 429
+
+
+    ## Base URL
+
+    - Local development: `http://localhost:8000/api`
+
+    - All routes are relative to `/api` unless explicitly noted
+  contact:
+    name: My3PAI API Support
+  license:
+    name: Proprietary
+    url: https://my3pai.com
+servers:
+  - url: http://localhost:8000/api
+    description: Local development server
+  - url: https://api.my3pai.com/api
+    description: Production server
+tags:
+  - name: Authentication
+    description: User registration, login, and authentication
+  - name: Profile
+    description: User profile management
+  - name: Influencers
+    description: Influencer profile management and public profiles
+  - name: Blog
+    description: Blog posts management and public blog content
+  - name: Podcast
+    description: Podcast episodes management and public podcast content
+  - name: Masterclasses
+    description: Training courses and masterclasses management
+  - name: Consultations
+    description: 1-on-1 consultation booking system
+  - name: Media Assets
+    description: Digital assets marketplace (stock footage, presets, templates, etc.)
+  - name: Stripe
+    description: Stripe Connect integration for payment processing
+  - name: Maps
+    description: Map creation and management
+  - name: POIs
+    description: Points of Interest management
+  - name: Media
+    description: Media upload and management for POIs and maps
+  - name: Admin
+    description: Administrative endpoints (admin only)
+  - name: AI
+    description: AI-powered endpoints using Google Vertex AI
+  - name: Public
+    description: Public endpoints that don't require authentication
+  - name: Billing
+    description: Shopping cart, orders, payments, and invoicing
+  - name: Webhooks
+    description: Webhook endpoints for external service callbacks
+security:
+  - BearerAuth: []
+paths:
+  /health:
+    $ref: paths/health.yaml
+  /pois/filters/metadata:
+    $ref: paths/pois_filters_metadata.yaml
+  /pois/fetch-unsplash-images:
+    $ref: paths/pois_fetch_unsplash_images.yaml
+  /storage/proxy:
+    $ref: paths/storage_proxy.yaml
+  /register:
+    $ref: paths/register.yaml
+  /login:
+    $ref: paths/login.yaml
+  /forgot-password:
+    $ref: paths/forgot-password.yaml
+  /reset-password:
+    $ref: paths/reset-password.yaml
+  /me:
+    $ref: paths/me.yaml
+  /logout:
+    $ref: paths/logout.yaml
+  /profile:
+    $ref: paths/profile.yaml
+  /profile/avatar:
+    $ref: paths/profile_avatar.yaml
+  /profile/cover:
+    $ref: paths/profile_cover.yaml
+  /profile/preferences:
+    $ref: paths/profile_preferences.yaml
+  /profile/change-password:
+    $ref: paths/profile_change-password.yaml
+  /profile/account:
+    $ref: paths/profile_account.yaml
+  /influencer/socials:
+    $ref: paths/influencer_socials.yaml
+  /influencer/socials/{id}:
+    $ref: paths/influencer_socials_{id}.yaml
+  /influencer/socials/reorder:
+    $ref: paths/influencer_socials_reorder.yaml
+  /influencer/social-posts:
+    $ref: paths/influencer_social-posts.yaml
+  /influencer/social-posts/{id}:
+    $ref: paths/influencer_social-posts_{id}.yaml
+  /influencer/social-posts/reorder:
+    $ref: paths/influencer_social-posts_reorder.yaml
+  /influencer/languages:
+    $ref: paths/influencer_languages.yaml
+  /influencer/languages/{id}:
+    $ref: paths/influencer_languages_{id}.yaml
+  /influencer/languages/reorder:
+    $ref: paths/influencer_languages_reorder.yaml
+  /influencer/skills:
+    $ref: paths/influencer_skills.yaml
+  /influencer/skills/{id}:
+    $ref: paths/influencer_skills_{id}.yaml
+  /influencer/certifications:
+    $ref: paths/influencer_certifications.yaml
+  /influencer/certifications/{id}:
+    $ref: paths/influencer_certifications_{id}.yaml
+  /influencer/external-links:
+    $ref: paths/influencer_external-links.yaml
+  /influencer/external-links/{id}:
+    $ref: paths/influencer_external-links_{id}.yaml
+  /influencer/blog:
+    $ref: paths/influencer_blog.yaml
+  /influencer/blog/{id}:
+    $ref: paths/influencer_blog_{id}.yaml
+  /influencer/blog/{id}/cover:
+    $ref: paths/influencer_blog_{id}_cover.yaml
+  /influencer/podcast:
+    $ref: paths/influencer_podcast.yaml
+  /influencer/podcast/settings:
+    $ref: paths/influencer_podcast_settings.yaml
+  /influencer/podcast/{id}:
+    $ref: paths/influencer_podcast_{id}.yaml
+  /influencer/podcast/{id}/audio:
+    $ref: paths/influencer_podcast_{id}_audio.yaml
+  /influencer/podcast/{id}/cover:
+    $ref: paths/influencer_podcast_{id}_cover.yaml
+  /influencer/contact-messages:
+    $ref: paths/influencer_contact-messages.yaml
+  /influencer/contact-messages/stats:
+    $ref: paths/influencer_contact-messages_stats.yaml
+  /influencer/contact-messages/{id}:
+    $ref: paths/influencer_contact-messages_{id}.yaml
+  /influencer/contact-messages/{id}/read:
+    $ref: paths/influencer_contact-messages_{id}_read.yaml
+  /influencer/contact-settings:
+    $ref: paths/influencer_contact-settings.yaml
+  /map/pois:
+    $ref: paths/map_pois.yaml
+  /influencers:
+    $ref: paths/influencers.yaml
+  /influencers/{username}:
+    $ref: paths/influencers_{username}.yaml
+  /u/{username}/{slug}:
+    $ref: paths/u_{username}_{slug}.yaml
+  /influencers/{username}/blog:
+    $ref: paths/influencers_{username}_blog.yaml
+  /influencers/{username}/blog/{slug}:
+    $ref: paths/influencers_{username}_blog_{slug}.yaml
+  /influencers/{username}/podcast:
+    $ref: paths/influencers_{username}_podcast.yaml
+  /influencers/{username}/podcast/{slug}:
+    $ref: paths/influencers_{username}_podcast_{slug}.yaml
+  /influencers/{username}/masterclasses:
+    $ref: paths/influencers_{username}_masterclasses.yaml
+  /influencers/{username}/masterclasses/{slug}:
+    $ref: paths/influencers_{username}_masterclasses_{slug}.yaml
+  /influencers/{username}/maps:
+    $ref: paths/influencers_{username}_maps.yaml
+  /influencers/{username}/consultation:
+    $ref: paths/influencers_{username}_consultation.yaml
+  /influencers/{username}/consultation/availability:
+    $ref: paths/influencers_{username}_consultation_availability.yaml
+  /influencers/{username}/consultation/availability/calendar:
+    $ref: paths/influencers_{username}_consultation_availability_calendar.yaml
+  /influencers/{username}/consultation/availability/slots:
+    $ref: paths/influencers_{username}_consultation_availability_slots.yaml
+  /influencers/{username}/contact:
+    $ref: paths/influencers_{username}_contact.yaml
+  /influencers/{username}/contact-info:
+    $ref: paths/influencers_{username}_contact-info.yaml
+  /influencer/consultation:
+    $ref: paths/influencer_consultation.yaml
+  /influencer/consultation/bookings:
+    $ref: paths/influencer_consultation_bookings.yaml
+  /influencer/consultation/bookings/{id}:
+    $ref: paths/influencer_consultation_bookings_{id}.yaml
+  /influencer/consultation/bookings/{id}/confirm:
+    $ref: paths/influencer_consultation_bookings_{id}_confirm.yaml
+  /influencer/consultation/bookings/{id}/complete:
+    $ref: paths/influencer_consultation_bookings_{id}_complete.yaml
+  /consultations/{id}/book:
+    $ref: paths/consultations_{id}_book.yaml
+  /consultations/{id}/book-and-pay:
+    $ref: paths/consultations_{id}_book-and-pay.yaml
+  /consultations/{id}/availability:
+    $ref: paths/consultations_{id}_availability.yaml
+  /consultations/my-bookings:
+    $ref: paths/consultations_my-bookings.yaml
+  /consultations/bookings/{id}:
+    $ref: paths/consultations_bookings_{id}.yaml
+  /consultations/bookings/{bookingId}/cancel:
+    $ref: paths/consultations_bookings_{bookingId}_cancel.yaml
+  /consultations/bookings/{bookingId}/cancellation-policy:
+    $ref: paths/consultations_bookings_{bookingId}_cancellation-policy.yaml
+  /influencers/{username}/media-assets:
+    $ref: paths/influencers_{username}_media-assets.yaml
+  /influencers/{username}/media-assets/{id}:
+    $ref: paths/influencers_{username}_media-assets_{id}.yaml
+  /influencers/{username}/social-posts:
+    $ref: paths/influencers_{username}_social-posts.yaml
+  /influencer/media-assets:
+    $ref: paths/influencer_media-assets.yaml
+  /influencer/media-assets/{id}:
+    $ref: paths/influencer_media-assets_{id}.yaml
+  /influencer/media-assets/{id}/file:
+    $ref: paths/influencer_media-assets_{id}_file.yaml
+  /influencer/media-assets/{id}/image:
+    $ref: paths/influencer_media-assets_{id}_image.yaml
+  /media-assets/{id}/purchase:
+    $ref: paths/media-assets_{id}_purchase.yaml
+  /media-assets/my-purchases:
+    $ref: paths/media-assets_my-purchases.yaml
+  /purchased-products:
+    $ref: paths/purchased-products.yaml
+  /purchased-products/{purchase}:
+    $ref: paths/purchased-products_{purchase}.yaml
+  /media-assets/download:
+    $ref: paths/media-assets_download.yaml
+  /influencer/masterclasses:
+    $ref: paths/influencer_masterclasses.yaml
+  /influencer/masterclasses/{id}:
+    $ref: paths/influencer_masterclasses_{id}.yaml
+  /influencer/masterclasses/{id}/cover:
+    $ref: paths/influencer_masterclasses_{id}_cover.yaml
+  /influencer/intro-video:
+    $ref: paths/influencer_intro-video.yaml
+  /influencer/intro-video/thumbnail:
+    $ref: paths/influencer_intro-video_thumbnail.yaml
+  /influencer/logo:
+    $ref: paths/influencer_logo.yaml
+  /influencer/settings:
+    $ref: paths/influencer_settings.yaml
+  /influencer/creator-tools-visibility:
+    $ref: paths/influencer_creator-tools-visibility.yaml
+  /influencer/payouts:
+    $ref: paths/influencer_payouts.yaml
+  /influencer/payouts/{id}:
+    $ref: paths/influencer_payouts_{id}.yaml
+  /influencer/earnings/summary:
+    $ref: paths/influencer_earnings_summary.yaml
+  /stripe/connect/onboard:
+    $ref: paths/stripe_connect_onboard.yaml
+  /stripe/connect/status:
+    $ref: paths/stripe_connect_status.yaml
+  /stripe/connect/dashboard:
+    $ref: paths/stripe_connect_dashboard.yaml
+  /stripe/connect:
+    $ref: paths/stripe_connect.yaml
+  /webhooks/stripe:
+    $ref: paths/webhooks_stripe.yaml
+  /webhooks/video-worker:
+    $ref: paths/webhooks_video-worker.yaml
+  /maps:
+    $ref: paths/maps.yaml
+  /maps/parse-url:
+    $ref: paths/maps_parse-url.yaml
+  /maps/{map}:
+    $ref: paths/maps_{map}.yaml
+  /maps/{map}/pois:
+    $ref: paths/maps_{map}_pois.yaml
+  /maps/{map}/pois/batch:
+    $ref: paths/maps_{map}_pois_batch.yaml
+  /maps/{map}/pois/draft:
+    $ref: paths/maps_{map}_pois_draft.yaml
+  /maps/{map}/pois/{poi}:
+    $ref: paths/maps_{map}_pois_{poi}.yaml
+  /maps/{map}/pois/{poi}/draft:
+    $ref: paths/maps_{map}_pois_{poi}_draft.yaml
+  /maps/{map}/thumbnail:
+    $ref: paths/maps_{map}_thumbnail.yaml
+  /pois/{poi}/media:
+    $ref: paths/pois_{poi}_media.yaml
+  /pois/{poi}/audio:
+    $ref: paths/pois_{poi}_audio.yaml
+  /pois/{poi}/pdf:
+    $ref: paths/pois_{poi}_pdf.yaml
+  /pois/{poi}/media/{media}:
+    $ref: paths/pois_{poi}_media_{media}.yaml
+  /pois/{poi}/media/reorder:
+    $ref: paths/pois_{poi}_media_reorder.yaml
+  /admin/stats:
+    $ref: paths/admin_stats.yaml
+  /admin/activity:
+    $ref: paths/admin_activity.yaml
+  /admin/users:
+    $ref: paths/admin_users.yaml
+  /admin/users/{id}:
+    $ref: paths/admin_users_{id}.yaml
+  /admin/users/{id}/verify:
+    $ref: paths/admin_users_{id}_verify.yaml
+  /admin/users/{id}/change-password:
+    $ref: paths/admin_users_{id}_change-password.yaml
+  /admin/platform/earnings:
+    $ref: paths/admin_platform_earnings.yaml
+  /admin/platform/earnings/summary:
+    $ref: paths/admin_platform_earnings_summary.yaml
+  /ai/chat:
+    $ref: paths/ai_chat.yaml
+  /cart:
+    $ref: paths/cart.yaml
+  /cart/items:
+    $ref: paths/cart_items.yaml
+  /cart/items/{id}:
+    $ref: paths/cart_items_{id}.yaml
+  /cart/merge:
+    $ref: paths/cart_merge.yaml
+  /orders:
+    $ref: paths/orders.yaml
+  /orders/purchased:
+    $ref: paths/orders_purchased.yaml
+  /orders/sold:
+    $ref: paths/orders_sold.yaml
+  /orders/{id}:
+    $ref: paths/orders_{id}.yaml
+  /orders/{id}/download:
+    $ref: paths/orders_{id}_download.yaml
+  /orders/{id}/refund:
+    $ref: paths/orders_{id}_refund.yaml
+  /payments/intent:
+    $ref: paths/payments_intent.yaml
+  /payments/confirm:
+    $ref: paths/payments_confirm.yaml
+  /invoices:
+    $ref: paths/invoices.yaml
+  /invoices/paid:
+    $ref: paths/invoices_paid.yaml
+  /invoices/received:
+    $ref: paths/invoices_received.yaml
+  /invoices/{id}:
+    $ref: paths/invoices_{id}.yaml
+  /invoices/{id}/download:
+    $ref: paths/invoices_{id}_download.yaml
+  /invoices/{id}/send:
+    $ref: paths/invoices_{id}_send.yaml
+  /invoices/summary:
+    $ref: paths/invoices_summary.yaml
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Laravel Sanctum token

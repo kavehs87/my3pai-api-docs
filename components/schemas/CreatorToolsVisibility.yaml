@@ -1,0 +1,45 @@
+type: object
+description: Creator tools visibility settings for public profile
+properties:
+  blog:
+    type: boolean
+    description: Whether Blog section is visible on public profile
+    example: true
+  podcast:
+    type: boolean
+    description: Whether Podcast section is visible on public profile
+    example: true
+  masterclass:
+    type: boolean
+    description: Whether Training/Masterclass section is visible on public profile
+    example: true
+  maps:
+    type: boolean
+    description: Whether Maps section is visible on public profile
+    example: true
+  consultation:
+    type: boolean
+    description: Whether Consultations section is visible on public profile
+    example: true
+  media-assets:
+    type: boolean
+    description: Whether Digital Assets section is visible on public profile
+    example: true
+  creator:
+    type: boolean
+    description: Whether Creator Profile section is visible on public profile
+    example: true
+  social:
+    type: boolean
+    description: Whether Social Posts section is visible on public profile
+    example: true
+  social-links:
+    type: boolean
+    description: Whether Social Links section is visible on public profile
+    example: true
+  order:
+    type: array
+    items:
+      type: string
+    description: Array of tool IDs in display order. If not provided, default order is used.
+    example: ['masterclass', 'maps', 'blog', 'podcast', 'media-assets', 'consultation', 'social', 'social-links', 'creator']

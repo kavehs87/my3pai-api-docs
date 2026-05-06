@@ -1,0 +1,83 @@
+post:
+  tags:
+    - Maps
+    - POIs
+  summary: Create draft POI in map
+  description: >
+    Create a draft POI with minimal validation. Allows auto-saving incomplete data
+    without hitting 422 validation errors. All fields are optional (nullable).
+    
+    The POI will be created with `status = 'draft'` and can be updated later using
+    the regular update endpoint or the draft update endpoint.
+    
+    **Optimistic Locking:**
+    The `draft_version` field is required. For new POI creation, always use `0`.
+    The response will contain `draftVersion: 0`, which you must use for subsequent updates.
+    
+    **Use Case:** Frontend auto-save functionality for work-in-progress POIs.
+  parameters:
+    - name: map
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The map ID
+  requestBody:
+    required: false
+    description: >
+      Partial POI data. All fields are optional. You can send just `{ "basic": { "name": "WIP" } }`
+      and it will create a draft POI successfully.
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/CreatePoiDraftRequest.yaml
+        examples:
+          minimal:
+            summary: Minimal payload (new POI)
+            description: >
+              For new POI creation, always use draft_version: 0.
+              The response will contain draftVersion: 0, which you'll use for the first update.
+            value:
+              draft_version: 0
+              basic:
+                name: "WIP"
+          partial:
+            summary: Partial data (new POI)
+            description: >
+              Create a POI with some initial data. Use draft_version: 0 for all new POIs.
+            value:
+              draft_version: 0
+              basic:
+                name: "Partial POI"
+                tagline: "Work in progress"
+              category:
+                placeType: "nature"
+  responses:
+    '201':
+      description: Draft POI created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  poi:
+                    $ref: ../components/schemas/PoiResource.yaml
+    '403':
+      description: Forbidden - not owner
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed (invalid enum values, type mismatches, etc.)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+

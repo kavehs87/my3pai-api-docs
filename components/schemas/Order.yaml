@@ -1,0 +1,89 @@
+type: object
+properties:
+  id:
+    type: integer
+  order_id:
+    type: integer
+    description: Alias for id field (for API consistency)
+  order_number:
+    type: string
+    example: ORD-2025-000001
+  user_id:
+    type: integer
+  is_free:
+    type: boolean
+    description: True if order total is $0 (free order)
+    example: false
+  status:
+    type: string
+    enum:
+      - pending
+      - processing
+      - completed
+      - cancelled
+      - refunded
+      - partially_refunded
+    description: Order status (free orders are automatically 'completed')
+  payment_status:
+    type: string
+    enum:
+      - pending
+      - processing
+      - paid
+      - failed
+      - refunded
+      - partially_refunded
+    description: Payment status (free orders are automatically 'paid')
+  subtotal_cents:
+    type: integer
+  subtotal_formatted:
+    type: string
+  tax_amount_cents:
+    type: integer
+  tax_amount_formatted:
+    type: string
+  discount_amount_cents:
+    type: integer
+  discount_amount_formatted:
+    type: string
+  total_amount_cents:
+    type: integer
+  total_amount_formatted:
+    type: string
+  platform_fee_amount_cents:
+    type: integer
+  platform_fee_amount_formatted:
+    type: string
+  influencer_payout_amount_cents:
+    type: integer
+  influencer_payout_amount_formatted:
+    type: string
+  currency:
+    type: string
+  billing_email:
+    type: string
+  billing_name:
+    type: string
+    nullable: true
+  billing_address:
+    type: object
+    nullable: true
+  items:
+    type: array
+    items:
+      $ref: ./OrderItem.yaml
+  invoice:
+    allOf:
+      - $ref: ./Invoice.yaml
+      - type: object
+        nullable: true
+  payments:
+    type: array
+    items:
+      $ref: ./Payment.yaml
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time

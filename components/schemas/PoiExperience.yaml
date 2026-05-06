@@ -1,0 +1,9 @@
+type: object
+properties:
+  experience:
+    type: string
+    maxLength: 2000
+    nullable: true
+    description: >
+      Optional rich text description of the experience at this POI.
+      This field is optional in V2 and may be omitted.

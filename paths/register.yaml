@@ -1,0 +1,45 @@
+post:
+  tags:
+    - Authentication
+  summary: Register a new user
+  description: Register a new user with email and password
+  security: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/RegisterRequest.yaml
+        examples:
+          default:
+            value:
+              first_name: Jane
+              last_name: Doe
+              email: jane@example.com
+              password: secret123
+              password_confirmation: secret123
+  responses:
+    '201':
+      description: Registration successful
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AuthResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+    '429':
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '500':
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

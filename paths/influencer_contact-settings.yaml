@@ -1,0 +1,69 @@
+get:
+  summary: Get contact settings
+  description: Retrieve the authenticated influencer's contact settings
+  tags:
+    - Influencers
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Contact settings retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                $ref: '../components/schemas/ContactSettings.yaml'
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/ErrorResponse.yaml'
+
+put:
+  summary: Update contact settings
+  description: Update the authenticated influencer's contact settings
+  tags:
+    - Influencers
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/ContactSettings.yaml'
+  responses:
+    '200':
+      description: Contact settings updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "Contact settings updated successfully"
+              data:
+                $ref: '../components/schemas/ContactSettings.yaml'
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/ErrorResponse.yaml'
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/ValidationError.yaml'
+

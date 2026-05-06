@@ -1,0 +1,22 @@
+type: object
+required:
+  - item_type
+  - item_id
+properties:
+  item_type:
+    type: string
+    enum:
+      - consultation
+      - masterclass
+      - media_asset
+      - map
+  item_id:
+    type: integer
+  quantity:
+    type: integer
+    minimum: 1
+    maximum: 99
+    default: 1
+  metadata:
+    type: object
+    nullable: true

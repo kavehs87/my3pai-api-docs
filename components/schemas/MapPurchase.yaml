@@ -1,0 +1,72 @@
+type: object
+properties:
+  id:
+    type: integer
+  purchasedAt:
+    type: string
+    format: date-time
+  isImmutable:
+    type: boolean
+  currency:
+    type: string
+    example: "USD"
+  unitPrice:
+    type: number
+    format: float
+    description: "Price per unit in dollars (converted from cents)"
+    example: 150.00
+  totalPrice:
+    type: number
+    format: float
+    description: "Total price in dollars (converted from cents)"
+    example: 150.00
+  map:
+    type: object
+    nullable: true
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+      slug:
+        type: string
+      isPublished:
+        type: boolean
+      isForSale:
+        type: boolean
+      price:
+        type: string
+        nullable: true
+      poiCount:
+        type: integer
+      thumbnailUrl:
+        type: string
+        format: uri
+        nullable: true
+      pois:
+        type: array
+        items:
+          $ref: ./PoiResource.yaml
+  influencer:
+    type: object
+    nullable: true
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      username:
+        type: string
+  snapshot:
+    type: object
+    nullable: true
+    properties:
+      manifestPath:
+        type: string
+      timestamp:
+        type: string
+      createdAt:
+        type: string
+        format: date-time
+      fileCount:
+        type: integer

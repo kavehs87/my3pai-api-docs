@@ -1,0 +1,131 @@
+type: object
+required: []
+description: >
+  Request body for creating an order from cart.
+
+
+  **Free Orders:**
+
+  - If cart total = $0, all billing fields are optional
+
+  - User's email and name will be used as fallback if not provided
+
+  - Billing address is optional for free orders
+
+
+  **Paid Orders:**
+
+  - Billing email is required
+
+  - Complete billing address is required (line1, city, postal_code, country)
+
+
+  **Billing Address Formats:**
+
+  - **Flat structure** (recommended for frontend): Use `billing_address_line1`,
+  `billing_address_line2`, `billing_city`, etc.
+
+  - **Nested structure** (alternative): Use `billing_address.line1`,
+  `billing_address.line2`, etc.
+
+
+  At least one format must be provided for paid orders. If flat structure is
+  provided, it will be automatically transformed to nested format.
+properties:
+  billing_email:
+    type: string
+    format: email
+    maxLength: 255
+    nullable: true
+    description: >-
+      Customer billing email address (required for paid orders, optional for
+      free orders)
+  billing_name:
+    type: string
+    maxLength: 255
+    nullable: true
+    description: >-
+      Customer billing name (optional for free orders, will use user's name if
+      not provided)
+  billing_address_line1:
+    type: string
+    maxLength: 255
+    nullable: true
+    description: >-
+      Street address line 1 (required for paid orders if flat structure is used,
+      optional for free orders)
+  billing_address_line2:
+    type: string
+    maxLength: 255
+    nullable: true
+    description: Street address line 2 (optional)
+  billing_city:
+    type: string
+    maxLength: 255
+    nullable: true
+    description: >-
+      City (required for paid orders if flat structure is used, optional for
+      free orders)
+  billing_state:
+    type: string
+    maxLength: 255
+    nullable: true
+    description: State or province (optional)
+  billing_postal_code:
+    type: string
+    maxLength: 20
+    nullable: true
+    description: >-
+      Postal/ZIP code (required for paid orders if flat structure is used,
+      optional for free orders)
+  billing_country:
+    type: string
+    minLength: 2
+    maxLength: 2
+    nullable: true
+    description: >-
+      Country code (ISO 3166-1 alpha-2, e.g., "US", "GB") (required for paid
+      orders if flat structure is used, optional for free orders)
+  billing_address:
+    type: object
+    nullable: true
+    description: >-
+      Billing address object (required for paid orders if nested structure is
+      used, optional for free orders)
+    properties:
+      line1:
+        type: string
+        maxLength: 255
+        description: Street address line 1
+      line2:
+        type: string
+        maxLength: 255
+        nullable: true
+        description: Street address line 2
+      city:
+        type: string
+        maxLength: 255
+        description: City
+      state:
+        type: string
+        maxLength: 255
+        nullable: true
+        description: State or province
+      postal_code:
+        type: string
+        maxLength: 20
+        description: Postal/ZIP code
+      country:
+        type: string
+        minLength: 2
+        maxLength: 2
+        description: Country code (ISO 3166-1 alpha-2)
+  notes:
+    type: string
+    maxLength: 1000
+    nullable: true
+    description: Optional order notes
+  metadata:
+    type: object
+    nullable: true
+    description: Optional metadata object

@@ -1,0 +1,50 @@
+type: object
+properties:
+  id:
+    type: integer
+  title:
+    type: string
+  description:
+    type: string
+  type:
+    type: string
+    enum:
+      - Video
+      - Photo
+      - Preset
+      - Audio
+      - Template
+      - Other
+  price:
+    type: number
+    format: float
+  currency:
+    type: string
+    minLength: 3
+    maxLength: 3
+  image:
+    type: string
+    format: uri
+    nullable: true
+  fileUrl:
+    type: string
+    format: uri
+    nullable: true
+  fileName:
+    type: string
+    nullable: true
+    description: User-friendly filename based on the asset title slug
+    example: "cinematic-drone-luts.png"
+  fileSize:
+    type: integer
+    nullable: true
+  fileFormat:
+    type: string
+    nullable: true
+  isActive:
+    type: boolean
+  downloadCount:
+    type: integer
+  createdAt:
+    type: string
+    format: date-time

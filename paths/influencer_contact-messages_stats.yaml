@@ -1,0 +1,36 @@
+get:
+  tags:
+    - Influencers
+  summary: Get contact messages statistics
+  description: Get statistics about contact messages for the authenticated influencer
+  responses:
+    '200':
+      description: Contact messages statistics
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    description: Total number of messages
+                  unread:
+                    type: integer
+                    description: Number of unread messages
+                  by_subject:
+                    type: object
+                    properties:
+                      general:
+                        type: integer
+                      course:
+                        type: integer
+                      business:
+                        type: integer
+                      press:
+                        type: integer
+

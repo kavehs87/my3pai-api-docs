@@ -1,0 +1,45 @@
+type: object
+required:
+  - scheduled_at
+  - billing_email
+properties:
+  scheduled_at:
+    type: string
+    format: date-time
+    description: Consultation scheduled time (UTC)
+  notes:
+    type: string
+    maxLength: 1000
+    nullable: true
+  billing_email:
+    type: string
+    format: email
+  billing_name:
+    type: string
+    maxLength: 255
+    nullable: true
+  billing_address:
+    type: object
+    nullable: true
+    properties:
+      street:
+        type: string
+        nullable: true
+      city:
+        type: string
+        nullable: true
+      state:
+        type: string
+        nullable: true
+      postal_code:
+        type: string
+        nullable: true
+      country:
+        type: string
+        minLength: 2
+        maxLength: 2
+        nullable: true
+  payment_method_id:
+    type: string
+    nullable: true
+    description: Stripe payment method ID (optional for now)

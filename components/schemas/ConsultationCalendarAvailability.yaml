@@ -1,0 +1,43 @@
+type: object
+description: Day-level calendar availability data
+properties:
+  month:
+    type: string
+    pattern: ^\d{4}-\d{2}$
+    description: Month in YYYY-MM format
+    example: '2024-02'
+  days:
+    type: array
+    description: Array of day availability data
+    items:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+          description: Date in YYYY-MM-DD format
+          example: '2024-02-15'
+        status:
+          type: string
+          enum:
+            - available
+            - limited
+            - full
+            - unavailable
+          description: |
+            - available: 3+ slots available
+            - limited: 1-2 slots available
+            - full: All slots booked
+            - unavailable: Day is outside working hours
+        slotsAvailable:
+          type: integer
+          description: Number of available slots
+          minimum: 0
+        slotsTotal:
+          type: integer
+          description: Total number of slots for the day
+          minimum: 0
+        slotsBooked:
+          type: integer
+          description: Number of booked slots
+          minimum: 0

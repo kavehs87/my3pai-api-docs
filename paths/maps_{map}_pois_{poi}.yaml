@@ -1,0 +1,135 @@
+put:
+  tags:
+    - Maps
+    - POIs
+  summary: Update POI in map
+  description: Update an existing POI in a map. Owner-only.
+  parameters:
+    - name: map
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: poi
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/CreatePoiRequest.yaml
+  responses:
+    '200':
+      description: POI updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  poi:
+                    $ref: ../components/schemas/PoiResource.yaml
+              message:
+                type: string
+    '403':
+      description: Forbidden - not owner
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: POI or map not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed or business logic error (e.g., too many featured POIs)
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: ../components/schemas/ValidationError.yaml
+              - type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "A map can only have up to 2 featured POIs."
+    '409':
+      description: >
+        Version conflict - the POI has been modified by another session.
+
+        The `draft_version` in the request does not match the current database version.
+        This can happen when:
+        - Another client/tab updated the POI between your read and write
+        - The version you sent is stale (lower or higher than current)
+
+        The response includes the current POI state with the current `draftVersion`.
+        You should refresh your local state and retry the update with the new version.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: "Version conflict - the POI has been modified by another session"
+              data:
+                type: object
+                properties:
+                  poi:
+                    $ref: ../components/schemas/PoiResource.yaml
+delete:
+  tags:
+    - Maps
+    - POIs
+  summary: Delete POI in map
+  description: Delete a POI from a map. Owner-only.
+  parameters:
+    - name: map
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: poi
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: POI deleted successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+    '403':
+      description: Forbidden - not owner
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: POI or map not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

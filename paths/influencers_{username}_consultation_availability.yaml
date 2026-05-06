@@ -1,0 +1,57 @@
+get:
+  tags:
+    - Public
+    - Consultations
+  summary: Get consultation availability (booked time slots)
+  description: >-
+    Get booked/occupied time slots for a consultation. Used by calendar widgets
+    to disable unavailable time slots. Returns only pending and confirmed
+    bookings (excludes cancelled and completed). All timestamps are returned in UTC.
+  security: []
+  parameters:
+    - name: username
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Influencer username
+    - name: start_date
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date
+      description: Start date for availability range (defaults to today, in UTC)
+      example: '2024-02-01'
+    - name: end_date
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date
+      description: End date for availability range (defaults to 90 days from start, in UTC)
+      example: '2024-02-29'
+  responses:
+    '200':
+      description: Consultation availability data
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/ConsultationAvailability.yaml
+    '404':
+      description: Consultation not found or not active
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

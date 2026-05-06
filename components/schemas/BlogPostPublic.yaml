@@ -1,0 +1,25 @@
+type: object
+properties:
+  id:
+    type: integer
+  title:
+    type: string
+  slug:
+    type: string
+  preview:
+    type: string
+    description: Short excerpt (max 500 chars)
+    nullable: true
+  coverImage:
+    type: string
+    format: uri
+    nullable: true
+  isPremium:
+    type: boolean
+  publishedAt:
+    type: string
+    format: date-time
+    nullable: true
+  readTime:
+    type: string
+    description: 5 min read

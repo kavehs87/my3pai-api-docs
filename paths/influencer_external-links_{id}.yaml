@@ -1,0 +1,97 @@
+put:
+  tags:
+    - Influencers
+  summary: Update external link
+  description: Update an existing external link
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            platform:
+              type: string
+              maxLength: 255
+            title:
+              type: string
+              maxLength: 255
+            subtitle:
+              type: string
+              maxLength: 255
+              nullable: true
+            url:
+              type: string
+              format: uri
+              maxLength: 500
+            rating:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 5
+              nullable: true
+            sortOrder:
+              type: integer
+              minimum: 0
+              nullable: true
+  responses:
+    '200':
+      description: External link updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/UserExternalLink.yaml
+              message:
+                type: string
+    '404':
+      description: External link not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+delete:
+  tags:
+    - Influencers
+  summary: Delete external link
+  description: Delete an external link
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: External link deleted
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+    '404':
+      description: External link not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

@@ -1,0 +1,142 @@
+get:
+  tags:
+    - Maps
+  summary: Get map
+  description: Get map details. Accessible to owner or public if published.
+  parameters:
+    - name: map
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Map details
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  map:
+                    $ref: ../components/schemas/MapResource.yaml
+    '403':
+      description: Forbidden - not owner and not published
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Map not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+put:
+  tags:
+    - Maps
+  summary: Update map
+  description: >
+    Update map. Owner-only.
+
+
+    When a map is published (isPublished: true), all POIs in that map are
+    automatically published.
+
+    When a map is unpublished (isPublished: false), all POIs are automatically
+    set to draft.
+
+
+    **Stripe Account Requirement:**
+
+    If `isForSale` or `is_for_sale` is being set to `true`, the authenticated user
+    must have an active Stripe Connect account. The request will fail with a 422
+    error if the user has not connected their Stripe account. Setting other fields
+    (title, isPublished) does not require a Stripe account.
+  parameters:
+    - name: map
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            title:
+              type: string
+              maxLength: 255
+            isPublished:
+              type: boolean
+            is_published:
+              type: boolean
+            isForSale:
+              type: boolean
+            is_for_sale:
+              type: boolean
+            price:
+              type: number
+              format: decimal
+              minimum: 0
+              nullable: true
+              description: Required if isForSale or is_for_sale is true
+  responses:
+    '200':
+      description: Map updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  map:
+                    $ref: ../components/schemas/MapResource.yaml
+              message:
+                type: string
+delete:
+  tags:
+    - Maps
+  summary: Delete map
+  description: |
+    Delete a map and all of its POIs. Owner-only.
+  parameters:
+    - name: map
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Map deleted successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+    '403':
+      description: Forbidden - not owner
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Map not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

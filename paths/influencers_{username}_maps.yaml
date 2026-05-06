@@ -1,0 +1,65 @@
+get:
+  tags:
+    - Public
+    - Maps
+  summary: Get published maps for influencer
+  description: >-
+    Get published maps created by an influencer. Returns paginated list of maps
+    with POI counts.
+  security: []
+  parameters:
+    - name: username
+      in: path
+      required: true
+      schema:
+        type: string
+        description: Username of the influencer
+    - name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+        description: Page number for pagination
+    - name: per_page
+      in: query
+      schema:
+        type: integer
+        default: 10
+        minimum: 1
+        maximum: 50
+        description: Number of items per page
+  responses:
+    '200':
+      description: Maps retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  maps:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/MapResource.yaml
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                      per_page:
+                        type: integer
+                      total:
+                        type: integer
+                      last_page:
+                        type: integer
+    '404':
+      description: User not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

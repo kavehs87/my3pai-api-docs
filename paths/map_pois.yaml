@@ -1,0 +1,113 @@
+get:
+  tags:
+    - Public
+  summary: Explore POIs
+  description: |
+    Retrieve published POIs with optional filters and pagination.
+
+    Only returns POIs that are **publishable** (meet completeness requirements).
+
+    Returns POIs that are either:
+    - Published individually (status='published'), OR
+    - Belong to a published map (even if POI status is draft)
+  security: []
+  parameters:
+    - name: bbox
+      in: query
+      description: >
+        Bounding box in format minLng,minLat,maxLng,maxLat (comma-separated). 
+
+        Must be valid geographic coordinates. Size limited to 10 degrees
+        (approximately 1100km).
+      schema:
+        type: string
+        pattern: ^-?\d+\.?\d*,-?\d+\.?\d*,-?\d+\.?\d*,-?\d+\.?\d*$
+      example: '-180,-90,180,90'
+    - name: country
+      in: query
+      schema:
+        type: string
+        maxLength: 2
+        description: ISO 2 country code
+    - name: place_type
+      in: query
+      schema:
+        type: string
+        enum:
+          - nature
+          - city
+          - culture
+          - food
+          - adventure
+          - other
+    - name: cost_type
+      in: query
+      schema:
+        type: string
+        enum:
+          - free
+          - paid
+          - mixed
+    - name: difficulty
+      in: query
+      schema:
+        type: string
+        enum:
+          - very-easy
+          - easy
+          - moderate
+          - challenging
+          - hard
+          - extreme
+    - name: activities
+      in: query
+      description: Array of activity keys
+      style: form
+      explode: true
+      schema:
+        type: array
+        items:
+          type: string
+    - name: tags
+      in: query
+      description: Array of tag keys
+      style: form
+      explode: true
+      schema:
+        type: array
+        items:
+          type: string
+    - name: per_page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 50
+  responses:
+    '200':
+      description: List of POIs
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/PoiResource.yaml
+              meta:
+                type: object
+                properties:
+                  filtersApplied:
+                    type: object
+                  pagination:
+                    $ref: ../components/schemas/PaginationMeta.yaml
+    '429':
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

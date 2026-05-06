@@ -1,0 +1,45 @@
+get:
+  tags:
+    - Influencers
+  summary: Get current user's influencer settings
+  description: >-
+    Returns intro video and other influencer-specific settings for the
+    authenticated user
+  responses:
+    '200':
+      description: Influencer settings
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  introVideoUrl:
+                    type: string
+                    format: uri
+                    nullable: true
+                  introVideoThumbnail:
+                    type: string
+                    format: uri
+                    nullable: true
+                  introVideoStatus:
+                    type: string
+                    enum:
+                      - processing
+                      - ready
+                      - failed
+                    nullable: true
+                  introVideoDuration:
+                    type: integer
+                    nullable: true
+                    description: Duration in seconds
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

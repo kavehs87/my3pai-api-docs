@@ -1,0 +1,92 @@
+post:
+  tags:
+    - Influencers
+    - Media
+  summary: Upload intro video
+  description: >
+    Upload an intro video for the influencer profile. Max 100MB, max 60 seconds.
+    
+    **Processing Flow:**
+    1. Video is uploaded to GCS source bucket (private)
+    2. Status is immediately set to `'processing'`
+    3. Video processing job is dispatched (Cloud Run Job or local queue)
+    4. Response includes signed URL for original video (valid for 1 hour)
+    5. Frontend should poll `/influencer/settings` or `/me` to check status
+    6. When processing completes, status changes to `'ready'` (or `'failed'` on error)
+    7. Processed video URL and thumbnail are available when status is `'ready'`
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            video:
+              type: string
+              format: binary
+              description: Video file (MP4, MOV, WebM). Max 100MB, max 60 seconds.
+  responses:
+    '200':
+      description: Video uploaded successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  introVideoUrl:
+                    type: string
+                    format: uri
+                    nullable: true
+                    description: Signed URL for original uploaded video (valid for 1 hour). Will be null if signed URL generation fails. After processing completes, this will be the processed video URL.
+                  introVideoThumbnail:
+                    type: string
+                    format: uri
+                    nullable: true
+                    description: Thumbnail URL (available after processing completes)
+                  introVideoStatus:
+                    type: string
+                    enum:
+                      - processing
+                      - ready
+                      - failed
+                    description: |
+                      Video processing status:
+                      - `processing`: Video is being processed (frontend should poll for updates)
+                      - `ready`: Video processing completed successfully
+                      - `failed`: Video processing failed
+                    example: processing
+                  introVideoDuration:
+                    type: integer
+                    nullable: true
+                    description: Duration in seconds
+              message:
+                type: string
+    '422':
+      description: Validation error (file too large, wrong format, too long)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+delete:
+  tags:
+    - Influencers
+    - Media
+  summary: Remove intro video
+  description: Remove the intro video from the influencer profile
+  responses:
+    '200':
+      description: Video removed successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string

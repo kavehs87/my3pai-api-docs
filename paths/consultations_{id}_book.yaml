@@ -1,0 +1,97 @@
+post:
+  tags:
+    - Consultations
+  summary: Book a consultation
+  description: >
+    Book a consultation slot for a customer. 
+
+
+    The endpoint automatically checks for time slot conflicts:
+
+    - Prevents overlapping bookings (considers consultation duration)
+
+    - Only checks pending and confirmed bookings (ignores cancelled/completed)
+
+    - Returns HTTP 409 if the requested time slot overlaps with an existing
+    booking
+
+
+    Use the availability endpoints to check available slots before booking.
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Consultation ID
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/ConsultationBookRequest.yaml
+  responses:
+    '201':
+      description: Booking created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  booking:
+                    $ref: ../components/schemas/ConsultationBooking.yaml
+                  paymentIntent:
+                    type: object
+                    properties:
+                      clientSecret:
+                        type: string
+                        description: Stripe payment intent client secret
+                      amount:
+                        type: integer
+                        description: Amount in cents
+                      currency:
+                        type: string
+                        description: Currency code (e.g., usd)
+              message:
+                type: string
+    '400':
+      description: Cannot book own consultation or influencer not set up
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Consultation not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '409':
+      description: Time slot already booked
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+    '500':
+      description: Payment processing setup failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

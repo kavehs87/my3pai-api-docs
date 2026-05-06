@@ -1,0 +1,79 @@
+get:
+  tags:
+    - Influencers
+  summary: Get all external links
+  description: Get all external links for authenticated user
+  responses:
+    '200':
+      description: List of external links
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/UserExternalLink.yaml
+post:
+  tags:
+    - Influencers
+  summary: Create external link
+  description: Add a new external link
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - platform
+            - title
+            - url
+          properties:
+            platform:
+              type: string
+              maxLength: 255
+            title:
+              type: string
+              maxLength: 255
+            subtitle:
+              type: string
+              maxLength: 255
+              nullable: true
+            url:
+              type: string
+              format: uri
+              maxLength: 500
+            rating:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 5
+              nullable: true
+            sortOrder:
+              type: integer
+              minimum: 0
+              nullable: true
+  responses:
+    '201':
+      description: External link added
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/UserExternalLink.yaml
+              message:
+                type: string
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

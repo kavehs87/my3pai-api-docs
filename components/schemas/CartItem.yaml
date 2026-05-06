@@ -1,0 +1,76 @@
+type: object
+properties:
+  id:
+    type: integer
+  item_type:
+    type: string
+    enum:
+      - consultation
+      - masterclass
+      - media_asset
+  item_id:
+    type: integer
+  quantity:
+    type: integer
+    minimum: 1
+    maximum: 99
+  price_cents:
+    type: integer
+    description: Unit price in cents (locked at time of adding to cart)
+  price_formatted:
+    type: string
+    description: Unit price formatted as dollars
+  total_price_cents:
+    type: integer
+    description: Total price (price * quantity) in cents
+  total_price_formatted:
+    type: string
+    description: Total price formatted as dollars
+  currency:
+    type: string
+  metadata:
+    type: object
+    nullable: true
+  image_url:
+    type: string
+    format: uri
+    nullable: true
+    description: >
+      Image/thumbnail URL for the cart item (from related masterclass,
+      media_asset, etc.).
+
+      - For masterclasses: Returns cover image URL
+
+      - For media_assets: Returns image URL
+
+      - For consultations: Returns null (consultations don't have images)
+  item:
+    type: object
+    nullable: true
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+        nullable: true
+      description:
+        type: string
+        nullable: true
+      price:
+        type: number
+        format: float
+        nullable: true
+      coverImage:
+        type: string
+        format: uri
+        nullable: true
+        description: >-
+          Cover image URL for masterclasses (only present when item_type is
+          'masterclass')
+      image:
+        type: string
+        format: uri
+        nullable: true
+        description: >-
+          Image URL for media assets (only present when item_type is
+          'media_asset')

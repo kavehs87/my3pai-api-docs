@@ -1,0 +1,56 @@
+get:
+  tags:
+    - Profile
+  summary: Get user profile
+  description: Get complete user profile with stats
+  responses:
+    '200':
+      description: Profile information
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  user:
+                    $ref: ../components/schemas/UserProfile.yaml
+                  stats:
+                    $ref: ../components/schemas/UserStats.yaml
+put:
+  tags:
+    - Profile
+  summary: Update user profile
+  description: Update user profile information
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/UpdateProfileRequest.yaml
+  responses:
+    '200':
+      description: Profile updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  user:
+                    $ref: ../components/schemas/UserProfile.yaml
+              message:
+                type: string
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

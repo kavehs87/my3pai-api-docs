@@ -1,0 +1,53 @@
+type: object
+description: >
+  Profile update request. Fields are optional for partial updates.
+
+  Note: firstName and lastName are conditionally required:
+
+  - Required if either firstName or lastName is provided (both must be provided
+  together)
+
+  - Required if updating other profile fields (username, bio, location, etc.)
+
+  - Optional if only updating theme
+properties:
+  firstName:
+    type: string
+    maxLength: 255
+    nullable: true
+    description: Required if lastName is provided or if updating other profile fields
+  lastName:
+    type: string
+    maxLength: 255
+    nullable: true
+    description: Required if firstName is provided or if updating other profile fields
+  username:
+    type: string
+    maxLength: 255
+    nullable: true
+  bio:
+    type: string
+    maxLength: 1000
+    nullable: true
+  location:
+    type: string
+    maxLength: 255
+    nullable: true
+  tagline:
+    type: string
+    maxLength: 255
+    nullable: true
+  subLocation:
+    type: string
+    maxLength: 255
+    nullable: true
+  theme:
+    type: string
+    maxLength: 50
+    nullable: true
+    enum:
+      - modern
+      - minimal
+      - basic
+      - dark-blue
+    description: Profile theme for public influencer profile page

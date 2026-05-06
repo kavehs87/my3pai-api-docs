@@ -1,0 +1,15 @@
+type: object
+properties:
+  id:
+    type: integer
+  name:
+    type: string
+  issuer:
+    type: string
+    nullable: true
+  issuedAt:
+    type: string
+    format: date
+    nullable: true
+  sortOrder:
+    type: integer

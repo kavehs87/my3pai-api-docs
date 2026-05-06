@@ -1,0 +1,54 @@
+post:
+  tags:
+    - POIs
+    - Media
+  summary: Upload POI audio
+  description: |
+    Upload an audio file for a POI. One audio file per POI.
+    Authorization: requester must own the POI or its map.
+  parameters:
+    - name: poi
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          required:
+            - audio
+          properties:
+            audio:
+              type: string
+              format: binary
+              description: Audio file (mp3, wav, ogg, m4a, aac, flac, webm, max 50MB)
+  responses:
+    '201':
+      description: Audio uploaded successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  audio:
+                    $ref: ../components/schemas/PoiMediaResource.yaml
+    '403':
+      description: Forbidden - not owner
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed or invalid audio file type
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

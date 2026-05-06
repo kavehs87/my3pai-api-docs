@@ -1,0 +1,87 @@
+get:
+  tags:
+    - Admin
+  summary: Get platform earnings summary
+  description: >-
+    Get aggregated platform earnings summary with totals and breakdowns (admin
+    only)
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: from_date
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date
+      description: Filter earnings from this date (inclusive)
+    - name: to_date
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date
+      description: Filter earnings up to this date (inclusive)
+  responses:
+    '200':
+      description: Platform earnings summary
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              total_earnings_cents:
+                type: integer
+                description: Total earnings in cents
+              total_earnings_formatted:
+                type: string
+                description: Formatted total earnings (e.g., "1000.00")
+              reversed_earnings_cents:
+                type: integer
+                description: Total reversed earnings in cents
+              reversed_earnings_formatted:
+                type: string
+                description: Formatted reversed earnings
+              net_earnings_cents:
+                type: integer
+                description: Net earnings (total - reversed) in cents
+              net_earnings_formatted:
+                type: string
+                description: Formatted net earnings
+              count:
+                type: integer
+                description: Total number of earnings records
+              count_by_status:
+                type: object
+                description: Count of earnings by status
+                additionalProperties:
+                  type: integer
+              monthly_breakdown:
+                type: array
+                description: Monthly earnings breakdown
+                items:
+                  type: object
+                  properties:
+                    month:
+                      type: string
+                      format: YYYY-MM
+                    count:
+                      type: integer
+                    total_cents:
+                      type: integer
+                      description: Total for the month in cents
+                    total_formatted:
+                      type: string
+                      description: Formatted total for the month
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

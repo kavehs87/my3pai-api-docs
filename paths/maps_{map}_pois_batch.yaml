@@ -1,0 +1,64 @@
+patch:
+  tags:
+    - Maps
+    - POIs
+  summary: Batch update POIs
+  description: Update multiple POIs in a map. Currently supports adding tags and setting place type. Owner-only.
+  parameters:
+    - name: map
+      in: path
+      required: true
+      description: The ID of the map
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - poi_ids
+          properties:
+            poi_ids:
+              type: array
+              description: IDs of the POIs to update
+              items:
+                type: integer
+            place_type:
+              type: string
+              description: The new place type for all selected POIs
+              example: nature
+            tags:
+              type: array
+              description: Tags to add to all selected POIs (appends to existing tags)
+              items:
+                type: string
+              example: ["scenic", "quiet"]
+  responses:
+    '200':
+      description: POIs updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: POIs updated successfully
+    '403':
+      description: Forbidden - not owner
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+

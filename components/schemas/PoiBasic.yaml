@@ -1,0 +1,95 @@
+type: object
+description: >
+  Basic POI information. For draft POIs, all fields are optional (nullable).
+  
+  **Field Deletion (Update Only):**
+  When updating a draft POI via `PUT /maps/{map}/pois/{poi}/draft`:
+  - Sending `null` or `""` (empty string) for any nullable field will clear that field
+  - The response will return `null` for cleared fields
+required:
+  - name
+  - tagline
+  - summary
+  - country
+  - region
+  - address
+  - latitude
+  - longitude
+properties:
+  name:
+    type: string
+    maxLength: 255
+  tagline:
+    type: string
+    maxLength: 255
+  summary:
+    type: string
+    maxLength: 2000
+  estimatedDuration:
+    type: string
+    maxLength: 64
+    nullable: true
+  country:
+    type: string
+    minLength: 2
+    maxLength: 2
+    description: ISO 2 country code
+  region:
+    type: string
+    maxLength: 128
+  address:
+    type: string
+    maxLength: 500
+  pinAccuracy:
+    type: string
+    enum:
+      - exact
+      - approximate
+      - estimate
+    nullable: true
+  phone:
+    type: string
+    maxLength: 64
+    nullable: true
+  website:
+    type: string
+    format: uri
+    maxLength: 255
+    nullable: true
+  openingHours:
+    type: string
+    maxLength: 512
+    nullable: true
+  placeId:
+    type: string
+    maxLength: 255
+    nullable: true
+  myScore:
+    type: number
+    format: float
+    minimum: 0
+    maximum: 10
+    nullable: true
+    description: User's personal rating (0.00-10.00 scale)
+  googleRating:
+    type: number
+    format: float
+    minimum: 0
+    maximum: 5
+    nullable: true
+    description: Google Places API rating (0-5 scale)
+  googleRatingCount:
+    type: integer
+    minimum: 0
+    nullable: true
+    description: Number of Google reviews/ratings
+  latitude:
+    type: number
+    format: float
+    minimum: -90
+    maximum: 90
+  longitude:
+    type: number
+    format: float
+    minimum: -180
+    maximum: 180

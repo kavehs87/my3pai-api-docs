@@ -1,0 +1,25 @@
+post:
+  tags:
+    - Authentication
+  summary: Logout user
+  description: Revoke current token and logout
+  responses:
+    '200':
+      description: Logout successful
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Logged out successfully
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

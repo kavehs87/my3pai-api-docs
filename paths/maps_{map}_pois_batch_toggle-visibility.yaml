@@ -1,0 +1,120 @@
+patch:
+  tags:
+    - Maps
+    - POIs
+  summary: Batch toggle POI visibility
+  description: >
+    Toggle visibility for multiple POIs in a map at once. This allows map owners to
+    show or hide multiple POI pins from their published maps efficiently.
+
+    Only the map owner can toggle POI visibility. Invisible POIs will not appear
+    in public map views or explore results, but remain visible in the owner's
+    private management interface.
+  parameters:
+    - name: map
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: ID of the map containing the POIs
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - poi_ids
+            - is_visible
+          properties:
+            poi_ids:
+              type: array
+              minItems: 1
+              maxItems: 50
+              items:
+                type: integer
+              description: Array of POI IDs to toggle visibility for
+              example: [1, 2, 3, 4, 5]
+            is_visible:
+              type: boolean
+              description: Desired visibility state for the POIs
+              example: true
+        examples:
+          show-pois:
+            summary: Show multiple POIs
+            value:
+              poi_ids: [1, 2, 3]
+              is_visible: true
+          hide-pois:
+            summary: Hide multiple POIs
+            value:
+              poi_ids: [4, 5, 6]
+              is_visible: false
+  responses:
+    '200':
+      description: Visibility updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "Visibility updated for 3 POIs"
+              data:
+                type: object
+                properties:
+                  updated_count:
+                    type: integer
+                    description: Number of POIs that were updated
+                    example: 3
+                  is_visible:
+                    type: boolean
+                    description: The visibility state that was applied
+                    example: true
+    '403':
+      description: Forbidden - not the map owner
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Map not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+          examples:
+            empty-poi-ids:
+              summary: No POI IDs provided
+              value:
+                success: false
+                message: "Validation failed"
+                errors:
+                  poi_ids:
+                    - "At least one POI ID must be provided."
+            invalid-poi-ids:
+              summary: POI IDs don't belong to map
+              value:
+                success: false
+                message: "Validation failed"
+                errors:
+                  poi_ids:
+                    - "All POI IDs must belong to the specified map."
+            too-many-pois:
+              summary: Too many POI IDs
+              value:
+                success: false
+                message: "Validation failed"
+                errors:
+                  poi_ids:
+                    - "Cannot toggle visibility for more than 50 POIs at once."

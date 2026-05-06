@@ -1,0 +1,54 @@
+type: object
+properties:
+  id:
+    type: integer
+  type:
+    type: string
+    enum:
+      - youtube
+      - short-form
+  platform:
+    type: string
+    enum:
+      - YouTube
+      - Instagram
+      - TikTok
+      - Facebook
+      - YouTube Shorts
+  title:
+    type: string
+    nullable: true
+    description: Required for YouTube videos
+  caption:
+    type: string
+    nullable: true
+    description: Recommended for short-form content
+  thumbnail:
+    type: string
+    format: uri
+  url:
+    type: string
+    format: uri
+  views:
+    type: string
+    nullable: true
+    description: Display string like "125K"
+  duration:
+    type: string
+    nullable: true
+    description: For videos, e.g., "14:20"
+  status:
+    type: string
+    enum:
+      - published
+      - draft
+  published_at:
+    type: string
+    format: date-time
+    nullable: true
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time

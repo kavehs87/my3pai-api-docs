@@ -1,0 +1,72 @@
+get:
+  tags:
+    - Public
+    - Influencers
+  summary: List popular/featured influencers
+  description: >
+    Returns a paginated list of popular or featured creators for the homepage.
+    Public endpoint, no authentication required.
+
+    Selection criteria (MVP): users with completed profile, verified status,
+    and at least one published map. Ordered by published maps count.
+    When `include_maps` is specified, each influencer object may include a `maps`
+    array of published maps (up to `include_maps`) used by the Travel Plans grid.
+  security: []
+  parameters:
+    - name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 20
+        default: 8
+      description: Number of influencers to return
+    - name: offset
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+      description: Pagination offset
+    - name: include_maps
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+      description: Include up to N published maps per influencer when greater than 0 (used by Travel Plans).
+  responses:
+    '200':
+      description: List of popular influencers
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/InfluencerListItem.yaml
+              meta:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+                  offset:
+                    type: integer
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '429':
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

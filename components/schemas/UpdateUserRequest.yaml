@@ -1,0 +1,31 @@
+type: object
+properties:
+  first_name:
+    type: string
+    maxLength: 255
+  last_name:
+    type: string
+    maxLength: 255
+  email:
+    type: string
+    format: email
+    maxLength: 255
+  username:
+    type: string
+    maxLength: 255
+    nullable: true
+  bio:
+    type: string
+    maxLength: 1000
+    nullable: true
+  location:
+    type: string
+    maxLength: 255
+    nullable: true
+  verified:
+    type: boolean
+  role:
+    type: string
+    enum:
+      - user
+      - admin

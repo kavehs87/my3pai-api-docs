@@ -1,0 +1,61 @@
+post:
+  tags:
+    - Media Assets
+  summary: Purchase media asset
+  description: Customer purchases a media asset
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '201':
+      description: Purchase created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  purchase:
+                    $ref: ../components/schemas/MediaAssetPurchase.yaml
+                  paymentIntent:
+                    type: object
+                    properties:
+                      clientSecret:
+                        type: string
+                      amount:
+                        type: integer
+                      currency:
+                        type: string
+              message:
+                type: string
+    '400':
+      description: Cannot purchase own asset or asset not available
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Asset not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '500':
+      description: Payment processing failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

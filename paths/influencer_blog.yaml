@@ -1,0 +1,52 @@
+get:
+  tags:
+    - Influencers
+    - Blog
+  summary: Get own blog posts (includes drafts)
+  description: Get all blog posts for authenticated user, including unpublished drafts
+  responses:
+    '200':
+      description: List of blog posts
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/BlogPostFull.yaml
+post:
+  tags:
+    - Influencers
+    - Blog
+  summary: Create blog post
+  description: Create a new blog post
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/BlogPostCreate.yaml
+  responses:
+    '201':
+      description: Blog post created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/BlogPostFull.yaml
+              message:
+                type: string
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

@@ -1,0 +1,73 @@
+get:
+  tags:
+    - Influencers
+  summary: List contact messages
+  description: Get paginated list of contact messages for the authenticated influencer
+  parameters:
+    - name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+    - name: per_page
+      in: query
+      schema:
+        type: integer
+        default: 10
+        maximum: 50
+        minimum: 1
+    - name: subject
+      in: query
+      schema:
+        type: string
+        enum: [general, course, business, press]
+      description: Filter by subject
+    - name: is_read
+      in: query
+      schema:
+        type: boolean
+      description: Filter by read status
+    - name: sort
+      in: query
+      schema:
+        type: string
+        enum: [created_at, name, email]
+        default: created_at
+      description: Sort field
+    - name: order
+      in: query
+      schema:
+        type: string
+        enum: [asc, desc]
+        default: desc
+      description: Sort order
+  responses:
+    '200':
+      description: List of contact messages
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/ContactMessage.yaml
+              meta:
+                type: object
+                properties:
+                  current_page:
+                    type: integer
+                  per_page:
+                    type: integer
+                  total:
+                    type: integer
+                  last_page:
+                    type: integer
+                  unread_count:
+                    type: integer
+                    description: Total number of unread messages
+

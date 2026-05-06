@@ -1,0 +1,18 @@
+get:
+  tags:
+    - Authentication
+  summary: Get current user
+  description: Get the authenticated user's information
+  responses:
+    '200':
+      description: User information
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/UserBasic.yaml
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

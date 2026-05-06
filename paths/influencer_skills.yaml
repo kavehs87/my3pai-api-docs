@@ -1,0 +1,60 @@
+get:
+  tags:
+    - Influencers
+  summary: Get all skills
+  description: Get all skills for authenticated user
+  responses:
+    '200':
+      description: List of skills
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/UserSkill.yaml
+post:
+  tags:
+    - Influencers
+  summary: Create skill
+  description: Add a new skill
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - skill
+          properties:
+            skill:
+              type: string
+              maxLength: 255
+            sortOrder:
+              type: integer
+              minimum: 0
+              nullable: true
+  responses:
+    '201':
+      description: Skill added
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/UserSkill.yaml
+              message:
+                type: string
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

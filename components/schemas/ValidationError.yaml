@@ -1,0 +1,15 @@
+type: object
+properties:
+  success:
+    type: boolean
+    example: false
+  message:
+    type: string
+  error:
+    type: string
+  errors:
+    type: object
+    additionalProperties:
+      type: array
+      items:
+        type: string

@@ -1,0 +1,33 @@
+type: object
+required:
+  - title
+  - description
+  - type
+  - price
+  - currency
+properties:
+  title:
+    type: string
+    maxLength: 255
+  description:
+    type: string
+    maxLength: 1000
+  type:
+    type: string
+    enum:
+      - Video
+      - Photo
+      - Preset
+      - Audio
+      - Template
+      - Other
+  price:
+    type: number
+    format: float
+    minimum: 0
+  currency:
+    type: string
+    minLength: 3
+    maxLength: 3
+  isActive:
+    type: boolean

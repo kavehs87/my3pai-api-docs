@@ -1,0 +1,97 @@
+get:
+  tags:
+    - Influencers
+    - Billing
+  summary: Get payout details
+  description: Get detailed information about a specific payout, including related earnings
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Payout ID
+  responses:
+    '200':
+      description: Payout details
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  amount:
+                    type: number
+                    format: float
+                    description: Amount in dollars
+                  currency:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                      - pending
+                      - processing
+                      - paid
+                      - failed
+                  created_at:
+                    type: string
+                    format: date-time
+                  processed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  paid_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  stripe_transfer_id:
+                    type: string
+                    nullable: true
+                  metadata:
+                    type: object
+                  earnings:
+                    type: array
+                    description: Related platform earnings for this payout's order
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        order_id:
+                          type: integer
+                        amount:
+                          type: number
+                          format: float
+                          description: Amount in dollars
+                        fee_percentage:
+                          type: number
+                          format: float
+                        created_at:
+                          type: string
+                          format: date-time
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Unauthorized - payout does not belong to user
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Payout not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

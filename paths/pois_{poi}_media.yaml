@@ -1,0 +1,79 @@
+post:
+  tags:
+    - POIs
+    - Media
+  summary: Upload POI images and videos
+  description: |
+    Upload images and/or native videos for a POI.
+    - Images: Maximum 20 images per POI (max 10MB each).
+    - Videos: Maximum 10 native video uploads per POI (max 50MB, max 60s).
+    - Rate Limiting: 3 upload attempts per 5 minutes.
+    - Authorization: Requester must own the POI or its map.
+  parameters:
+    - name: poi
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            images:
+              type: array
+              maxItems: 20
+              items:
+                type: string
+                format: binary
+              description: Array of image files (jpeg, jpg, png, webp, max 10MB each).
+            videos:
+              type: array
+              maxItems: 10
+              items:
+                type: string
+                format: binary
+              description: Array of video files (mp4, mov, webm, max 50MB each). Limit 10 per POI.
+            type:
+              type: string
+              enum:
+                - image
+                - video
+              default: image
+  responses:
+    '200':
+      description: Media uploaded successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  media:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/PoiMediaResource.yaml
+    '403':
+      description: Forbidden - not owner
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed or limits exceeded
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+    '429':
+      description: Too many requests
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

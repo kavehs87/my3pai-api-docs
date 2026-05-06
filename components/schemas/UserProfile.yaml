@@ -1,0 +1,62 @@
+type: object
+properties:
+  id:
+    type: integer
+  firstName:
+    type: string
+  lastName:
+    type: string
+  email:
+    type: string
+    format: email
+  username:
+    type: string
+    nullable: true
+  avatar:
+    type: string
+    format: uri
+    nullable: true
+  coverImage:
+    type: string
+    format: uri
+    nullable: true
+  bio:
+    type: string
+    nullable: true
+  location:
+    type: string
+    nullable: true
+  tagline:
+    type: string
+    maxLength: 255
+    nullable: true
+    description: Short specialty/description (e.g., "Mountain and lake routes specialist")
+  subLocation:
+    type: string
+    maxLength: 255
+    nullable: true
+    description: Secondary location (e.g., "Lives in Bern")
+  theme:
+    type: string
+    maxLength: 50
+    nullable: true
+    enum:
+      - modern
+      - minimal
+      - basic
+      - dark-blue
+    description: >-
+      Profile theme for public influencer profile page (defaults to 'modern' if
+      not set)
+  verified:
+    type: boolean
+  joinedDate:
+    type: string
+    format: date-time
+    nullable: true
+    description: Date when the user joined (ISO 8601 format)
+  preferences:
+    allOf:
+      - $ref: ./UserPreferences.yaml
+      - type: object
+        nullable: true

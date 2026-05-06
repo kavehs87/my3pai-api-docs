@@ -1,0 +1,114 @@
+get:
+  tags:
+    - Admin
+  summary: List users
+  description: List all users with optional filters (admin only)
+  parameters:
+    - name: search
+      in: query
+      schema:
+        type: string
+        maxLength: 255
+        pattern: ^[a-zA-Z0-9@.\s_-]+$
+    - name: role
+      in: query
+      schema:
+        type: string
+        enum:
+          - user
+          - admin
+          - all
+    - name: verified
+      in: query
+      schema:
+        type: boolean
+    - name: per_page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 15
+  responses:
+    '200':
+      description: List of users
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/User.yaml
+                  meta:
+                    $ref: ../components/schemas/PaginationMeta.yaml
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+post:
+  tags:
+    - Admin
+  summary: Create user
+  description: Create a new user (admin only)
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/CreateUserRequest.yaml
+  responses:
+    '201':
+      description: User created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  user:
+                    $ref: ../components/schemas/User.yaml
+              message:
+                type: string
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

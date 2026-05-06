@@ -1,0 +1,33 @@
+type: object
+required:
+  - video_id
+  - status
+properties:
+  video_id:
+    type: integer
+    description: The influencer/user ID (can be integer or string)
+    example: 123
+  status:
+    type: string
+    enum:
+      - processed
+      - failed
+    description: Processing status from Python worker
+    example: processed
+  video_gcs_uri:
+    type: string
+    nullable: true
+    description: GCS URI for processed video (gs://bucket/path format)
+    example: gs://my3pai-public-assets/intro-videos/123/video.mp4
+  thumb_gcs_uri:
+    type: string
+    nullable: true
+    description: GCS URI for thumbnail (gs://bucket/path format)
+    example: gs://my3pai-public-assets/intro-videos/123/thumbnail.jpg
+  error:
+    type: string
+    nullable: true
+    maxLength: 1000
+    description: Error message if processing failed
+    example: null
+

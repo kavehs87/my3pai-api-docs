@@ -1,0 +1,54 @@
+get:
+  tags:
+    - Public
+    - Podcast
+  summary: Get single podcast episode (audio gated for premium)
+  description: Get a single podcast episode. Premium audio requires purchase.
+  security: []
+  parameters:
+    - name: username
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Podcast episode
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/PodcastEpisodeFull.yaml
+    '402':
+      description: Premium content - payment required
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: Premium content
+              requiresPurchase:
+                type: boolean
+                example: true
+              data:
+                $ref: ../components/schemas/PodcastEpisodeFull.yaml
+    '404':
+      description: Podcast episode not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

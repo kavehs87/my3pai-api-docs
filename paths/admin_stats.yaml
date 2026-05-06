@@ -1,0 +1,41 @@
+get:
+  tags:
+    - Admin
+  summary: Get dashboard stats
+  description: Get dashboard statistics (admin only)
+  responses:
+    '200':
+      description: Dashboard statistics
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  users:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      verified:
+                        type: integer
+                      admins:
+                        type: integer
+                      this_month:
+                        type: integer
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

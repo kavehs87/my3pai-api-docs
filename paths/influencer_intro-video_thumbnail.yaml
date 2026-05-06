@@ -1,0 +1,74 @@
+post:
+  tags:
+    - Influencers
+    - Media
+  summary: Upload intro video thumbnail
+  description: Upload a portrait thumbnail image (9:16 aspect ratio) for the intro video. This will be used as the poster/thumbnail for the intro video.
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            thumbnail:
+              type: string
+              format: binary
+              description: Portrait image file (JPEG, PNG, WebP). Recommended 9:16 aspect ratio (e.g., 720x1280px). Max 10MB.
+  responses:
+    '200':
+      description: Thumbnail uploaded successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  introVideoThumbnail:
+                    type: string
+                    format: uri
+                    description: URL to the uploaded thumbnail image
+              message:
+                type: string
+    '422':
+      description: Validation error (file too large, wrong format, invalid aspect ratio)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+
+delete:
+  tags:
+    - Influencers
+    - Media
+  summary: Delete intro video thumbnail
+  description: Remove the intro video thumbnail. The thumbnail will be deleted but the video (if exists) will remain.
+  responses:
+    '200':
+      description: Thumbnail removed successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+

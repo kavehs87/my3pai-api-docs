@@ -1,0 +1,16 @@
+type: object
+properties:
+  id:
+    type: integer
+  platform:
+    type: string
+    enum:
+      - instagram
+      - tiktok
+      - facebook
+      - other
+  url:
+    type: string
+    format: uri
+  position:
+    type: integer

@@ -1,0 +1,51 @@
+patch:
+  tags:
+    - Influencers
+  summary: Mark message as read/unread
+  description: Update the read status of a contact message
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - is_read
+          properties:
+            is_read:
+              type: boolean
+              example: true
+  responses:
+    '200':
+      description: Message status updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/ContactMessage.yaml
+              message:
+                type: string
+                example: "Message status updated successfully"
+    '404':
+      description: Message not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+

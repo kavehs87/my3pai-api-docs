@@ -1,0 +1,79 @@
+post:
+  summary: Fetch images from Unsplash for a POI
+  description: |
+    Generates search queries from POI data (title, place type, description, address) and fetches relevant images from Unsplash API.
+    The Unsplash API key is stored securely on the backend, preventing exposure in client-side code.
+    
+    **Query Generation Logic:**
+    - Primary query: POI title
+    - Secondary queries: Place type, location (extracted from address)
+    - Combined queries: Title + Place type, Title + Location
+    - Fallback queries: Generic queries based on place type if less than 3 queries generated
+    
+    **Rate Limiting:**
+    - Unsplash free tier: 50 requests per hour
+    - Backend implements 200ms delay between queries to avoid rate limiting
+    - Results are deduplicated across queries
+    
+    **Image Selection:**
+    - Uses `urls.regular` from Unsplash (good balance between quality and size)
+    - Returns landscape-oriented images
+    - Maximum 30 images per request
+  tags:
+    - POIs
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/FetchUnsplashImagesRequest.yaml'
+        examples:
+          withAllFields:
+            summary: Request with all fields
+            value:
+              poi_id: 1
+              title: "Eiffel Tower"
+              placeType: "landmark"
+              description: "Iconic iron tower in Paris"
+              address: "Champ de Mars, 5 Avenue Anatole France, 75007 Paris, France"
+              count: 8
+          minimal:
+            summary: Minimal request (only title)
+            value:
+              poi_id: 1
+              title: "Eiffel Tower"
+              count: 5
+          withPlaceType:
+            summary: Request with place type fallback
+            value:
+              poi_id: 1
+              placeType: "nature"
+              count: 10
+  responses:
+    '200':
+      description: Images fetched successfully
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/FetchUnsplashImagesResponse.yaml'
+    '401':
+      description: Unauthorized - authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/ErrorResponse.yaml'
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/ValidationError.yaml'
+    '500':
+      description: Server error (Unsplash API error or configuration issue)
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/ErrorResponse.yaml'
+

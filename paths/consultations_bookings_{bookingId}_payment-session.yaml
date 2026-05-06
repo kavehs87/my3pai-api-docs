@@ -1,0 +1,134 @@
+post:
+  tags:
+    - Consultations
+  summary: Request payment session for pending booking
+  description: >-
+    Request a new or refresh an existing Stripe Checkout session for a pending consultation booking.
+    This endpoint allows customers to retry payment after abandoning checkout or returning to complete
+    the purchase. It implements idempotency: if a session already exists in the order metadata, it is
+    reused and returned immediately instead of creating a duplicate session.
+
+    Allowed states:
+    - Booking must belong to authenticated customer
+    - Booking must be in 'pending' status with 'pending' payment_status
+
+    Error cases return 403 (forbidden), 404 (not found), or 409 (conflict) based on the state.
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: bookingId
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Consultation booking ID
+  requestBody:
+    required: false
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            return_url:
+              type: string
+              format: url
+              nullable: true
+              description: >-
+                Optional custom return URL for successful payment completion.
+                If not provided, defaults to frontend success URL.
+            cancel_url:
+              type: string
+              format: url
+              nullable: true
+              description: >-
+                Optional custom cancel URL if customer abandons payment.
+                If not provided, defaults to frontend cancel URL.
+  responses:
+    '200':
+      description: Checkout session retrieved or created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              redirect_url:
+                type: string
+                format: url
+                description: Stripe Checkout URL to redirect customer to
+                example: https://checkout.stripe.com/pay/cs_live_abc123
+              order_id:
+                type: integer
+                description: Associated order ID
+              order_number:
+                type: string
+                description: Human-readable order number
+                example: 'ORD-2025-000123'
+              booking_id:
+                type: integer
+                description: Consultation booking ID
+              checkout_session_id:
+                type: string
+                nullable: true
+                description: Stripe Checkout Session ID
+                example: cs_live_abc123
+    '401':
+      description: Unauthenticated (no valid Bearer token)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - booking does not belong to authenticated customer
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+          example:
+            success: false
+            error: 'This booking does not belong to you'
+    '404':
+      description: Booking not found or no associated order found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+          example:
+            success: false
+            error: 'No associated order found for this booking'
+    '409':
+      description: >-
+        Conflict - booking/order is not in a valid pending state.
+        Payment may already be completed, cancelled, or order already paid.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+          examples:
+            already_paid:
+              value:
+                success: false
+                error: 'Payment has already been completed for this booking'
+            cancelled:
+              value:
+                success: false
+                error: 'This booking has been cancelled'
+            order_not_pending:
+              value:
+                success: false
+                error: 'The associated order is no longer pending payment'
+    '422':
+      description: Validation error (invalid URL format, etc.)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+    '500':
+      description: Server error - failed to create or refresh checkout session
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+

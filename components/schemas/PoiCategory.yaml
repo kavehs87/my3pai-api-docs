@@ -1,0 +1,69 @@
+type: object
+required:
+  - placeType
+properties:
+  placeType:
+    type: string
+    enum:
+      - food_drink
+      - nature
+      - culture
+      - adventure
+      - nightlife
+      - shopping
+      - wellness
+      - accommodation
+      - transportation
+      - instagrammable
+      - other
+  activities:
+    type: array
+    maxItems: 20
+    items:
+      type: string
+    description: >
+      Array of Google Place Type keys (snake_case) from the activities table.
+      Examples: `pizza_restaurant`, `resort_hotel`, `gym`, `museum`, `spa`, `shopping_mall`, `nightclub`, `airport`, `beach`, `landmark`.
+      Each key must exist in the `activities` table (validated via `exists:activities,key`).
+      Keys are sourced from TypeScript GOOGLE_TYPE_MAP and seeded via ActivitySeeder.
+      All keys follow Google Places API naming convention (snake_case).
+  audience:
+    type: array
+    maxItems: 20
+    items:
+      type: string
+    description: >
+      Array of audience keys (kebab-case) from the audiences table.
+      Examples: `families`, `couples`, `solo`, `groups`, `digital-nomads`, `van-lifers`.
+      Each key must exist in the `audiences` table (validated via `exists:audiences,key`).
+      Keys are seeded via PoiReferenceSeeder.
+      All keys use kebab-case format (e.g., `digital-nomads`, not `digital_nomads`).
+  ageRequirement:
+    type: array
+    maxItems: 5
+    items:
+      type: string
+      enum:
+        - infant
+        - kids
+        - teens
+        - adults
+        - none
+    description: >
+      Array of age requirement groups. Multiple age groups can be selected.
+      Examples: `["infant", "kids"]`, `["adults"]`, `["teens", "adults"]`.
+      Valid values: `infant`, `kids`, `teens`, `adults`, `none`.
+      Maximum 5 items (one for each age group).
+    nullable: true
+  elevation:
+    type: integer
+    minimum: 0
+    maximum: 9000
+    nullable: true
+    description: >
+      Altitude/elevation above sea level in meters (integer).
+      Examples: `1500` (for 1500 meters), `2500` (for 2500 meters).
+      Stored as integer to enable filtering (e.g., "Find hotels above 2000m").
+      The "m" unit is handled in the UI, backend stores only the numeric value.
+      Valid range: 0 to 9000 meters (covers all habitable elevations).
+    example: 1500

@@ -1,0 +1,67 @@
+get:
+  tags:
+    - Influencers
+  summary: Get creator tools visibility settings
+  description: >-
+    Returns visibility settings for each creator tool (Blog, Podcast, Training,
+    Consultations, Digital Assets, Creator Profile, Social Posts, Social Links)
+    on the public profile page
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Creator tools visibility settings
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/CreatorToolsVisibility.yaml
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+put:
+  tags:
+    - Influencers
+  summary: Update creator tools visibility settings
+  description: >-
+    Update visibility settings for creator tools. Partial updates are allowed -
+    only send the fields being changed.
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/CreatorToolsVisibilityUpdate.yaml
+  responses:
+    '200':
+      description: Settings updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/CreatorToolsVisibility.yaml
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

@@ -1,0 +1,22 @@
+type: object
+properties:
+  first:
+    type: string
+    format: uri
+    nullable: true
+    description: URL to the first page
+  last:
+    type: string
+    format: uri
+    nullable: true
+    description: URL to the last page
+  prev:
+    type: string
+    format: uri
+    nullable: true
+    description: URL to the previous page
+  next:
+    type: string
+    format: uri
+    nullable: true
+    description: URL to the next page

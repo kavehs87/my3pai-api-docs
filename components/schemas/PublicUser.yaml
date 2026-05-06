@@ -1,0 +1,32 @@
+type: object
+description: Public user profile with limited fields (no email, preferences, etc.)
+properties:
+  id:
+    type: integer
+  username:
+    type: string
+    nullable: true
+  firstName:
+    type: string
+  lastName:
+    type: string
+  avatar:
+    type: string
+    format: uri
+    nullable: true
+  bio:
+    type: string
+    nullable: true
+  location:
+    type: string
+    nullable: true
+  verified:
+    type: boolean
+  publishedMapsCount:
+    type: integer
+    minimum: 0
+    description: Number of published maps by this user
+  publishedPoisCount:
+    type: integer
+    minimum: 0
+    description: Total number of POIs across all published maps by this user

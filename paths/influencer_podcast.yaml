@@ -1,0 +1,79 @@
+get:
+  tags:
+    - Influencers
+    - Podcast
+  summary: Get own podcast episodes (includes drafts)
+  description: >-
+    Get all podcast episodes for authenticated user, including unpublished
+    drafts
+  responses:
+    '200':
+      description: List of podcast episodes
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  podcastTitle:
+                    type: string
+                    nullable: true
+                    description: Custom title for the podcast section in themes
+                    example: "My Travel Podcast"
+                  podcastDescription:
+                    type: string
+                    nullable: true
+                    description: Description of the podcast section
+                    example: "Weekly episodes covering solo travel safety, budgeting, and creator tips."
+                  applePodcastUrl:
+                    type: string
+                    nullable: true
+                    format: uri
+                    description: Apple Podcast URL
+                    example: "https://podcasts.apple.com/us/podcast/my-travel-podcast/id123456789"
+                  spotifyUrl:
+                    type: string
+                    nullable: true
+                    format: uri
+                    description: Spotify URL
+                    example: "https://open.spotify.com/show/1234567890abcdef"
+                  episodes:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/PodcastEpisodeFull.yaml
+post:
+  tags:
+    - Influencers
+    - Podcast
+  summary: Create podcast episode
+  description: Create a new podcast episode
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/PodcastEpisodeCreate.yaml
+  responses:
+    '201':
+      description: Podcast episode created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/PodcastEpisodeFull.yaml
+              message:
+                type: string
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

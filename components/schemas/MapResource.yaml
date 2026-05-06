@@ -1,0 +1,62 @@
+type: object
+properties:
+  id:
+    type: integer
+  title:
+    type: string
+  isPublished:
+    type: boolean
+  isForSale:
+    type: boolean
+    description: Whether the map is available for purchase
+  price:
+    type: string
+    format: decimal
+    nullable: true
+    description: Price in decimal format (e.g., "29.99"). Null if isForSale is false.
+  slug:
+    type: string
+    nullable: true
+  thumbnailUrl:
+    type: string
+    format: uri
+    nullable: true
+  poiCount:
+    type: integer
+    minimum: 0
+    description: Number of POIs associated with the map
+  location:
+    type: string
+    nullable: true
+    description: Primary destination (e.g., "Paris")
+  duration:
+    type: string
+    nullable: true
+    description: Human-readable duration (e.g., "3 days")
+  type:
+    type: string
+    nullable: true
+    description: Categories for the trip (e.g., "Food / Culture / Adventure")
+  rating:
+    type: number
+    format: float
+    nullable: true
+    description: Numeric rating; null until reviews exist
+  tag:
+    type: string
+    nullable: true
+    description: Badge label (e.g., "🔥 Medium")
+  tagColor:
+    type: string
+    nullable: true
+    description: Hex color used for the tag background
+  userHasAccess:
+    type: boolean
+    description: Whether the current user (authenticated or via session) has access to the full content of this map.
+  pois:
+    type: array
+    items:
+      oneOf:
+        - $ref: ./PoiResource.yaml
+        - $ref: ./LockedPoiResource.yaml
+    nullable: true

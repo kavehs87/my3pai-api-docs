@@ -1,0 +1,119 @@
+get:
+  tags:
+    - Public
+    - Media
+  summary: Proxy storage images with CORS headers
+  description: >
+    Proxy endpoint for storage images to handle CORS issues when loading images
+    for editing/cropping.
+
+    This endpoint serves images from the public storage directory with proper
+    CORS headers to allow
+
+    cross-origin requests from the frontend.
+
+
+    The endpoint validates that:
+
+    - The URL must start with `/storage/`
+
+    - The URL must not contain path traversal sequences (`..`)
+
+    - The file must exist in storage
+
+    - The file must be a valid image (jpg, jpeg, png, gif, webp, svg, bmp, ico)
+
+
+    Returns the image file with appropriate Content-Type header and CORS headers
+    for `https://my3pai.com`.
+
+    Includes caching headers for performance optimization.
+  security: []
+  parameters:
+    - name: url
+      in: query
+      required: true
+      description: >-
+        The storage file URL (e.g.,
+        `/storage/maps/thumb_692c291a3f226_img_692041632cd7e.jpg`)
+      schema:
+        type: string
+        example: /storage/maps/thumb_692c291a3f226_img_692041632cd7e.jpg
+  responses:
+    '200':
+      description: Image file with CORS headers
+      headers:
+        Access-Control-Allow-Origin:
+          description: CORS header allowing requests from my3pai.com
+          schema:
+            type: string
+            example: https://my3pai.com
+        Access-Control-Allow-Credentials:
+          description: CORS header allowing credentials
+          schema:
+            type: string
+            example: 'true'
+        Cache-Control:
+          description: Caching directive for performance
+          schema:
+            type: string
+            example: public, max-age=31536000, immutable
+      content:
+        image/jpeg:
+          schema:
+            type: string
+            format: binary
+        image/png:
+          schema:
+            type: string
+            format: binary
+        image/gif:
+          schema:
+            type: string
+            format: binary
+        image/webp:
+          schema:
+            type: string
+            format: binary
+        image/svg+xml:
+          schema:
+            type: string
+            format: binary
+        image/bmp:
+          schema:
+            type: string
+            format: binary
+        image/x-icon:
+          schema:
+            type: string
+            format: binary
+    '400':
+      description: Invalid request (URL validation failed or not an image)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+          examples:
+            invalidUrl:
+              value:
+                success: false
+                error: URL must start with /storage/
+            notImage:
+              value:
+                success: false
+                error: File is not a valid image
+    '404':
+      description: File not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+          example:
+            success: false
+            error: File not found
+    '429':
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

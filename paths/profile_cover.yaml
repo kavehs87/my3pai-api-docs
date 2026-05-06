@@ -1,0 +1,42 @@
+post:
+  tags:
+    - Profile
+  summary: Upload cover image
+  description: Upload and update user cover image
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          required:
+            - cover
+          properties:
+            cover:
+              type: string
+              format: binary
+              description: Image file (jpeg, jpg, png, webp, max 5MB)
+  responses:
+    '200':
+      description: Cover image updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  coverImage:
+                    type: string
+                    format: uri
+              message:
+                type: string
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

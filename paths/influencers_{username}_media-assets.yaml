@@ -1,0 +1,54 @@
+get:
+  tags:
+    - Public
+    - Media Assets
+  summary: Get public media assets for an influencer
+  description: Get public media assets for a specific influencer's profile
+  security: []
+  parameters:
+    - name: username
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: type
+      in: query
+      schema:
+        type: string
+        description: Comma-separated types (Video,Photo,Preset,Audio,Template,Other)
+    - name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    - name: per_page
+      in: query
+      schema:
+        type: integer
+        default: 20
+        maximum: 100
+  responses:
+    '200':
+      description: List of media assets
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/MediaAsset.yaml
+                  meta:
+                    $ref: ../components/schemas/PaginationMeta.yaml
+    '404':
+      description: Influencer not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

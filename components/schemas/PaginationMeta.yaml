@@ -1,0 +1,15 @@
+type: object
+properties:
+  pagination:
+    type: object
+    properties:
+      current_page:
+        type: integer
+      per_page:
+        type: integer
+      total:
+        type: integer
+      last_page:
+        type: integer
+      has_more_pages:
+        type: boolean

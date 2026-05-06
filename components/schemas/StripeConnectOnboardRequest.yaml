@@ -1,0 +1,18 @@
+type: object
+required:
+  - returnUrl
+  - refreshUrl
+  - country
+properties:
+  returnUrl:
+    type: string
+    format: uri
+    description: URL to redirect user after onboarding completion
+  refreshUrl:
+    type: string
+    format: uri
+    description: URL to refresh the page after onboarding
+  country:
+    type: string
+    pattern: "^[A-Z]{2}$"
+    description: "2-letter ISO country code (e.g., 'DE', 'US')"

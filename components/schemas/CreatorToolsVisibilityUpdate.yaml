@@ -1,0 +1,27 @@
+type: object
+description: Update creator tools visibility settings (partial updates allowed)
+properties:
+  blog:
+    type: boolean
+    description: Whether Blog section should be visible
+  podcast:
+    type: boolean
+    description: Whether Podcast section should be visible
+  masterclass:
+    type: boolean
+    description: Whether Training/Masterclass section should be visible
+  consultation:
+    type: boolean
+    description: Whether Consultations section should be visible
+  media-assets:
+    type: boolean
+    description: Whether Digital Assets section should be visible
+  creator:
+    type: boolean
+    description: Whether Creator Profile section should be visible
+  social:
+    type: boolean
+    description: Whether Social Posts section should be visible
+  social-links:
+    type: boolean
+    description: Whether Social Links section should be visible

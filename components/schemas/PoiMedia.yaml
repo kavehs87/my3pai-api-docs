@@ -1,0 +1,62 @@
+type: object
+properties:
+  imageCredit:
+    type: string
+    nullable: true
+  videos:
+    type: array
+    maxItems: 5
+    items:
+      type: object
+      required:
+        - url
+      properties:
+        url:
+          type: string
+          format: uri
+          maxLength: 255
+          description: YouTube or other video URL
+        startTime:
+          type: string
+          maxLength: 16
+          nullable: true
+          description: Start time in format HH:MM:SS or MM:SS
+          example: "00:10"
+        endTime:
+          type: string
+          maxLength: 16
+          nullable: true
+          description: End time in format HH:MM:SS or MM:SS
+          example: "00:45"
+        caption:
+          type: string
+          maxLength: 255
+          nullable: true
+          description: Optional caption for the video
+          example: "Drone flyover"
+    description: Array of videos associated with this POI (up to 5 videos)
+    nullable: true
+  previewImage:
+    type: string
+    format: uri
+    nullable: true
+  images:
+    type: array
+    items:
+      $ref: ./PoiMediaResource.yaml
+  audio:
+    allOf:
+      - $ref: ./PoiMediaResource.yaml
+      - type: object
+        nullable: true
+    description: Single audio file for the POI
+  pdf:
+    allOf:
+      - $ref: ./PoiMediaResource.yaml
+      - type: object
+        nullable: true
+    description: Single PDF document for the POI
+  socialPosts:
+    type: array
+    items:
+      $ref: ./PoiSocialPostResource.yaml

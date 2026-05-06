@@ -1,0 +1,127 @@
+post:
+  tags:
+    - Billing
+  summary: Confirm payment
+  description: |
+    Confirm payment after Stripe Payment Intent succeeds. This endpoint:
+    - Validates the payment intent with Stripe
+    - Creates payment, invoice, and earnings records
+    - Updates order status to paid
+    - Verifies order ownership (order must belong to authenticated user)
+
+    **Free Orders:**
+    - This endpoint should NOT be called for free orders (total = $0)
+    - Free orders are automatically completed during order creation
+    - If called with a free order, will return 400 error
+
+    The `order_id` parameter is optional but recommended for validation.
+    If provided, it will be verified against the payment intent's order.
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - payment_intent_id
+          properties:
+            payment_intent_id:
+              type: string
+              description: Stripe PaymentIntent ID
+              example: pi_3SacXJ9RXVZMuOrk1mo8KoC1
+            order_id:
+              type: integer
+              description: >-
+                Optional order ID for validation. If provided, must match the
+                payment intent's order. Free orders will be rejected.
+              example: 13
+  responses:
+    '200':
+      description: Payment confirmed successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  order:
+                    $ref: ../components/schemas/Order.yaml
+                  payment:
+                    $ref: ../components/schemas/Payment.yaml
+    '400':
+      description: >-
+        Payment confirmation failed (invalid payment intent, order mismatch,
+        free order, or validation error)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                description: Error message describing what went wrong
+          examples:
+            orderMismatch:
+              value:
+                success: false
+                error: Order ID does not match the payment intent order.
+            freeOrder:
+              value:
+                success: false
+                error: Payment confirmation is not required for free orders.
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Unauthenticated
+    '403':
+      description: Forbidden - Order does not belong to authenticated user
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: Order does not belong to you.
+    '404':
+      description: Order or payment intent not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '500':
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                description: Error message (detailed in debug mode, generic in production)
+                example: An error occurred while confirming payment. Please try again.

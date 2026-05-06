@@ -1,0 +1,68 @@
+get:
+  tags:
+    - Influencers
+  summary: Get all certifications
+  description: Get all certifications for authenticated user
+  responses:
+    '200':
+      description: List of certifications
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/UserCertification.yaml
+post:
+  tags:
+    - Influencers
+  summary: Create certification
+  description: Add a new certification
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - name
+          properties:
+            name:
+              type: string
+              maxLength: 255
+            issuer:
+              type: string
+              maxLength: 255
+              nullable: true
+            issuedAt:
+              type: string
+              format: date
+              nullable: true
+            sortOrder:
+              type: integer
+              minimum: 0
+              nullable: true
+  responses:
+    '201':
+      description: Certification added
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/UserCertification.yaml
+              message:
+                type: string
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

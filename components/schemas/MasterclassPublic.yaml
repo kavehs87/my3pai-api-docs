@@ -1,0 +1,41 @@
+type: object
+properties:
+  id:
+    type: integer
+  title:
+    type: string
+  slug:
+    type: string
+  description:
+    type: string
+    nullable: true
+  coverImage:
+    type: string
+    format: uri
+    nullable: true
+  price:
+    type: number
+    format: float
+    minimum: 0
+  type:
+    type: string
+    enum:
+      - course
+      - guide
+      - training
+      - masterclass
+  isPremium:
+    type: boolean
+  rating:
+    type: number
+    format: float
+    nullable: true
+    minimum: 0
+    maximum: 5
+  publishedAt:
+    type: string
+    format: date-time
+    nullable: true
+  viewsCount:
+    type: integer
+    minimum: 0

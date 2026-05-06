@@ -1,0 +1,118 @@
+type: object
+properties:
+  id:
+    type: integer
+  title:
+    type: string
+  description:
+    type: string
+  price:
+    type: number
+    format: float
+  currency:
+    type: string
+    minLength: 3
+    maxLength: 3
+  durationMinutes:
+    type: integer
+    minimum: 15
+    maximum: 240
+  isActive:
+    type: boolean
+  workingHours:
+    type: object
+    description: >-
+      Working hours configuration for each day of the week. Defaults to 9 AM - 5
+      PM Monday-Friday if not set. Times are stored as the influencer configured them (typically in their local timezone); frontend should interpret based on the influencer's timezone preference.
+    properties:
+      monday:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+          start:
+            type: string
+            format: time
+            nullable: true
+          end:
+            type: string
+            format: time
+            nullable: true
+      tuesday:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+          start:
+            type: string
+            format: time
+            nullable: true
+          end:
+            type: string
+            format: time
+            nullable: true
+      wednesday:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+          start:
+            type: string
+            format: time
+            nullable: true
+          end:
+            type: string
+            format: time
+            nullable: true
+      thursday:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+          start:
+            type: string
+            format: time
+            nullable: true
+          end:
+            type: string
+            format: time
+            nullable: true
+      friday:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+          start:
+            type: string
+            format: time
+            nullable: true
+          end:
+            type: string
+            format: time
+            nullable: true
+      saturday:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+          start:
+            type: string
+            format: time
+            nullable: true
+          end:
+            type: string
+            format: time
+            nullable: true
+      sunday:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+          start:
+            type: string
+            format: time
+            nullable: true
+          end:
+            type: string
+            format: time
+            nullable: true

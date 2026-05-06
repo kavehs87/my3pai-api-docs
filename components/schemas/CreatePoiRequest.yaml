@@ -1,0 +1,94 @@
+type: object
+required:
+  - basic
+  - category
+  - pricing
+  - regions
+  - experience
+properties:
+  basic:
+    $ref: ./PoiBasic.yaml
+  category:
+    $ref: ./PoiCategory.yaml
+  difficulty:
+    $ref: ./PoiDifficulty.yaml
+  pricing:
+    $ref: ./PoiPricing.yaml
+  regions:
+    $ref: ./PoiRegions.yaml
+  amenities:
+    $ref: ./PoiAmenities.yaml
+  tips:
+    $ref: ./PoiTips.yaml
+  media:
+    type: object
+    properties:
+      imageCredit:
+        type: string
+        nullable: true
+      videos:
+        type: array
+        maxItems: 5
+        items:
+          type: object
+          required:
+            - url
+          properties:
+            url:
+              type: string
+              format: uri
+              maxLength: 255
+              description: YouTube or other video URL
+            startTime:
+              type: string
+              maxLength: 16
+              nullable: true
+              description: Start time in format HH:MM:SS or MM:SS
+            endTime:
+              type: string
+              maxLength: 16
+              nullable: true
+              description: End time in format HH:MM:SS or MM:SS
+            caption:
+              type: string
+              maxLength: 255
+              nullable: true
+              description: Optional caption for the video
+        description: Array of videos associated with this POI (up to 5 videos)
+        nullable: true
+      socialPosts:
+        type: array
+        maxItems: 3
+        items:
+          type: string
+          format: uri
+          maxLength: 255
+  experience:
+    $ref: ./PoiExperience.yaml
+  isVisible:
+    type: boolean
+    default: true
+    description: >
+      Whether this POI should be visible to the public.
+
+      When `false`, the POI will be hidden from public map views and explore results,
+      but will still be visible to the map owner in their private management interface.
+  isFeatured:
+    type: boolean
+    nullable: true
+    description: >
+      Whether this POI should be marked as featured.
+
+      Featured POIs (maximum 2 per map) are shown as a free preview for maps that are for sale,
+      even when the user hasn't purchased access to the full map content.
+  draft_version:
+    type: integer
+    minimum: 0
+    default: 0
+    description: >
+      Version number for optimistic locking.
+
+      For new POI creation, always use `0` as the initial version.
+      The server will set the POI's `draftVersion` to `0` in the response.
+
+      Subsequent updates must use the exact `draftVersion` from the last response.

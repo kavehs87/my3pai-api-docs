@@ -1,0 +1,47 @@
+type: object
+properties:
+  amenities:
+    type: array
+    maxItems: 20
+    items:
+      type: string
+    description: >
+      Array of amenity keys from the amenities table.
+      Valid keys (original): `restaurant`, `cafe`, `shop`, `wc`, `picnic`, `bbq`, `rental`.
+      Valid keys (basics): `wifi`, `parking`, `drinking-water`.
+      Valid keys (service): `card-payment`, `reservation-required`.
+      Valid keys (comfort/vibe): `outdoor-seating`, `air-conditioning`, `heating`, `live-music`.
+      Valid keys (family): `kid-friendly`, `baby-changing`.
+      **Note:** `pet-friendly` is handled by the `tags` table, and `wheelchair-accessible` is handled by the `accessibilities` table.
+      Each key must exist in the `amenities` table (validated via `exists:amenities,key`).
+      Keys are seeded via PoiReferenceSeeder.
+      Original keys use lowercase format (e.g., `wc`, `bbq`).
+      New keys use kebab-case format (e.g., `drinking-water`, `outdoor-seating`).
+      Examples: `["restaurant", "wc", "wifi"]`, `["cafe", "parking", "outdoor-seating"]`, `["picnic", "bbq", "kid-friendly"]`.
+    example: ["restaurant", "wc", "wifi"]
+  nearbyServices:
+    type: string
+    nullable: true
+  petFriendly:
+    type: boolean
+    nullable: true
+    description: >
+      Whether pets are allowed at this POI.
+      Stored as a boolean in the database (true/false).
+      Examples: `true`, `false`.
+  petNotes:
+    type: string
+    nullable: true
+  accessibility:
+    type: array
+    maxItems: 20
+    items:
+      type: string
+    description: >
+      Array of accessibility keys (kebab-case) from the accessibilities table.
+      Valid keys: `wheelchair`, `stroller`, `step-free`, `accessible-toilet`.
+      Each key must exist in the `accessibilities` table (validated via `exists:accessibilities,key`).
+      Keys are seeded via PoiReferenceSeeder.
+      All keys use kebab-case format (e.g., `step-free`, `accessible-toilet`).
+      Examples: `["wheelchair", "step-free"]`, `["stroller", "accessible-toilet"]`, `["wheelchair", "stroller", "step-free"]`.
+    example: ["wheelchair", "step-free"]

@@ -1,0 +1,71 @@
+get:
+  tags:
+    - Billing
+  summary: List received invoices
+  description: >
+    List invoices where the current user is the influencer/seller (received
+    invoices).
+
+    Supports filtering by status and date range, and pagination.
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    - name: per_page
+      in: query
+      schema:
+        type: integer
+        default: 15
+        maximum: 100
+    - name: status
+      in: query
+      schema:
+        type: string
+        enum:
+          - draft
+          - issued
+          - paid
+          - overdue
+          - cancelled
+      description: Filter by invoice status (comma-separated for multiple values)
+      example: paid
+    - name: from_date
+      in: query
+      schema:
+        type: string
+        format: date
+      description: Filter invoices issued on or after this date (YYYY-MM-DD)
+      example: '2025-01-01'
+    - name: to_date
+      in: query
+      schema:
+        type: string
+        format: date
+      description: Filter invoices issued on or before this date (YYYY-MM-DD)
+      example: '2025-12-31'
+  responses:
+    '200':
+      description: Received invoices retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/Invoice.yaml
+              meta:
+                $ref: ../components/schemas/PaginationMeta.yaml
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

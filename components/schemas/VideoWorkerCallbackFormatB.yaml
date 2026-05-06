@@ -1,0 +1,33 @@
+type: object
+required:
+  - video_id
+  - status
+properties:
+  video_id:
+    type: string
+    description: The influencer/user ID
+    example: "123"
+  status:
+    type: string
+    enum:
+      - success
+      - failed
+      - processing
+    description: Processing status (debug format)
+    example: success
+  output_paths:
+    type: array
+    nullable: true
+    description: Array of GCS paths for processed outputs
+    items:
+      type: string
+    example:
+      - gs://my3pai-public-assets/intro-videos/123/video.mp4
+      - gs://my3pai-public-assets/intro-videos/123/thumbnail.jpg
+  error_message:
+    type: string
+    nullable: true
+    maxLength: 1000
+    description: Error message if processing failed
+    example: null
+

@@ -1,0 +1,74 @@
+get:
+  tags:
+    - Influencers
+  summary: Get all languages
+  description: Get all languages for authenticated user
+  responses:
+    '200':
+      description: List of languages
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/UserLanguage.yaml
+post:
+  tags:
+    - Influencers
+  summary: Create language
+  description: Add a new language
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - languageCode
+            - languageName
+            - level
+          properties:
+            languageCode:
+              type: string
+              minLength: 2
+              maxLength: 2
+              description: ISO 639-1 code
+            languageName:
+              type: string
+              maxLength: 255
+            level:
+              type: string
+              enum:
+                - native
+                - fluent
+                - conversational
+                - basic
+            sortOrder:
+              type: integer
+              minimum: 0
+              nullable: true
+  responses:
+    '201':
+      description: Language added
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/UserLanguage.yaml
+              message:
+                type: string
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

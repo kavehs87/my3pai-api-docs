@@ -1,0 +1,70 @@
+get:
+  tags:
+    - Billing
+  summary: Get or create cart
+  description: >
+    Get the current user's active cart, or create a new one if none exists.
+
+
+    **Authentication Options:**
+
+    - **Authenticated users**: Include `Authorization: Bearer <token>` header.
+    Returns or creates a cart linked to the user account.
+
+    - **Guest users**: Include `X-Session-ID: <session-id>` header, or omit both
+    headers to auto-generate a session. Returns or creates a guest cart linked
+    to the session ID.
+
+
+    If no session ID is provided for guests, a new UUID session ID will be
+    generated and returned in the response.
+  security: []
+  parameters:
+    - name: X-Session-ID
+      in: header
+      required: false
+      description: >-
+        Session ID for guest cart access. Required for guests, optional for
+        authenticated users.
+      schema:
+        type: string
+        example: 550e8400-e29b-41d4-a716-446655440000
+  responses:
+    '200':
+      description: Cart retrieved or created successfully
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Cart.yaml
+delete:
+  tags:
+    - Billing
+  summary: Clear cart
+  description: |
+    Remove all items from the cart.
+
+    **Authentication Options:**
+    - **Authenticated users**: Include `Authorization: Bearer <token>` header
+    - **Guest users**: Include `X-Session-ID: <session-id>` header
+  security: []
+  parameters:
+    - name: X-Session-ID
+      in: header
+      required: false
+      description: >-
+        Session ID for guest cart access. Required for guests, optional for
+        authenticated users.
+      schema:
+        type: string
+        example: 550e8400-e29b-41d4-a716-446655440000
+  responses:
+    '200':
+      description: Cart cleared successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Cart cleared successfully

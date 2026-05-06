@@ -1,0 +1,61 @@
+patch:
+  tags:
+    - Influencers
+    - Consultations
+  summary: Confirm booking
+  description: Influencer confirms a pending booking
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            video_call_link:
+              type: string
+              format: uri
+              nullable: true
+              description: Optional video call link (Zoom, Google Meet, etc.)
+  responses:
+    '200':
+      description: Booking confirmed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/ConsultationBooking.yaml
+              message:
+                type: string
+    '400':
+      description: Booking is not in pending status
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Booking not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

@@ -1,0 +1,36 @@
+type: object
+required:
+  - currency
+  - language
+  - timezone
+properties:
+  currency:
+    type: string
+    enum:
+      - USD
+      - EUR
+      - GBP
+      - JPY
+  language:
+    type: string
+    enum:
+      - en
+      - es
+      - fr
+      - de
+  timezone:
+    type: string
+    maxLength: 255
+  notifications:
+    type: object
+    properties:
+      email:
+        type: boolean
+      push:
+        type: boolean
+      marketing:
+        type: boolean
+  wants_to_become_influencer:
+    type: boolean
+  dark_theme:
+    type: boolean
