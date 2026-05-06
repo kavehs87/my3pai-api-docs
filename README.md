@@ -147,6 +147,97 @@ A complete e-commerce infrastructure:
 | **AI** | Chat, translation | AI-powered features |
 | **Webhooks** | Stripe events, video worker callbacks | External integrations |
 
+### 🤝 B2B Partner Integration
+
+My3PAI offers a comprehensive set of API endpoints designed for **strategic B2B partners** — travel agencies, tourism boards, content distributors, affiliate networks, enterprise resellers, and SaaS platforms looking to integrate creator commerce into their ecosystem.
+
+#### Partner Onboarding & Payment Infrastructure
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `POST /stripe/connect/onboard` | `POST` | Initiate Stripe Connect Express onboarding — returns a hosted onboarding URL for partners to link their payment accounts |
+| `GET /stripe/connect/status` | `GET` | Retrieve Stripe account status: connection state, charges enabled, payouts enabled, outstanding requirements |
+| `GET /stripe/connect/dashboard` | `GET` | Generate a Stripe-hosted dashboard link for partners to manage payouts, balances, and account details |
+| `POST /stripe/connect` | `POST` | Update or manage the connected Stripe account configuration |
+| `POST /webhooks/stripe` | `POST` | Receive real-time Stripe event notifications (account updates, payout lifecycle, application deauthorization) |
+
+#### Partner Payouts & Financial Reconciliation
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `GET /influencer/earnings/summary` | `GET` | Aggregated earnings with period filtering (all_time, this_month, last_month, this_year) — all amounts in USD |
+| `GET /influencer/payouts` | `GET` | Paginated payout history with status filtering (pending, processing, paid, failed) |
+| `GET /influencer/payouts/{id}` | `GET` | Detailed view of a specific payout transaction |
+| `GET /invoices/summary` | `GET` | Invoice summary statistics with date range filtering — total paid, total received, status breakdown |
+| `GET /invoices` | `GET` | Full invoice listing with status and type filters (paid/received), date range, and pagination |
+| `GET /invoices/{id}` | `GET` | Single invoice detail with line items and payment information |
+| `GET /invoices/{id}/download` | `GET` | Download invoice as PDF for accounting and record-keeping |
+| `POST /invoices/{id}/send` | `POST` | Send invoice via email to the customer |
+
+#### Platform Analytics (Admin)
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `GET /admin/stats` | `GET` | Platform-wide dashboard statistics: total users, verified users, new registrations, admin counts |
+| `GET /admin/platform/earnings` | `GET` | Platform earnings with filtering by influencer, date range, and status (collected, reversed, pending) |
+| `GET /admin/platform/earnings/summary` | `GET` | Aggregated platform earnings summary for reporting |
+| `GET /admin/activity` | `GET` | Platform activity log for audit and compliance |
+| `GET /admin/users` | `GET` | User management with search, filtering, and pagination |
+| `GET /admin/users/{id}` | `GET` | Detailed user profile for account management |
+| `POST /admin/users/{id}/verify` | `POST` | Verify user accounts — essential for partner-managed creator verification |
+
+#### Commerce & Order Management
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `GET /orders` | `GET` | List orders with status and date filtering |
+| `GET /orders/sold` | `GET` | Orders sold by the partner/creator |
+| `GET /orders/purchased` | `GET` | Orders purchased by customers |
+| `GET /orders/{id}` | `GET` | Detailed order view with items, payment, and status |
+| `POST /orders/{id}/refund` | `POST` | Process refunds through Stripe |
+| `GET /orders/{id}/download` | `GET` | Download order-related digital assets |
+
+#### AI-Powered Partner Tools
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `POST /ai/chat` | `POST` | Google Vertex AI Gemini-powered chat — enables partners to build AI travel assistants, content generators, and smart recommendation features |
+| `POST /ai/translate-to-english` | `POST` | AI-powered translation to English — useful for partners operating in multilingual markets |
+
+#### Integration Scenarios
+
+**Travel Agency Partnership**
+```
+Agency Platform
+    ├── GET /influencers → Discover creators by location and expertise
+    ├── GET /influencers/{username}/maps → Browse available travel maps
+    ├── POST /stripe/connect/onboard → Link payment accounts
+    ├── GET /influencer/earnings/summary → Track revenue share
+    └── POST /ai/chat → Build AI trip planning features
+```
+
+**Enterprise Content Distribution**
+```
+Distribution Platform
+    ├── GET /influencers/{username}/masterclasses → Access premium courses
+    ├── GET /influencers/{username}/podcast → Syndicate podcast content
+    ├── GET /influencers/{username}/media-assets → License digital media
+    ├── GET /orders/sold → Track content sales
+    └── GET /invoices/summary → Financial reconciliation
+```
+
+**Tourism Board Integration**
+```
+Tourism Board
+    ├── GET /maps/{map} → Access curated destination maps
+    ├── GET /pois/filters/metadata → Explore POI categories and filters
+    ├── GET /influencers/{username}/blog → Curate destination blog content
+    ├── POST /influencer/contact → Direct messaging with creators
+    └── GET /admin/platform/earnings → Track regional economic impact
+```
+
+---
+
 ### 🔐 Authentication
 
 The API uses **Laravel Sanctum** token-based authentication:
