@@ -1,0 +1,57 @@
+type: object
+description: Request body for attaching a Europeana item to a POI.
+required:
+  - europeanaRecordId
+  - title
+  - originalUrl
+  - mediaType
+  - accessType
+  - isReusable
+properties:
+  europeanaRecordId:
+    type: string
+    description: The unique record ID from Europeana
+  title:
+    type: string
+  description:
+    type: string
+    nullable: true
+  thumbnailUrl:
+    type: string
+    format: uri
+    nullable: true
+  originalUrl:
+    type: string
+    format: uri
+    description: Direct URL to the item on Europeana
+  provider:
+    type: string
+    nullable: true
+  creator:
+    type: string
+    nullable: true
+  mediaType:
+    type: string
+    enum:
+      - IMAGE
+      - TEXT
+      - VIDEO
+      - SOUND
+      - 3D
+  rightsStatement:
+    type: string
+    nullable: true
+    description: The edm:rights URL or label
+  accessType:
+    type: string
+    enum:
+      - PUBLIC_DOMAIN
+      - CC
+      - RESTRICTED
+      - RESERVED
+      - UNKNOWN
+  isReusable:
+    type: boolean
+  attributionData:
+    type: object
+    nullable: true

@@ -1,0 +1,65 @@
+type: object
+description: A Europeana cultural heritage item attached to a POI.
+properties:
+  id:
+    type: integer
+  poi_id:
+    type: integer
+  europeana_record_id:
+    type: string
+    description: The unique record ID from Europeana
+  title:
+    type: string
+  description:
+    type: string
+    nullable: true
+  thumbnail_url:
+    type: string
+    format: uri
+    nullable: true
+  original_url:
+    type: string
+    format: uri
+    description: Direct URL to the item on Europeana
+  provider:
+    type: string
+    nullable: true
+    description: The data provider institution
+  creator:
+    type: string
+    nullable: true
+  media_type:
+    type: string
+    enum:
+      - IMAGE
+      - TEXT
+      - VIDEO
+      - SOUND
+      - 3D
+  rights_statement:
+    type: string
+    nullable: true
+    description: The edm:rights URL or label
+  access_type:
+    type: string
+    enum:
+      - PUBLIC_DOMAIN
+      - CC
+      - RESTRICTED
+      - RESERVED
+      - UNKNOWN
+  is_reusable:
+    type: boolean
+    description: Whether the item can be reused based on its rights
+  attribution_data:
+    type: object
+    nullable: true
+    description: Provider attribution information
+  sort_order:
+    type: integer
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time

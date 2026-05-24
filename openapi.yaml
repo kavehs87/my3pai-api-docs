@@ -328,6 +328,14 @@ paths:
     $ref: paths/pois_{poi}_media_{media}.yaml
   /pois/{poi}/media/reorder:
     $ref: paths/pois_{poi}_media_reorder.yaml
+  /pois/{poi}/europeana:
+    $ref: paths/pois_{poi}_europeana.yaml
+  /pois/{poi}/europeana/search:
+    $ref: paths/pois_{poi}_europeana_search.yaml
+  /pois/{poi}/europeana/attach:
+    $ref: paths/pois_{poi}_europeana_attach.yaml
+  /pois/{poi}/europeana/{europeanaItem}:
+    $ref: paths/pois_{poi}_europeana_{europeanaItem}.yaml
   /admin/stats:
     $ref: paths/admin_stats.yaml
   /admin/activity:

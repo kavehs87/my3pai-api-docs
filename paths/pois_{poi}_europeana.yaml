@@ -1,0 +1,45 @@
+get:
+  tags:
+    - POIs
+    - Europeana
+  summary: List Europeana items attached to a POI
+  description: |
+    Get all Europeana cultural heritage items attached to a POI.
+    Requires authentication and ownership of the POI.
+  parameters:
+    - name: poi
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The POI ID
+  responses:
+    '200':
+      description: List of attached Europeana items
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  europeanaItems:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/PoiEuropeanaItemResource.yaml
+    '403':
+      description: Forbidden - not owner
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: POI not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

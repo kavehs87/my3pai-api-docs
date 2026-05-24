@@ -1,0 +1,51 @@
+type: object
+description: API response shape for a Europeana item attached to a POI.
+properties:
+  id:
+    type: integer
+  europeanaRecordId:
+    type: string
+  title:
+    type: string
+  description:
+    type: string
+    nullable: true
+  thumbnailUrl:
+    type: string
+    format: uri
+    nullable: true
+  originalUrl:
+    type: string
+    format: uri
+  provider:
+    type: string
+    nullable: true
+  creator:
+    type: string
+    nullable: true
+  mediaType:
+    type: string
+    enum:
+      - IMAGE
+      - TEXT
+      - VIDEO
+      - SOUND
+      - 3D
+  rightsStatement:
+    type: string
+    nullable: true
+  accessType:
+    type: string
+    enum:
+      - PUBLIC_DOMAIN
+      - CC
+      - RESTRICTED
+      - RESERVED
+      - UNKNOWN
+  isReusable:
+    type: boolean
+  attributionData:
+    type: object
+    nullable: true
+  sortOrder:
+    type: integer

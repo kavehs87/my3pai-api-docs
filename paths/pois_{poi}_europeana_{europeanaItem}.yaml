@@ -1,0 +1,48 @@
+delete:
+  tags:
+    - POIs
+    - Europeana
+  summary: Detach a Europeana item from a POI
+  description: |
+    Remove a previously attached Europeana item from a POI.
+    Uses soft delete — the record is not permanently removed.
+    Requires authentication and ownership of the POI.
+  parameters:
+    - name: poi
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The POI ID
+    - name: europeanaItem
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The Europeana item ID
+  responses:
+    '200':
+      description: Europeana item detached successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Europeana item detached successfully.
+    '403':
+      description: Forbidden - not owner
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: POI or Europeana item not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

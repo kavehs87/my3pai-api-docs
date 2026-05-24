@@ -1,0 +1,48 @@
+type: object
+description: A single search result from the Europeana API.
+properties:
+  europeanaRecordId:
+    type: string
+  title:
+    type: string
+    nullable: true
+  description:
+    type: string
+    nullable: true
+  thumbnailUrl:
+    type: string
+    format: uri
+    nullable: true
+  originalUrl:
+    type: string
+    format: uri
+  provider:
+    type: string
+    nullable: true
+  creator:
+    type: string
+    nullable: true
+  mediaType:
+    type: string
+  rightsStatement:
+    type: string
+    nullable: true
+  accessType:
+    type: string
+    enum:
+      - PUBLIC_DOMAIN
+      - CC
+      - RESTRICTED
+      - RESERVED
+      - UNKNOWN
+  isReusable:
+    type: boolean
+  country:
+    type: array
+    items:
+      type: string
+    description: Countries associated with the item
+  language:
+    type: array
+    items:
+      type: string
