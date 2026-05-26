@@ -17,6 +17,10 @@ properties:
     $ref: ./PoiCategory.yaml
   difficulty:
     $ref: ./PoiDifficulty.yaml
+  elevation:
+    type: integer
+    nullable: true
+    description: Duplicate of category.elevation (mirrors API output)
   pricing:
     $ref: ./PoiPricing.yaml
   regions:

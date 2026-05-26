@@ -242,6 +242,8 @@ paths:
     $ref: paths/consultations_bookings_{bookingId}_cancel.yaml
   /consultations/bookings/{bookingId}/cancellation-policy:
     $ref: paths/consultations_bookings_{bookingId}_cancellation-policy.yaml
+  /consultations/bookings/{bookingId}/payment-session:
+    $ref: paths/consultations_bookings_{bookingId}_payment-session.yaml
   /influencers/{username}/media-assets:
     $ref: paths/influencers_{username}_media-assets.yaml
   /influencers/{username}/media-assets/{id}:
@@ -310,6 +312,8 @@ paths:
     $ref: paths/maps_{map}_pois.yaml
   /maps/{map}/pois/batch:
     $ref: paths/maps_{map}_pois_batch.yaml
+  /maps/{map}/pois/batch/toggle-visibility:
+    $ref: paths/maps_{map}_pois_batch_toggle-visibility.yaml
   /maps/{map}/pois/draft:
     $ref: paths/maps_{map}_pois_draft.yaml
   /maps/{map}/pois/{poi}:
