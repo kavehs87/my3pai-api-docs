@@ -7,6 +7,12 @@ properties:
   durationMinutes:
     type: integer
     description: Duration of the consultation in minutes
+  influencerTimezone:
+    type: string
+    description: |
+      IANA timezone identifier for the influencer (e.g., "America/New_York").
+      Provided for context; all booked slot times are returned in UTC.
+    example: 'America/New_York'
   bookedSlots:
     type: array
     description: Array of booked time slots (only pending and confirmed bookings)

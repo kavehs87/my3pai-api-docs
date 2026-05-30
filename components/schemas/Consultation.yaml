@@ -19,6 +19,12 @@ properties:
     maximum: 240
   isActive:
     type: boolean
+  influencerTimezone:
+    type: string
+    description: |
+      IANA timezone identifier for the influencer (e.g., "America/New_York").
+      All date parameters should be interpreted in this timezone. All slot times returned by the API are in UTC; frontend is responsible for converting to the customer's local timezone.
+    example: 'America/New_York'
   workingHours:
     type: object
     description: >-

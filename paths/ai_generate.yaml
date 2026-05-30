@@ -1,0 +1,107 @@
+post:
+  tags:
+    - AI
+  summary: Generate content with Vertex AI Gemini
+  description: >
+    Flexible content generation endpoint. Accepts custom system prompts and
+    temperature overrides.
+
+    **Authentication:**
+    Send `X-AI-Token` header with the general AI token to authenticate, or
+    use a standard Sanctum Bearer token.
+
+    **System Prompt:**
+    If omitted, defaults to "You are a helpful assistant."
+  security:
+    - BearerAuth: []
+    - AiTokenAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - message
+          properties:
+            message:
+              type: string
+              description: The user's prompt/message to send to the AI model
+              maxLength: 10000
+              example: "Suggest the next travel activity in Paris"
+            system_prompt:
+              type: string
+              description: Optional system prompt to override the default
+              maxLength: 2000
+              example: "You are a travel itinerary assistant."
+            temperature:
+              type: number
+              description: Optional temperature override (0-2, defaults to 0.7)
+              minimum: 0
+              maximum: 2
+              example: 0.7
+  responses:
+    '200':
+      description: Content generated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: The generated text response from the AI model
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Unauthenticated.
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Validation failed
+              errors:
+                type: object
+                properties:
+                  message:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                      - "The message field is required."
+    '500':
+      description: Server error or Vertex AI API error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Failed to generate response
+              error:
+                type: string
+                description: Error message (only shown in local/development environments)

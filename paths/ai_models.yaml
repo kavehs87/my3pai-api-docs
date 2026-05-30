@@ -1,0 +1,59 @@
+get:
+  tags:
+    - AI
+  summary: List supported AI models
+  description: >
+    Returns the currently configured AI model and a list of all Gemini models
+    supported by the application. Use this endpoint to discover which models
+    are available for use with the chat endpoint.
+
+    This endpoint is public and does not require authentication.
+  security: []
+  responses:
+    '200':
+      description: Models list retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  configured:
+                    type: object
+                    properties:
+                      model:
+                        type: string
+                        example: gemini-2.5-flash-lite
+                      region:
+                        type: string
+                        example: europe-west1
+                      project_id:
+                        type: string
+                        example: third-anvil-478617-d4
+                  supported:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        description:
+                          type: string
+    '500':
+      description: Server error or Vertex AI API error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Failed to retrieve models

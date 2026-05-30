@@ -4,7 +4,7 @@ properties:
   date:
     type: string
     format: date
-    description: Date in YYYY-MM-DD format (UTC)
+    description: Date in YYYY-MM-DD format, interpreted in the influencer's timezone
     example: '2024-02-15'
   consultationId:
     type: integer
@@ -12,6 +12,12 @@ properties:
   durationMinutes:
     type: integer
     description: Duration of the consultation in minutes
+  influencerTimezone:
+    type: string
+    description: |
+      IANA timezone identifier for the influencer (e.g., "America/New_York").
+      The date parameter is interpreted in this timezone. All slot times are returned in UTC.
+    example: 'America/New_York'
   workingHours:
     type: object
     description: Working hours for this day (times are stored in the working hours format as configured by the influencer; frontend should interpret based on influencer's timezone)
@@ -32,15 +38,23 @@ properties:
     items:
       type: object
       properties:
+        startTimeUtc:
+          type: string
+          format: date-time
+          description: |
+            Authoritative slot start time in UTC (ISO 8601). Frontend should use this field to convert to customer's local timezone.
+          example: '2024-02-15T14:00:00Z'
         time:
           type: string
           pattern: ^\d{2}:\d{2}$
-          description: Time in HH:MM format
+          description: Time in HH:MM format (influencer's local time)
+          deprecated: true
           example: '09:00'
         available:
           type: boolean
-          description: Whether this time slot is available
+          description: Whether this time slot is available (false if booked or in the past)
         formatted:
           type: string
-          description: Formatted time string (e.g., "09:00 AM")
+          description: Formatted time string in influencer's local timezone (e.g., "09:00 AM")
+          deprecated: true
           example: 09:00 AM

@@ -20,7 +20,7 @@ get:
       schema:
         type: string
         format: date
-      description: Date in YYYY-MM-DD format (UTC)
+      description: Date in YYYY-MM-DD format, interpreted in the influencer's timezone (not UTC). Frontend should send dates in the influencer's timezone obtained from `influencerTimezone` in the consultation payload.
       example: '2024-02-15'
   responses:
     '200':

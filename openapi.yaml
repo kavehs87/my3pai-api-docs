@@ -358,6 +358,10 @@ paths:
     $ref: paths/admin_platform_earnings_summary.yaml
   /ai/chat:
     $ref: paths/ai_chat.yaml
+  /ai/models:
+    $ref: paths/ai_models.yaml
+  /ai/generate:
+    $ref: paths/ai_generate.yaml
   /cart:
     $ref: paths/cart.yaml
   /cart/items:
@@ -403,3 +407,8 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: Laravel Sanctum token
+    AiTokenAuth:
+      type: apiKey
+      in: header
+      name: X-AI-Token
+      description: General AI access token for tooling and mock projects

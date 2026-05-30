@@ -4,8 +4,14 @@ properties:
   month:
     type: string
     pattern: ^\d{4}-\d{2}$
-    description: Month in YYYY-MM format
+    description: Month in YYYY-MM format, interpreted in the influencer's timezone
     example: '2024-02'
+  influencerTimezone:
+    type: string
+    description: |
+      IANA timezone identifier for the influencer (e.g., "America/New_York").
+      All dates in the response are in the influencer's timezone. Day-of-week is computed in the influencer's timezone.
+    example: 'America/New_York'
   days:
     type: array
     description: Array of day availability data
