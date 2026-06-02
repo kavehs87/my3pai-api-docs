@@ -13,6 +13,11 @@ properties:
     type: string
     format: uri
     nullable: true
+  detailCoverImage:
+    type: string
+    format: uri
+    nullable: true
+    description: Cover image for the single episode detail view
   duration:
     type: string
     description: 45 min

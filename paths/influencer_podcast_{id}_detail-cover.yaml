@@ -1,0 +1,54 @@
+post:
+  tags:
+    - Influencers
+    - Podcast
+    - Media
+  summary: Upload detail cover image
+  description: Upload a detail cover image for the single podcast episode view
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            detail_cover:
+              type: string
+              format: binary
+              description: Image file (JPEG, PNG, WebP, max 10MB)
+  responses:
+    '200':
+      description: Detail cover image uploaded
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  detailCoverImage:
+                    type: string
+                    format: uri
+              message:
+                type: string
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: You do not have permission to upload cover for this podcast episode
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

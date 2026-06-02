@@ -178,6 +178,8 @@ paths:
     $ref: paths/influencer_podcast_{id}_audio.yaml
   /influencer/podcast/{id}/cover:
     $ref: paths/influencer_podcast_{id}_cover.yaml
+  /influencer/podcast/{id}/detail-cover:
+    $ref: paths/influencer_podcast_{id}_detail-cover.yaml
   /influencer/contact-messages:
     $ref: paths/influencer_contact-messages.yaml
   /influencer/contact-messages/stats:
