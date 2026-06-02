@@ -2,9 +2,9 @@ type: object
 properties:
   password:
     type: string
-    description: Required if user has a password
+    description: User password. Used for verification if the user has a password set.
     nullable: true
   providerReauthToken:
     type: string
-    description: Required if user has no password (Google OAuth users). Google ID token.
+    description: Google ID token. Used for verification if the user is an OAuth user.
     nullable: true

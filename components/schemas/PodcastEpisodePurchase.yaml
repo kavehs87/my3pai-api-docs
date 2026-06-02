@@ -1,0 +1,29 @@
+type: object
+properties:
+  id:
+    type: integer
+  amount:
+    type: number
+    format: float
+    description: Purchase price in dollars
+  currency:
+    type: string
+    example: USD
+  purchasedAt:
+    type: string
+    format: date-time
+  episode:
+    $ref: ./PodcastEpisodeFull.yaml
+  influencer:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      username:
+        type: string
+      avatarUrl:
+        type: string
+        format: uri
+        nullable: true

@@ -18,3 +18,13 @@ properties:
   isPublished:
     type: boolean
     default: false
+  price:
+    type: number
+    format: float
+    description: Price in dollars
+    nullable: true
+  currency:
+    type: string
+    maxLength: 3
+    description: ISO 4217 currency code (e.g. USD)
+    nullable: true

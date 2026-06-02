@@ -160,6 +160,8 @@ paths:
     $ref: paths/influencer_external-links_{id}.yaml
   /influencer/blog:
     $ref: paths/influencer_blog.yaml
+  /influencer/blog/reorder:
+    $ref: paths/influencer_blog_reorder.yaml
   /influencer/blog/{id}:
     $ref: paths/influencer_blog_{id}.yaml
   /influencer/blog/{id}/cover:
@@ -196,10 +198,14 @@ paths:
     $ref: paths/influencers_{username}_blog.yaml
   /influencers/{username}/blog/{slug}:
     $ref: paths/influencers_{username}_blog_{slug}.yaml
+  /influencers/{username}/blog/{slug}/purchase:
+    $ref: paths/influencers_{username}_blog_{slug}_purchase.yaml
   /influencers/{username}/podcast:
     $ref: paths/influencers_{username}_podcast.yaml
   /influencers/{username}/podcast/{slug}:
     $ref: paths/influencers_{username}_podcast_{slug}.yaml
+  /influencers/{username}/podcast/{slug}/purchase:
+    $ref: paths/influencers_{username}_podcast_{slug}_purchase.yaml
   /influencers/{username}/masterclasses:
     $ref: paths/influencers_{username}_masterclasses.yaml
   /influencers/{username}/masterclasses/{slug}:
@@ -262,6 +268,10 @@ paths:
     $ref: paths/media-assets_{id}_purchase.yaml
   /media-assets/my-purchases:
     $ref: paths/media-assets_my-purchases.yaml
+  /user/blog-purchases:
+    $ref: paths/user_blog-purchases.yaml
+  /user/podcast-purchases:
+    $ref: paths/user_podcast-purchases.yaml
   /purchased-products:
     $ref: paths/purchased-products.yaml
   /purchased-products/{purchase}:

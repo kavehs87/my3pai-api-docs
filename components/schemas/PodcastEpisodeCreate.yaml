@@ -20,6 +20,15 @@ properties:
   isPremium:
     type: boolean
     default: false
+  price:
+    type: number
+    format: float
+    description: Price in dollars (stored as cents in DB)
+    nullable: true
+  currency:
+    type: string
+    default: USD
+    description: ISO 4217 currency code
   isPublished:
     type: boolean
     default: false

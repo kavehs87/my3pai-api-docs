@@ -36,12 +36,18 @@ put:
         application/json:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: You do not have permission to update this blog post
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
 delete:
   tags:
     - Influencers
     - Blog
   summary: Delete blog post
-  description: Delete a blog post
+    description: Delete a blog post
   parameters:
     - name: id
       in: path
@@ -62,6 +68,12 @@ delete:
                 type: string
     '404':
       description: Blog post not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: You do not have permission to delete this blog post
       content:
         application/json:
           schema:

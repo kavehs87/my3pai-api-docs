@@ -42,7 +42,7 @@ post:
               example: 550e8400-e29b-41d4-a716-446655440000
   responses:
     '200':
-      description: Carts merged successfully
+      description: Carts merged successfully (or no guest cart found to merge)
       content:
         application/json:
           schema:
@@ -55,12 +55,6 @@ post:
                 $ref: ../components/schemas/Cart.yaml
     '401':
       description: Unauthenticated
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/ErrorResponse.yaml
-    '404':
-      description: Guest cart not found
       content:
         application/json:
           schema:

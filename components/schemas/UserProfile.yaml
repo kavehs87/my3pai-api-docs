@@ -55,6 +55,12 @@ properties:
     format: date-time
     nullable: true
     description: Date when the user joined (ISO 8601 format)
+  hasPassword:
+    type: boolean
+    description: Indicates if the user has a password set for their account
+  hasGoogleAccount:
+    type: boolean
+    description: Indicates if the user is registered via Google OAuth
   preferences:
     allOf:
       - $ref: ./UserPreferences.yaml

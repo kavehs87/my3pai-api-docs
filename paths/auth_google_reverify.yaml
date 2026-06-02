@@ -1,0 +1,18 @@
+get:
+  summary: Redirect to Google OAuth for account deletion re-verification
+  description: |
+    Initiates Google OAuth flow to re-verify user identity for account deletion.
+    Uses session cookie authentication ($request->user()). Passes user_id via Google's state parameter.
+  parameters:
+    - name: redirect
+      in: query
+      required: false
+      schema:
+        type: string
+        example: http://localhost:3000/profile?tab=settings
+      description: Frontend URL to redirect to after verification completes
+  responses:
+    '302':
+      description: Redirect to Google OAuth authorization URL
+    '302_error':
+      description: Redirect to frontend with ?reverify=error if user is not authenticated via session

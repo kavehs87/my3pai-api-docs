@@ -45,7 +45,7 @@ get:
                 type: boolean
                 example: true
               data:
-                $ref: ../components/schemas/BlogPostFull.yaml
+                $ref: ../components/schemas/BlogPostPublic.yaml
     '404':
       description: Blog post not found
       content:

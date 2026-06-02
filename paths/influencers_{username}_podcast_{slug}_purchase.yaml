@@ -1,0 +1,59 @@
+post:
+  tags:
+    - Podcast
+  summary: Purchase podcast episode
+  description: Customer purchases a premium podcast episode via Stripe Checkout Session
+  parameters:
+    - name: username
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '201':
+      description: Checkout session created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              redirect_url:
+                type: string
+                format: uri
+              order_id:
+                type: integer
+              order_number:
+                type: string
+              checkout_session_id:
+                type: string
+    '400':
+      description: Cannot purchase (not published, not premium, no price, self-purchase, already purchased, influencer Stripe not ready)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Podcast episode not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '500':
+      description: Failed to create order or checkout session
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

@@ -24,6 +24,11 @@ properties:
     type: string
     minLength: 3
     maxLength: 3
+  timezone:
+    type: string
+    description: IANA timezone identifier (e.g., "America/New_York"). Saved to the influencer's user preferences.
+    example: 'America/New_York'
+    nullable: true
   is_active:
     type: boolean
   working_hours:

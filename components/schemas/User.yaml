@@ -45,6 +45,12 @@ properties:
   updated_at:
     type: string
     format: date-time
+  hasPassword:
+    type: boolean
+    description: Indicates if the user has a password set for their account
+  hasGoogleAccount:
+    type: boolean
+    description: Indicates if the user is registered via Google OAuth
   preferences:
     allOf:
       - $ref: ./UserPreferences.yaml

@@ -23,3 +23,11 @@ properties:
   readTime:
     type: string
     description: 5 min read
+  price:
+    type: number
+    description: Price in dollars (e.g., 3.00). Null if free or not set.
+    nullable: true
+  currency:
+    type: string
+    description: ISO 4217 currency code (e.g., USD). Defaults to USD.
+    nullable: true
