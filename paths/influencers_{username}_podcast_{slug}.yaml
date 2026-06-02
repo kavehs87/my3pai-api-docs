@@ -45,7 +45,7 @@ get:
                 type: boolean
                 example: true
               data:
-                $ref: ../components/schemas/PodcastEpisodeFull.yaml
+                $ref: ../components/schemas/PodcastEpisodePublic.yaml
     '404':
       description: Podcast episode not found
       content:

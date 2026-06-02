@@ -46,3 +46,9 @@ post:
         application/json:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: You do not have permission to upload cover for this podcast episode
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

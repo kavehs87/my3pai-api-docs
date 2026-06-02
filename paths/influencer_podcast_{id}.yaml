@@ -36,6 +36,12 @@ put:
         application/json:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: You do not have permission to update this podcast episode
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
 delete:
   tags:
     - Influencers
@@ -62,6 +68,12 @@ delete:
                 type: string
     '404':
       description: Podcast episode not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: You do not have permission to delete this podcast episode
       content:
         application/json:
           schema:
