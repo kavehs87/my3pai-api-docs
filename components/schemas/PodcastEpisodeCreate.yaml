@@ -32,3 +32,10 @@ properties:
   isPublished:
     type: boolean
     default: false
+  tags:
+    type: array
+    maxItems: 20
+    items:
+      type: string
+      maxLength: 64
+    description: Array of tag key strings

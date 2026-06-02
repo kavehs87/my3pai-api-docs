@@ -27,6 +27,11 @@ properties:
   currency:
     type: string
     example: USD
+  tags:
+    type: array
+    items:
+      type: string
+    description: Array of tag key strings for this episode
   publishedAt:
     type: string
     format: date-time
