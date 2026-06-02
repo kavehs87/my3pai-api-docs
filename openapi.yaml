@@ -170,6 +170,8 @@ paths:
     $ref: paths/influencer_podcast.yaml
   /influencer/podcast/settings:
     $ref: paths/influencer_podcast_settings.yaml
+  /influencer/podcast/reorder:
+    $ref: paths/influencer_podcast_reorder.yaml
   /influencer/podcast/{id}:
     $ref: paths/influencer_podcast_{id}.yaml
   /influencer/podcast/{id}/audio:

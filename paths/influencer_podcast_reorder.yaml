@@ -1,0 +1,43 @@
+put:
+  tags:
+    - Influencers
+    - Podcast
+  summary: Reorder podcast episodes
+  description: Reorder podcast episodes by providing an array of IDs in desired order
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - ids
+          properties:
+            ids:
+              type: array
+              items:
+                type: integer
+  responses:
+    '200':
+      description: Podcast episodes reordered
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+    '404':
+      description: Some episodes not found or do not belong to user
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
