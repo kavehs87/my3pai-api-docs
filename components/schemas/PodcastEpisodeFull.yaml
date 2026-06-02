@@ -12,14 +12,6 @@ allOf:
         nullable: true
       isPremium:
         type: boolean
-      price:
-        type: number
-        format: float
-        description: Price in dollars (null if not premium)
-        nullable: true
-      currency:
-        type: string
-        example: USD
       isLocked:
         type: boolean
         description: True if premium and user hasn't purchased
