@@ -1,0 +1,60 @@
+type: object
+description: API response shape for a DZT item attached to a POI.
+properties:
+  id:
+    type: integer
+  dztUri:
+    type: string
+    format: uri
+    description: The unique URI of the entity in the DZT Knowledge Graph
+  title:
+    type: string
+  description:
+    type: string
+    nullable: true
+  entityType:
+    type: string
+    enum:
+      - event
+      - poi
+      - trail
+      - region
+    description: The type of tourism entity
+  locality:
+    type: string
+    nullable: true
+    description: City or locality of the entity
+  region:
+    type: string
+    nullable: true
+    description: Federal state or region of the entity
+  thumbnailUrl:
+    type: string
+    format: uri
+    nullable: true
+  originalUrl:
+    type: string
+    format: uri
+    description: Direct URL to the entity on Open Data Germany
+  license:
+    type: string
+    format: uri
+    nullable: true
+    description: The license URL
+  accessType:
+    type: string
+    enum:
+      - PUBLIC_DOMAIN
+      - CC
+      - RESERVED
+      - UNKNOWN
+    description: Normalized access category
+  isReusable:
+    type: boolean
+    description: Whether the entity can be reused commercially
+  attributionData:
+    type: object
+    nullable: true
+    description: Attribution metadata for the entity
+  sortOrder:
+    type: integer

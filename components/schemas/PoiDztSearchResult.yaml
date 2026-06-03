@@ -1,0 +1,62 @@
+type: object
+description: |
+  A lightweight V2 search result from the DZT Knowledge Graph.
+  V2 search returns minimal data (URI, entity type, compliance).
+  Full details (title, description, media) require a separate GET call
+  to the DZT API endpoint with the entity ID.
+properties:
+  dztUri:
+    type: string
+    format: uri
+    description: The unique URI of the entity in the DZT Knowledge Graph
+  title:
+    type: string
+    nullable: true
+    description: Null in V2 results — fetch entity details for full title
+  description:
+    type: string
+    nullable: true
+    description: Null in V2 results — fetch entity details for full description
+  entityType:
+    type: string
+    enum:
+      - event
+      - poi
+      - trail
+      - region
+  locality:
+    type: string
+    nullable: true
+    description: Null in V2 results — fetch entity details for locality
+  region:
+    type: string
+    nullable: true
+    description: Null in V2 results — fetch entity details for region
+  thumbnailUrl:
+    type: string
+    format: uri
+    nullable: true
+    description: Null in V2 results — fetch entity details for thumbnail
+  originalUrl:
+    type: string
+    format: uri
+    description: Generated URL to the entity on Open Data Germany
+  license:
+    type: string
+    nullable: true
+    description: Null in V2 results — fetch entity details for license
+  accessType:
+    type: string
+    enum:
+      - PUBLIC_DOMAIN
+      - CC
+      - RESERVED
+      - UNKNOWN
+    description: UNKNOWN in V2 results — fetch entity details for rights
+  isReusable:
+    type: boolean
+    description: false in V2 results — fetch entity details for reuse status
+  compliesWith:
+    type: string
+    nullable: true
+    description: Domain Specification (DS) URI the entity complies with

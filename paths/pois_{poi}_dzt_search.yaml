@@ -1,0 +1,61 @@
+post:
+  tags:
+    - POIs
+    - DZT
+  summary: Search DZT Knowledge Graph
+  description: |
+    Proxy search to the DZT (Open Data Germany) API. Keeps the DZT API key server-side.
+    Requires authentication and ownership of the POI.
+
+    Results include lightweight V2 data with entity type and compliance information.
+    Full details require a separate GET call to the DZT API.
+  parameters:
+    - name: poi
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The POI ID (used for auth context)
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/SearchDztRequest.yaml
+  responses:
+    '200':
+      description: Search results from DZT
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/PoiDztSearchResult.yaml
+                  total:
+                    type: integer
+                    description: Total number of results
+                  page:
+                    type: integer
+                  pageSize:
+                    type: integer
+    '403':
+      description: Forbidden - not owner
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '500':
+      description: DZT API error or configuration missing
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

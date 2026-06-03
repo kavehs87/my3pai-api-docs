@@ -1,0 +1,35 @@
+type: object
+description: Request body for searching the DZT Knowledge Graph (Open Data Germany).
+required:
+  - query
+properties:
+  query:
+    type: string
+    maxLength: 500
+    description: The search query (keyword, name, place)
+  entityType:
+    type: string
+    enum:
+      - event
+      - poi
+      - trail
+      - region
+    description: Filter by entity type
+  locality:
+    type: string
+    maxLength: 255
+    description: Filter by city or locality
+  region:
+    type: string
+    maxLength: 255
+    description: Filter by federal state or region
+  page:
+    type: integer
+    minimum: 1
+    maximum: 100
+    default: 1
+  pageSize:
+    type: integer
+    minimum: 1
+    maximum: 100
+    default: 5

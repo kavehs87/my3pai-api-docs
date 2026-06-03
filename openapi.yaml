@@ -91,6 +91,8 @@ tags:
     description: Public endpoints that don't require authentication
   - name: Billing
     description: Shopping cart, orders, payments, and invoicing
+  - name: DZT
+    description: DZT Knowledge Graph (Open Data Germany) integration
   - name: Webhooks
     description: Webhook endpoints for external service callbacks
 security:
@@ -354,6 +356,14 @@ paths:
     $ref: paths/pois_{poi}_europeana_attach.yaml
   /pois/{poi}/europeana/{europeanaItem}:
     $ref: paths/pois_{poi}_europeana_{europeanaItem}.yaml
+  /pois/{poi}/dzt:
+    $ref: paths/pois_{poi}_dzt.yaml
+  /pois/{poi}/dzt/search:
+    $ref: paths/pois_{poi}_dzt_search.yaml
+  /pois/{poi}/dzt/attach:
+    $ref: paths/pois_{poi}_dzt_attach.yaml
+  /pois/{poi}/dzt/{dztItem}:
+    $ref: paths/pois_{poi}_dzt_{dztItem}.yaml
   /admin/stats:
     $ref: paths/admin_stats.yaml
   /admin/activity:

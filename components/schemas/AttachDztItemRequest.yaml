@@ -1,0 +1,71 @@
+type: object
+description: Request body for attaching a DZT item to a POI.
+required:
+  - dztUri
+  - title
+  - entityType
+  - originalUrl
+  - accessType
+  - isReusable
+properties:
+  dztUri:
+    type: string
+    format: uri
+    maxLength: 500
+    description: The unique URI of the entity in the DZT Knowledge Graph
+  title:
+    type: string
+    maxLength: 2000
+  description:
+    type: string
+    maxLength: 10000
+    nullable: true
+  entityType:
+    type: string
+    enum:
+      - event
+      - poi
+      - trail
+      - region
+    description: The type of tourism entity
+  locality:
+    type: string
+    maxLength: 255
+    nullable: true
+    description: City or locality of the entity
+  region:
+    type: string
+    maxLength: 255
+    nullable: true
+    description: Federal state or region of the entity
+  thumbnailUrl:
+    type: string
+    format: uri
+    maxLength: 2048
+    nullable: true
+  originalUrl:
+    type: string
+    format: uri
+    maxLength: 2048
+    description: Direct URL to the entity on Open Data Germany
+  license:
+    type: string
+    format: uri
+    maxLength: 255
+    nullable: true
+    description: The license URL
+  accessType:
+    type: string
+    enum:
+      - PUBLIC_DOMAIN
+      - CC
+      - RESERVED
+      - UNKNOWN
+    description: Normalized access category
+  isReusable:
+    type: boolean
+    description: Whether the entity can be reused commercially
+  attributionData:
+    type: object
+    nullable: true
+    description: Attribution metadata for the entity
