@@ -1,0 +1,76 @@
+post:
+  tags:
+    - POIs
+    - DZT
+  summary: Search DZT by geographic proximity
+  description: |
+    Search the DZT (Open Data Germany) Knowledge Graph for tourism entities
+    within a radius of given coordinates.
+
+    Uses a two-phase approach: first finds entities with geo data via shape query,
+    then fetches entity details to calculate actual Haversine distance and filter
+    by radius. Results are sorted by distance ascending.
+
+    Requires authentication and ownership of the POI.
+  parameters:
+    - name: poi
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The POI ID (used for auth context)
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/SearchDztNearbyRequest.yaml
+  responses:
+    '200':
+      description: Search results from DZT, sorted by distance
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/PoiDztSearchResult.yaml
+                  total:
+                    type: integer
+                    description: Number of results within radius
+                  totalWithGeo:
+                    type: integer
+                    description: Total entities with geo data
+                  page:
+                    type: integer
+                  pageSize:
+                    type: integer
+                  centerLat:
+                    type: number
+                    description: Center latitude of search
+                  centerLon:
+                    type: number
+                    description: Center longitude of search
+                  radiusKm:
+                    type: integer
+                    description: Search radius in kilometers
+    '403':
+      description: Forbidden - not owner
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '500':
+      description: DZT API error or configuration missing
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

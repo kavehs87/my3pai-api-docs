@@ -1,0 +1,76 @@
+get:
+  tags:
+    - Admin
+  summary: Get dashboard trend data
+  description: Get chart data for dashboard widgets — revenue, user growth, and orders over time (admin only)
+  parameters:
+    - name: period
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: [12_months, 6_months, 30_days]
+        default: 12_months
+      description: Aggregation period
+  responses:
+    '200':
+      description: Trend data
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  revenue:
+                    type: array
+                    description: Revenue from completed orders
+                    items:
+                      type: object
+                      properties:
+                        month:
+                          type: string
+                          description: Period key (Y-m for monthly, Y-m-d for daily)
+                        amount_cents:
+                          type: integer
+                          description: Sum of completed order totals in cents
+                  user_growth:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        month:
+                          type: string
+                        new_users:
+                          type: integer
+                        total_users:
+                          type: integer
+                          description: Cumulative total users up to this period
+                  orders:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        month:
+                          type: string
+                        total:
+                          type: integer
+                        completed:
+                          type: integer
+                        refunded:
+                          type: integer
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

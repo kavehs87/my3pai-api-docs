@@ -9,16 +9,22 @@ properties:
   first_name:
     type: string
     maxLength: 255
+    pattern: '^[\p{L}\p{M}\s\x27-]+$'
+    description: 'Unicode letters, spaces, hyphens, apostrophes only'
   last_name:
     type: string
     maxLength: 255
+    pattern: '^[\p{L}\p{M}\s\x27-]+$'
+    description: 'Unicode letters, spaces, hyphens, apostrophes only'
   email:
     type: string
     format: email
     maxLength: 255
+    pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
   password:
     type: string
     minLength: 8
+    description: 'Must contain uppercase, lowercase, number, special character. Common passwords rejected.'
   password_confirmation:
     type: string
     minLength: 8

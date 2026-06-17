@@ -1,0 +1,14 @@
+type: object
+required:
+  - email
+  - token
+properties:
+  email:
+    type: string
+    format: email
+    maxLength: 255
+    example: jane@example.com
+  token:
+    type: string
+    description: Verification token from the email link
+    example: eyJ0b2tlbiI6IjEyMzQ1Njc4OTAiLCJlbWFpbCI6Imp...

@@ -18,6 +18,7 @@ properties:
   password:
     type: string
     minLength: 8
+    description: 'Must contain uppercase, lowercase, number, special character. Common passwords rejected.'
   username:
     type: string
     maxLength: 255

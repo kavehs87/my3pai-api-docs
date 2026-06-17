@@ -1,0 +1,47 @@
+type: object
+properties:
+  id:
+    type: string
+    description: Unique activity identifier (prefixed by type, e.g., "user_42")
+  type:
+    type: string
+    enum: [new_user, order_placed, order_refunded, content_flagged, admin_action, payment_failed]
+    description: Type of activity event
+  description:
+    type: string
+    description: Human-readable description of the activity
+  subject_type:
+    type: string
+    description: Type of resource the activity relates to (e.g., "user", "order", "payment")
+  subject_id:
+    type: integer
+    description: ID of the resource
+  performed_by:
+    nullable: true
+    oneOf:
+      - type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+        required:
+          - id
+          - name
+      - type: "null"
+  created_at:
+    type: string
+    format: date-time
+    description: ISO8601 timestamp
+  created_at_human:
+    type: string
+    description: Relative time string (e.g., "2 hours ago")
+required:
+  - id
+  - type
+  - description
+  - subject_type
+  - subject_id
+  - performed_by
+  - created_at
+  - created_at_human

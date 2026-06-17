@@ -1,0 +1,9 @@
+type: object
+description: Nearby search result with distance from search center.
+allOf:
+  - $ref: ./SwissDmoSearchResult.yaml
+  - type: object
+    properties:
+      distanceKm:
+        type: number
+        description: Distance in kilometers from search center (Haversine)

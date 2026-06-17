@@ -1,0 +1,117 @@
+type: object
+description: Tour detail from Swiss DMO with geodata.
+properties:
+  id:
+    type: string
+    description: Swiss DMO identifier (e.g., CH-20001)
+  name:
+    type: string
+  placeType:
+    type: string
+    enum: [tour]
+    example: tour
+  summary:
+    type: string
+    nullable: true
+  description:
+    type: string
+    nullable: true
+  latitude:
+    type: number
+    nullable: true
+  longitude:
+    type: number
+    nullable: true
+  thumbnailUrl:
+    type: string
+    format: uri
+    nullable: true
+  website:
+    type: string
+    format: uri
+    nullable: true
+  license:
+    type: string
+    format: uri
+    nullable: true
+  accessType:
+    type: string
+    enum: [PUBLIC_DOMAIN, CC, RESERVED, UNKNOWN]
+  isReusable:
+    type: boolean
+  source:
+    type: string
+    example: swiss_dmo
+  smRoute:
+    type: string
+    nullable: true
+  smCategory:
+    type: string
+    nullable: true
+  smUrl:
+    type: string
+    format: uri
+    nullable: true
+  smLogoUrl:
+    type: string
+    format: uri
+    nullable: true
+  smGeodataUrl:
+    type: string
+    format: uri
+    nullable: true
+    description: SM geodata URL
+  distanceKm:
+    type: number
+    nullable: true
+  durationMin:
+    type: integer
+    nullable: true
+  durationReverseMin:
+    type: integer
+    nullable: true
+  ascentM:
+    type: integer
+    nullable: true
+  descentM:
+    type: integer
+    nullable: true
+  isBarrierFree:
+    type: boolean
+    nullable: true
+  seasonText:
+    type: string
+    nullable: true
+  touristType:
+    type: string
+    nullable: true
+  itinerary:
+    type: string
+    nullable: true
+    description: Route description/itinerary
+  subTrip:
+    type: string
+    nullable: true
+    description: Sub-trip identifier
+  partOfTrip:
+    type: string
+    nullable: true
+    description: Parent trip identifier
+  provider:
+    type: string
+    nullable: true
+  origin:
+    type: string
+    nullable: true
+  classifications:
+    type: array
+    items:
+      $ref: ./SwissDmoClassification.yaml
+  images:
+    type: array
+    items:
+      $ref: ./SwissDmoImage.yaml
+  geodata:
+    type: array
+    items:
+      $ref: ./SwissDmoTourGeodata.yaml

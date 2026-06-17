@@ -1,0 +1,55 @@
+type: object
+properties:
+  id:
+    type: integer
+  purchasedAt:
+    type: string
+    format: date-time
+  purchasePrice:
+    type: number
+    format: float
+    description: "Purchase price in dollars (converted from cents)"
+    example: 49.99
+  masterclass:
+    type: object
+    nullable: true
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+      slug:
+        type: string
+      type:
+        type: string
+        enum: [course, guide, training, masterclass]
+      coverImage:
+        type: string
+        nullable: true
+        description: "Cover image URL"
+      price:
+        type: number
+        format: float
+        description: "Price in dollars"
+        example: 49.99
+      isPremium:
+        type: boolean
+      isPublished:
+        type: boolean
+      createdAt:
+        type: string
+        format: date-time
+  influencer:
+    type: object
+    nullable: true
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      username:
+        type: string
+      avatarUrl:
+        type: string
+        nullable: true
+        description: "Avatar image URL"

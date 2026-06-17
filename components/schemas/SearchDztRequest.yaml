@@ -33,3 +33,11 @@ properties:
     minimum: 1
     maximum: 100
     default: 5
+  hop:
+    type: integer
+    enum:
+      - 1
+      - 2
+    default: 1
+    description: >-
+      X-HOP depth for DZT API (1 = direct properties only, 2 = one level deep including geo/name/description)

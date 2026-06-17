@@ -1,17 +1,25 @@
-post:
+put:
   tags:
-    - Profile
-  summary: Change password
-  description: Change user password
+    - Influencers
+    - Masterclasses
+  summary: Reorder masterclasses
+  description: Reorder masterclasses by providing an array of IDs in desired order
   requestBody:
     required: true
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/ChangePasswordRequest.yaml
+          type: object
+          required:
+            - ids
+          properties:
+            ids:
+              type: array
+              items:
+                type: integer
   responses:
     '200':
-      description: Password changed successfully
+      description: Masterclasses reordered
       content:
         application/json:
           schema:
@@ -21,14 +29,14 @@ post:
                 type: boolean
               message:
                 type: string
-    '400':
-      description: Current password is incorrect
+    '404':
+      description: Some masterclasses not found or do not belong to user
       content:
         application/json:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
     '422':
-      description: Validation failed (new password same as current, or other validation errors)
+      description: Validation failed
       content:
         application/json:
           schema:

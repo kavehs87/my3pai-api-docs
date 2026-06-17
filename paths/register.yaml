@@ -20,11 +20,11 @@ post:
               password_confirmation: secret123
   responses:
     '201':
-      description: Registration successful
+      description: Registration successful (email verification required)
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AuthResponse.yaml
+            $ref: ../components/schemas/RegisterResponse.yaml
     '422':
       description: Validation failed
       content:

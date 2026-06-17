@@ -1,0 +1,23 @@
+get:
+  tags:
+    - Swiss DMO
+  summary: Get classification filter metadata
+  description: |
+    Get all classification categories with their values for building filter UI.
+    Response is cached for 1 hour. Returns categories like placetype, routetype,
+    season, view, and others with human-readable value titles.
+  responses:
+    '200':
+      description: Classification categories and values
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/SwissDmoClassificationCategory.yaml

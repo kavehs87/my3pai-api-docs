@@ -1,35 +1,44 @@
 post:
   tags:
     - Authentication
-  summary: Login user
-  description: Authenticate user with email and password
+  summary: Resend verification email
+  description: |
+    Resend the email verification link to a user who has not yet verified their email.
+    
+    The verification token expires after 60 minutes by default.
   security: []
   requestBody:
     required: true
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/LoginRequest.yaml
+          $ref: ../components/schemas/ResendVerificationRequest.yaml
         examples:
           default:
             value:
               email: jane@example.com
-              password: secret123
   responses:
     '200':
-      description: Login successful
+      description: Verification email sent
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AuthResponse.yaml
-    '401':
-      description: Invalid credentials
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Verification email sent.
+    '404':
+      description: User not found
       content:
         application/json:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
-    '403':
-      description: Email not verified
+    '409':
+      description: Email address has already been verified
       content:
         application/json:
           schema:

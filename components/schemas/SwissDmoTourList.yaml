@@ -1,0 +1,95 @@
+type: object
+description: Tour list item from Swiss DMO.
+properties:
+  id:
+    type: string
+    description: Swiss DMO identifier (e.g., CH-20001)
+  name:
+    type: string
+  placeType:
+    type: string
+    enum: [tour]
+    example: tour
+  summary:
+    type: string
+    nullable: true
+  latitude:
+    type: number
+    nullable: true
+  longitude:
+    type: number
+    nullable: true
+  thumbnailUrl:
+    type: string
+    format: uri
+    nullable: true
+  website:
+    type: string
+    format: uri
+    nullable: true
+  license:
+    type: string
+    format: uri
+    nullable: true
+  accessType:
+    type: string
+    enum: [PUBLIC_DOMAIN, CC, RESERVED, UNKNOWN]
+  isReusable:
+    type: boolean
+  source:
+    type: string
+    example: swiss_dmo
+  smRoute:
+    type: string
+    nullable: true
+    description: Switzerland Mobility route designation (e.g., National)
+  smCategory:
+    type: string
+    nullable: true
+    description: SM category code
+  smUrl:
+    type: string
+    format: uri
+    nullable: true
+    description: SM detail page URL
+  smLogoUrl:
+    type: string
+    format: uri
+    nullable: true
+  distanceKm:
+    type: number
+    nullable: true
+    description: Tour distance in kilometers
+  durationMin:
+    type: integer
+    nullable: true
+    description: Duration in minutes (forward direction)
+  durationReverseMin:
+    type: integer
+    nullable: true
+    description: Duration in minutes (reverse direction)
+  ascentM:
+    type: integer
+    nullable: true
+    description: Total ascent in meters
+  descentM:
+    type: integer
+    nullable: true
+    description: Total descent in meters
+  isBarrierFree:
+    type: boolean
+    nullable: true
+  seasonText:
+    type: string
+    nullable: true
+  touristType:
+    type: string
+    nullable: true
+  classifications:
+    type: array
+    items:
+      $ref: ./SwissDmoClassification.yaml
+  images:
+    type: array
+    items:
+      $ref: ./SwissDmoImage.yaml

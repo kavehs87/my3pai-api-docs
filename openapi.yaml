@@ -93,6 +93,8 @@ tags:
     description: Shopping cart, orders, payments, and invoicing
   - name: DZT
     description: DZT Knowledge Graph (Open Data Germany) integration
+  - name: Swiss DMO
+    description: Switzerland DMO open data (mySwitzerland.com) integration
   - name: Webhooks
     description: Webhook endpoints for external service callbacks
 security:
@@ -110,6 +112,10 @@ paths:
     $ref: paths/register.yaml
   /login:
     $ref: paths/login.yaml
+  /email/verify:
+    $ref: paths/email-verify.yaml
+  /email/resend:
+    $ref: paths/email-resend.yaml
   /forgot-password:
     $ref: paths/forgot-password.yaml
   /reset-password:
@@ -286,6 +292,8 @@ paths:
     $ref: paths/media-assets_download.yaml
   /influencer/masterclasses:
     $ref: paths/influencer_masterclasses.yaml
+  /influencer/masterclasses/reorder:
+    $ref: paths/influencer_masterclasses_reorder.yaml
   /influencer/masterclasses/{id}:
     $ref: paths/influencer_masterclasses_{id}.yaml
   /influencer/masterclasses/{id}/cover:
@@ -360,12 +368,44 @@ paths:
     $ref: paths/pois_{poi}_dzt.yaml
   /pois/{poi}/dzt/search:
     $ref: paths/pois_{poi}_dzt_search.yaml
+  /pois/{poi}/dzt/search-nearby:
+    $ref: paths/pois_{poi}_dzt_search-nearby.yaml
   /pois/{poi}/dzt/attach:
     $ref: paths/pois_{poi}_dzt_attach.yaml
+  /pois/{poi}/dzt/details:
+    $ref: paths/pois_{poi}_dzt_details.yaml
   /pois/{poi}/dzt/{dztItem}:
     $ref: paths/pois_{poi}_dzt_{dztItem}.yaml
+  /dzt/nearby:
+    $ref: paths/dzt_nearby.yaml
+  /dzt/nearby-cached:
+    $ref: paths/dzt_nearby_cached.yaml
+  /dzt/cache/stats:
+    $ref: paths/dzt_cache_stats.yaml
+  /swiss-dmo/search:
+    $ref: paths/swiss-dmo_search.yaml
+  /swiss-dmo/nearby:
+    $ref: paths/swiss-dmo_nearby.yaml
+  /swiss-dmo/destinations:
+    $ref: paths/swiss-dmo_destinations.yaml
+  /swiss-dmo/destinations/{swissId}:
+    $ref: paths/swiss-dmo_destinations_{swissId}.yaml
+  /swiss-dmo/attractions:
+    $ref: paths/swiss-dmo_attractions.yaml
+  /swiss-dmo/attractions/{swissId}:
+    $ref: paths/swiss-dmo_attractions_{swissId}.yaml
+  /swiss-dmo/tours:
+    $ref: paths/swiss-dmo_tours.yaml
+  /swiss-dmo/tours/{swissId}:
+    $ref: paths/swiss-dmo_tours_{swissId}.yaml
+  /swiss-dmo/map:
+    $ref: paths/swiss-dmo_map.yaml
+  /swiss-dmo/classifications:
+    $ref: paths/swiss-dmo_classifications.yaml
   /admin/stats:
     $ref: paths/admin_stats.yaml
+  /admin/stats/trends:
+    $ref: paths/admin_stats_trends.yaml
   /admin/activity:
     $ref: paths/admin_activity.yaml
   /admin/users:

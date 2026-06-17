@@ -1,0 +1,78 @@
+get:
+  tags:
+    - Swiss DMO
+  summary: Find nearby Swiss DMO resources
+  description: |
+    Find Swiss DMO resources within a radius of given coordinates using Haversine
+    distance calculation. Results include distance from search center and are
+    sorted by distance ascending. DZT-compatible response shape.
+  parameters:
+    - name: lat
+      in: query
+      required: true
+      schema:
+        type: number
+        minimum: -90
+        maximum: 90
+      description: Center latitude
+    - name: lon
+      in: query
+      required: true
+      schema:
+        type: number
+        minimum: -180
+        maximum: 180
+      description: Center longitude
+    - name: radiusKm
+      in: query
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 500
+      description: Search radius in kilometers
+    - name: entityType
+      in: query
+      schema:
+        type: string
+        enum: [destination, attraction, tour]
+      description: Filter by resource type
+    - name: pageSize
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+  responses:
+    '200':
+      description: Nearby resources sorted by distance
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/SwissDmoNearbyResult.yaml
+                  total:
+                    type: integer
+                  centerLat:
+                    type: number
+                  centerLon:
+                    type: number
+                  radiusKm:
+                    type: integer
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

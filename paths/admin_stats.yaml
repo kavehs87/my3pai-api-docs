@@ -2,7 +2,7 @@ get:
   tags:
     - Admin
   summary: Get dashboard stats
-  description: Get dashboard statistics (admin only)
+  description: Get comprehensive dashboard statistics for the admin panel (admin only)
   responses:
     '200':
       description: Dashboard statistics
@@ -27,6 +27,137 @@ get:
                         type: integer
                       this_month:
                         type: integer
+                      influencers:
+                        type: integer
+                      new_today:
+                        type: integer
+                  revenue:
+                    type: object
+                    properties:
+                      this_month:
+                        type: object
+                        properties:
+                          total_cents:
+                            type: integer
+                          platform_fees_cents:
+                            type: integer
+                          influencer_payouts_cents:
+                            type: integer
+                      last_month:
+                        type: object
+                        properties:
+                          total_cents:
+                            type: integer
+                          platform_fees_cents:
+                            type: integer
+                          influencer_payouts_cents:
+                            type: integer
+                      all_time:
+                        type: object
+                        properties:
+                          total_cents:
+                            type: integer
+                          platform_fees_cents:
+                            type: integer
+                  orders:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      pending:
+                        type: integer
+                      completed:
+                        type: integer
+                      refunded:
+                        type: integer
+                      this_month:
+                        type: integer
+                  content:
+                    type: object
+                    properties:
+                      maps:
+                        type: object
+                        properties:
+                          total:
+                            type: integer
+                          published:
+                            type: integer
+                          for_sale:
+                            type: integer
+                      blog_posts:
+                        type: object
+                        properties:
+                          total:
+                            type: integer
+                          published:
+                            type: integer
+                          premium:
+                            type: integer
+                      podcast_episodes:
+                        type: object
+                        properties:
+                          total:
+                            type: integer
+                          published:
+                            type: integer
+                          premium:
+                            type: integer
+                      masterclasses:
+                        type: object
+                        properties:
+                          total:
+                            type: integer
+                          published:
+                            type: integer
+                          premium:
+                            type: integer
+                      media_assets:
+                        type: object
+                        properties:
+                          total:
+                            type: integer
+                          active:
+                            type: integer
+                  messages:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      unread:
+                        type: integer
+                  consultations:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      pending:
+                        type: integer
+                      confirmed:
+                        type: integer
+                      completed:
+                        type: integer
+                      cancelled:
+                        type: integer
+                  alerts:
+                    type: object
+                    properties:
+                      pending_refunds:
+                        type: object
+                        properties:
+                          count:
+                            type: integer
+                          total_amount_cents:
+                            type: integer
+                      stripe_issues:
+                        type: object
+                        properties:
+                          count:
+                            type: integer
+                      flagged_content:
+                        type: object
+                        properties:
+                          count:
+                            type: integer
     '401':
       description: Unauthorized
       content:

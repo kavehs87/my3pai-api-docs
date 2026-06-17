@@ -1,0 +1,33 @@
+get:
+  tags:
+    - Swiss DMO
+  summary: Get destination detail
+  description: |
+    Get full detail for a Swiss DMO destination by Swiss ID.
+    Includes description, classifications, and images.
+  parameters:
+    - name: swissId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Swiss DMO identifier (e.g., CH-00001)
+  responses:
+    '200':
+      description: Destination detail
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                $ref: ../components/schemas/SwissDmoDestinationDetail.yaml
+    '404':
+      description: Destination not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

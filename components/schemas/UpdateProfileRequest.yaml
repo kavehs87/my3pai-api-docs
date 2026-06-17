@@ -14,17 +14,21 @@ properties:
   firstName:
     type: string
     maxLength: 255
+    pattern: '^[\p{L}\p{M}\s\x27-]+$'
     nullable: true
-    description: Required if lastName is provided or if updating other profile fields
+    description: 'Required if lastName is provided or if updating other profile fields. Unicode letters, spaces, hyphens, apostrophes only'
   lastName:
     type: string
     maxLength: 255
+    pattern: '^[\p{L}\p{M}\s\x27-]+$'
     nullable: true
-    description: Required if firstName is provided or if updating other profile fields
+    description: 'Required if firstName is provided or if updating other profile fields. Unicode letters, spaces, hyphens, apostrophes only'
   username:
     type: string
     maxLength: 255
+    pattern: '^[a-z0-9_-]+$'
     nullable: true
+    description: 'Lowercase letters, digits, underscores, hyphens only'
   bio:
     type: string
     maxLength: 1000

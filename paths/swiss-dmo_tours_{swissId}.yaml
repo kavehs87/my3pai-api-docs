@@ -1,0 +1,34 @@
+get:
+  tags:
+    - Swiss DMO
+  summary: Get tour detail
+  description: |
+    Get full detail for a Swiss DMO tour by Swiss ID.
+    Includes description, route specs, itinerary, classifications, images,
+    and geodata segments.
+  parameters:
+    - name: swissId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Swiss DMO identifier (e.g., CH-20001)
+  responses:
+    '200':
+      description: Tour detail
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                $ref: ../components/schemas/SwissDmoTourDetail.yaml
+    '404':
+      description: Tour not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

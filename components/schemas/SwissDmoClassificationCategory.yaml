@@ -1,0 +1,22 @@
+type: object
+description: Classification category with values for filter UI metadata.
+properties:
+  id:
+    type: integer
+  category:
+    type: string
+    description: Category identifier (e.g., placetype, routetype, season)
+  description:
+    type: string
+    nullable: true
+  values:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        title:
+          type: string

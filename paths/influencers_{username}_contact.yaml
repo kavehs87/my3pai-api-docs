@@ -42,6 +42,14 @@ post:
               minLength: 10
               maxLength: 5000
               example: "Hello, I have a question about your courses..."
+            website:
+              type: string
+              maxLength: 0
+              nullable: true
+              description: >
+                Honeypot spam prevention field. Frontend should render this as a hidden input
+                with CSS `display: none`. Bots that fill this field will cause a 422 validation error.
+                Leave empty or omit for legitimate submissions.
   responses:
     '201':
       description: Contact message sent successfully
@@ -87,4 +95,3 @@ post:
         application/json:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
-

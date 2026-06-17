@@ -1,9 +1,8 @@
 type: object
 description: |
-  A lightweight V2 search result from the DZT Knowledge Graph.
-  V2 search returns minimal data (URI, entity type, compliance).
-  Full details (title, description, media) require a separate GET call
-  to the DZT API endpoint with the entity ID.
+  A search result from the DZT Knowledge Graph.
+  For nearby search, includes coordinates and distance.
+  For keyword search, title/description/locality may be null — fetch entity details for full data.
 properties:
   dztUri:
     type: string
@@ -12,11 +11,11 @@ properties:
   title:
     type: string
     nullable: true
-    description: Null in V2 results — fetch entity details for full title
+    description: Entity name
   description:
     type: string
     nullable: true
-    description: Null in V2 results — fetch entity details for full description
+    description: Entity description
   entityType:
     type: string
     enum:
@@ -27,16 +26,16 @@ properties:
   locality:
     type: string
     nullable: true
-    description: Null in V2 results — fetch entity details for locality
+    description: City or locality name
   region:
     type: string
     nullable: true
-    description: Null in V2 results — fetch entity details for region
+    description: Region or federal state
   thumbnailUrl:
     type: string
     format: uri
     nullable: true
-    description: Null in V2 results — fetch entity details for thumbnail
+    description: Thumbnail image URL
   originalUrl:
     type: string
     format: uri
@@ -44,7 +43,7 @@ properties:
   license:
     type: string
     nullable: true
-    description: Null in V2 results — fetch entity details for license
+    description: License URL
   accessType:
     type: string
     enum:
@@ -52,11 +51,23 @@ properties:
       - CC
       - RESERVED
       - UNKNOWN
-    description: UNKNOWN in V2 results — fetch entity details for rights
+    description: Access type classification
   isReusable:
     type: boolean
-    description: false in V2 results — fetch entity details for reuse status
+    description: Whether the entity can be reused
   compliesWith:
     type: string
     nullable: true
     description: Domain Specification (DS) URI the entity complies with
+  lat:
+    type: number
+    nullable: true
+    description: Latitude (present for nearby search results)
+  lon:
+    type: number
+    nullable: true
+    description: Longitude (present for nearby search results)
+  distanceKm:
+    type: number
+    nullable: true
+    description: Distance in kilometers from search center (nearby search only)

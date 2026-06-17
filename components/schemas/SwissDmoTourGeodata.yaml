@@ -1,0 +1,14 @@
+type: object
+description: Tour geodata segment from Swiss DMO.
+properties:
+  id:
+    type: integer
+  geometry:
+    type: object
+    description: GeoJSON geometry object
+  properties:
+    type: object
+    description: GeoJSON properties
+  sortOrder:
+    type: integer
+    description: Segment order within the tour

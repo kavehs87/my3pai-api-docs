@@ -1,0 +1,14 @@
+type: object
+properties:
+  success:
+    type: boolean
+    example: true
+  user:
+    $ref: ./UserBasic.yaml
+  message:
+    type: string
+    example: Registration successful. Please check your email to verify your account.
+  email_not_verified:
+    type: boolean
+    example: true
+    description: Indicates that the user must verify their email before logging in

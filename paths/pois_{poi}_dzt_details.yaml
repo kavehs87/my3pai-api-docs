@@ -1,0 +1,77 @@
+post:
+  tags:
+    - POIs
+    - DZT
+  summary: Batch fetch DZT entity details
+  description: |
+    Fetch full details for multiple DZT entities in a single request.
+    Each entity is fetched from the DZT Knowledge Graph API and normalized
+    with rights information.
+
+    Requires authentication and ownership of the POI.
+  parameters:
+    - name: poi
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The POI ID (used for auth context)
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - uris
+          properties:
+            uris:
+              type: array
+              minItems: 1
+              maxItems: 20
+              items:
+                type: string
+                maxLength: 1000
+              description: Array of DZT entity URIs to fetch details for
+            language:
+              type: string
+              maxLength: 10
+              default: en
+              description: Preferred language for localized fields
+  responses:
+    '200':
+      description: Entity details
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  details:
+                    type: array
+                    items:
+                      oneOf:
+                        - $ref: ../components/schemas/PoiDztSearchResult.yaml
+                        - type: object
+                          properties:
+                            dztUri:
+                              type: string
+                            error:
+                              type: string
+    '403':
+      description: Forbidden - not owner
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

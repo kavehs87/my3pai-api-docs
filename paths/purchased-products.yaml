@@ -24,6 +24,7 @@ get:
                         - $ref: ../components/schemas/MapPurchase.yaml
                         - $ref: ../components/schemas/BlogPostPurchase.yaml
                         - $ref: ../components/schemas/PodcastEpisodePurchase.yaml
+                        - $ref: ../components/schemas/MasterclassPurchase.yaml
                         - $ref: ../components/schemas/ConsultationBooking.yaml
     '401':
       description: Unauthenticated

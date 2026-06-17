@@ -3,7 +3,21 @@ get:
     - Influencers
     - Masterclasses
   summary: Get own masterclasses (includes drafts)
-  description: Get all masterclasses for authenticated user, including unpublished drafts
+  description: Get all masterclasses for authenticated user, including unpublished drafts. Supports pagination with `page` and `per_page` query parameters (max 50 per page).
+  parameters:
+    - in: query
+      name: page
+      schema:
+        type: integer
+        default: 1
+      description: Page number
+    - in: query
+      name: per_page
+      schema:
+        type: integer
+        default: 10
+        maximum: 50
+      description: Items per page (max 50)
   responses:
     '200':
       description: List of masterclasses
@@ -18,6 +32,8 @@ get:
                 type: array
                 items:
                   $ref: ../components/schemas/MasterclassFull.yaml
+              meta:
+                $ref: ../components/schemas/PaginationMeta.yaml
 post:
   tags:
     - Influencers

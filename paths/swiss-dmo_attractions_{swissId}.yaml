@@ -1,0 +1,33 @@
+get:
+  tags:
+    - Swiss DMO
+  summary: Get attraction detail
+  description: |
+    Get full detail for a Swiss DMO attraction by Swiss ID.
+    Includes description, pricing, contact info, classifications, and images.
+  parameters:
+    - name: swissId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Swiss DMO identifier (e.g., CH-10001)
+  responses:
+    '200':
+      description: Attraction detail
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                $ref: ../components/schemas/SwissDmoAttractionDetail.yaml
+    '404':
+      description: Attraction not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

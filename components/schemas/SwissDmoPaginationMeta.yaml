@@ -1,0 +1,16 @@
+type: object
+description: Pagination metadata for Swiss DMO list endpoints.
+properties:
+  currentPage:
+    type: integer
+    example: 1
+  perPage:
+    type: integer
+    example: 20
+  total:
+    type: integer
+    description: Total number of items across all pages
+  lastPage:
+    type: integer
+  hasMorePages:
+    type: boolean

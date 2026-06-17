@@ -1,0 +1,83 @@
+get:
+  tags:
+    - Swiss DMO
+  summary: List attractions
+  description: |
+    List Swiss DMO attractions with search, classification, pricing, and
+    seasonal filtering. Returns compact list items with coordinates and
+    classification data.
+  parameters:
+    - name: q
+      in: query
+      schema:
+        type: string
+        maxLength: 200
+      description: Search by name or abstract
+    - name: classifications
+      in: query
+      schema:
+        type: array
+        items:
+          type: integer
+      style: form
+      explode: true
+      description: Filter by classification value IDs
+    - name: isFree
+      in: query
+      schema:
+        type: boolean
+      description: Filter by free admission
+    - name: season
+      in: query
+      schema:
+        type: string
+        maxLength: 50
+      description: Filter by recommended season
+    - name: sort
+      in: query
+      schema:
+        type: string
+        enum: [name, cached_at, latitude, longitude]
+        default: name
+    - name: order
+      in: query
+      schema:
+        type: string
+        enum: [asc, desc]
+        default: asc
+    - name: per_page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 50
+        default: 20
+    - name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+  responses:
+    '200':
+      description: Paginated attractions
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/SwissDmoAttractionList.yaml
+              meta:
+                $ref: ../components/schemas/SwissDmoPaginationMeta.yaml
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

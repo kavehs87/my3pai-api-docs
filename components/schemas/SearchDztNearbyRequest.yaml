@@ -1,0 +1,49 @@
+type: object
+description: Request body for searching the DZT Knowledge Graph by geographic proximity.
+required:
+  - lat
+  - lon
+  - radiusKm
+properties:
+  lat:
+    type: number
+    minimum: -90
+    maximum: 90
+    description: Latitude of the center point
+  lon:
+    type: number
+    minimum: -180
+    maximum: 180
+    description: Longitude of the center point
+  radiusKm:
+    type: integer
+    minimum: 1
+    maximum: 200
+    description: Search radius in kilometers from the center point
+  entityType:
+    type: string
+    enum:
+      - event
+      - poi
+      - trail
+      - region
+    description: >-
+      Filter by entity type (default: all tourism entities)
+  page:
+    type: integer
+    minimum: 1
+    maximum: 100
+    default: 1
+  pageSize:
+    type: integer
+    minimum: 1
+    maximum: 100
+    default: 5
+  hop:
+    type: integer
+    enum:
+      - 1
+      - 2
+    default: 1
+    description: >-
+      X-HOP depth for DZT API (1 = direct properties only, 2 = one level deep including geo/name/description)

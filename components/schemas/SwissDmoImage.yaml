@@ -1,0 +1,34 @@
+type: object
+description: Image metadata from Swiss DMO.
+properties:
+  id:
+    type: integer
+  name:
+    type: string
+    nullable: true
+  url:
+    type: string
+    format: uri
+    description: Image URL
+  keywords:
+    type: string
+    nullable: true
+  copyrightHolder:
+    type: string
+    nullable: true
+  publisher:
+    type: string
+    nullable: true
+  width:
+    type: integer
+    nullable: true
+  height:
+    type: integer
+    nullable: true
+  encodingFormat:
+    type: string
+    nullable: true
+    description: MIME type (e.g., image/jpeg)
+  sortOrder:
+    type: integer
+    nullable: true
