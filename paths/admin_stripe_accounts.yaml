@@ -1,0 +1,95 @@
+get:
+  tags:
+    - Admin
+  summary: List Stripe-connected accounts
+  description: Get paginated list of users with Stripe Connect accounts (admin only)
+  parameters:
+    - name: per_page
+      in: query
+      schema:
+        type: integer
+        default: 15
+        minimum: 1
+    - name: status
+      in: query
+      schema:
+        type: string
+        enum:
+          - active
+          - pending
+          - restricted
+    - name: sort
+      in: query
+      schema:
+        type: string
+        enum:
+          - name
+          - email
+          - stripe_account_status
+          - stripe_onboarding_completed_at
+          - created_at
+        default: created_at
+    - name: order
+      in: query
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+        default: desc
+  responses:
+    '200':
+      description: Paginated list of Stripe accounts
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  accounts:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/AdminStripeAccount.yaml
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                      last_page:
+                        type: integer
+                      per_page:
+                        type: integer
+                      total:
+                        type: integer
+                      filters:
+                        type: object
+                        properties:
+                          status:
+                            type: string
+                            nullable: true
+                          sort:
+                            type: string
+                          order:
+                            type: string
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

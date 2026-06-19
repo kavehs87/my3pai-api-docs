@@ -29,6 +29,35 @@ get:
         minimum: 1
         maximum: 100
         default: 15
+    - name: date_from
+      in: query
+      description: Filter users created from this date (inclusive)
+      schema:
+        type: string
+        format: date
+        pattern: ^\d{4}-\d{2}-\d{2}$
+    - name: date_to
+      in: query
+      description: Filter users created up to this date (inclusive)
+      schema:
+        type: string
+        format: date
+        pattern: ^\d{4}-\d{2}-\d{2}$
+    - name: stripe_status
+      in: query
+      description: Filter by Stripe account status
+      schema:
+        type: string
+        enum:
+          - active
+          - restricted
+          - pending
+          - none
+    - name: has_content
+      in: query
+      description: Filter by published content (1 = has, 0 = none)
+      schema:
+        type: boolean
   responses:
     '200':
       description: List of users

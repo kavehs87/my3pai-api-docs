@@ -1,0 +1,68 @@
+post:
+  tags:
+    - Admin
+  summary: Change user role
+  description: Change a user's role (admin only). Cannot remove the last admin.
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - role
+          properties:
+            role:
+              type: string
+              enum:
+                - user
+                - influencer
+                - admin
+  responses:
+    '200':
+      description: User role updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  user:
+                    $ref: ../components/schemas/AdminUser.yaml
+              message:
+                type: string
+                example: User role updated to influencer
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: User not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed or cannot remove last admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

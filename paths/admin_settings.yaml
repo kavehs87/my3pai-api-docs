@@ -1,0 +1,136 @@
+get:
+  tags:
+    - Admin
+  summary: Get all platform settings
+  description: Fetch all platform-wide settings as a flat key-value object (admin only)
+  responses:
+    '200':
+      description: All platform settings
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/AdminSettings.yaml
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+put:
+  tags:
+    - Admin
+  summary: Update platform settings
+  description: Update one or more settings. Only provided keys are updated (admin only)
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            platform_name:
+              type: string
+              maxLength: 255
+            support_email:
+              type: string
+              format: email
+            default_currency:
+              type: string
+              enum:
+                - usd
+                - eur
+                - gbp
+            timezone:
+              type: string
+              example: America/New_York
+            platform_fee_percentage:
+              type: integer
+              minimum: 0
+              maximum: 100
+            minimum_payout_threshold_cents:
+              type: integer
+              minimum: 0
+              maximum: 1000000
+            free_order_threshold_cents:
+              type: integer
+              minimum: 0
+              maximum: 1000000
+            auto_flag_keywords:
+              type: string
+              maxLength: 1000
+            max_upload_size_mb:
+              type: integer
+              minimum: 1
+              maximum: 500
+            allowed_file_types:
+              type: string
+              maxLength: 500
+            feature_maps_sales:
+              type: boolean
+            feature_consultations:
+              type: boolean
+            feature_premium_blog:
+              type: boolean
+            feature_premium_podcast:
+              type: boolean
+            feature_masterclasses:
+              type: boolean
+            feature_media_assets_marketplace:
+              type: boolean
+            password_min_length:
+              type: integer
+              minimum: 4
+              maximum: 128
+            password_require_complexity:
+              type: boolean
+            session_timeout_minutes:
+              type: integer
+              minimum: 5
+              maximum: 1440
+            rate_limit_overrides:
+              type: object
+              additionalProperties: true
+  responses:
+    '200':
+      description: Settings updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+                example: Settings updated
+              data:
+                $ref: ../components/schemas/AdminSettings.yaml
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

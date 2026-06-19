@@ -1,0 +1,44 @@
+get:
+  tags:
+    - Admin
+  summary: Export platform earnings as CSV
+  description: Export platform earnings to CSV with optional filters (admin only)
+  parameters:
+    - name: influencer_id
+      in: query
+      schema:
+        type: integer
+    - name: from_date
+      in: query
+      schema:
+        type: string
+        format: date
+    - name: to_date
+      in: query
+      schema:
+        type: string
+        format: date
+    - name: status
+      in: query
+      schema:
+        type: string
+  responses:
+    '200':
+      description: CSV file download
+      content:
+        text/csv:
+          schema:
+            type: string
+            format: binary
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

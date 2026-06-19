@@ -1,0 +1,48 @@
+type: object
+properties:
+  platform_name:
+    type: string
+  support_email:
+    type: string
+    format: email
+  default_currency:
+    type: string
+    enum:
+      - usd
+      - eur
+      - gbp
+  timezone:
+    type: string
+  platform_fee_percentage:
+    type: integer
+  minimum_payout_threshold_cents:
+    type: integer
+  free_order_threshold_cents:
+    type: integer
+  auto_flag_keywords:
+    type: string
+  max_upload_size_mb:
+    type: integer
+  allowed_file_types:
+    type: string
+  feature_maps_sales:
+    type: boolean
+  feature_consultations:
+    type: boolean
+  feature_premium_blog:
+    type: boolean
+  feature_premium_podcast:
+    type: boolean
+  feature_masterclasses:
+    type: boolean
+  feature_media_assets_marketplace:
+    type: boolean
+  password_min_length:
+    type: integer
+  password_require_complexity:
+    type: boolean
+  session_timeout_minutes:
+    type: integer
+  rate_limit_overrides:
+    type: object
+    additionalProperties: true

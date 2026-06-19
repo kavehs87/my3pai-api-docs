@@ -1,0 +1,42 @@
+type: object
+properties:
+  id:
+    type: integer
+  consultation_id:
+    type: integer
+  customer_id:
+    type: integer
+  influencer_id:
+    type: integer
+  status:
+    type: string
+    enum:
+      - pending
+      - confirmed
+      - completed
+      - cancelled
+  payment_status:
+    type: string
+    enum:
+      - pending
+      - paid
+      - failed
+      - refunded
+  scheduled_at:
+    type: string
+    format: date-time
+  amount_cents:
+    type: integer
+  platform_fee_cents:
+    type: integer
+  influencer_payout_cents:
+    type: integer
+  created_at:
+    type: string
+    format: date-time
+  customer:
+    $ref: ./AdminUser.yaml
+  influencer:
+    $ref: ./AdminUser.yaml
+  consultation:
+    $ref: ./AdminConsultation.yaml

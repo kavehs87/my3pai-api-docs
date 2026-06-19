@@ -1,0 +1,135 @@
+get:
+  tags:
+    - Admin
+  summary: Search all content
+  description: Search across users, influencers, orders, maps, blog posts, and contact messages. Returns up to N results per category.
+  operationId: adminSearch
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: q
+      in: query
+      required: true
+      description: Search query (minimum 2 characters)
+      schema:
+        type: string
+        minLength: 2
+        maxLength: 255
+    - name: per_page
+      in: query
+      required: false
+      description: Maximum results per category (default: 5, max: 20)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 20
+        default: 5
+  responses:
+    '200':
+      description: Search results
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        email:
+                          type: string
+                        type:
+                          type: string
+                          example: user
+                  influencers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        handle:
+                          type: string
+                          nullable: true
+                        type:
+                          type: string
+                          example: influencer
+                  orders:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        order_number:
+                          type: string
+                        customer_name:
+                          type: string
+                        total_cents:
+                          type: integer
+                        type:
+                          type: string
+                          example: order
+                  maps:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        title:
+                          type: string
+                        creator_name:
+                          type: string
+                        type:
+                          type: string
+                          example: map
+                  blog_posts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        title:
+                          type: string
+                        author_name:
+                          type: string
+                        type:
+                          type: string
+                          example: blog_post
+                  messages:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        email:
+                          type: string
+                        subject:
+                          type: string
+                        type:
+                          type: string
+                          example: message
+    '401':
+      description: Unauthorized
+    '403':
+      description: Forbidden (not admin)
+    '422':
+      description: Validation error

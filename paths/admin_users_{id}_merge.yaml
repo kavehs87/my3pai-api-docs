@@ -1,0 +1,74 @@
+post:
+  tags:
+    - Admin
+  summary: Merge duplicate accounts
+  description: Merge a source user's content into a target user. Source user is deleted after merge (admin only).
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - source_user_id
+          properties:
+            source_user_id:
+              type: integer
+              description: ID of the user to merge into the target user
+  responses:
+    '200':
+      description: Users merged successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  user:
+                    $ref: ../components/schemas/AdminUser.yaml
+                  merged:
+                    type: object
+                    properties:
+                      content_items:
+                        type: integer
+                      orders:
+                        type: integer
+                      messages:
+                        type: integer
+              message:
+                type: string
+                example: User #42 merged into #12
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: User not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

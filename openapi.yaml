@@ -464,6 +464,8 @@ paths:
     $ref: paths/admin_stats_trends.yaml
   /admin/activity:
     $ref: paths/admin_activity.yaml
+  /admin/search:
+    $ref: paths/admin_search.yaml
   /admin/users:
     $ref: paths/admin_users.yaml
   /admin/users/{id}:
@@ -482,8 +484,14 @@ paths:
     $ref: paths/admin_users_{id}_content.yaml
   /admin/users/{id}/impersonate:
     $ref: paths/admin_users_{id}_impersonate.yaml
+  /admin/users/{id}/role:
+    $ref: paths/admin_users_{id}_role.yaml
+  /admin/users/{id}/merge:
+    $ref: paths/admin_users_{id}_merge.yaml
   /admin/orders:
     $ref: paths/admin_orders.yaml
+  /admin/orders/export:
+    $ref: paths/admin_orders_export.yaml
   /admin/orders/{id}:
     $ref: paths/admin_orders_{id}.yaml
   /admin/invoices:
@@ -506,8 +514,20 @@ paths:
     $ref: paths/admin_influencers_{id}_feature.yaml
   /admin/influencers/{id}/disable-creator-tools:
     $ref: paths/admin_influencers_{id}_disable-creator-tools.yaml
+  /admin/contact-messages:
+    $ref: paths/admin_contact-messages.yaml
+  /admin/contact-messages/{id}:
+    $ref: paths/admin_contact-messages_{id}.yaml
+  /admin/contact-messages/{id}/mark-read:
+    $ref: paths/admin_contact-messages_{id}_mark-read.yaml
+  /admin/contact-messages/{id}/mark-unread:
+    $ref: paths/admin_contact-messages_{id}_mark-unread.yaml
+  /admin/contact-messages/{id}/delete:
+    $ref: paths/admin_contact-messages_{id}_delete.yaml
   /admin/platform/earnings:
     $ref: paths/admin_platform_earnings.yaml
+  /admin/platform/earnings/export:
+    $ref: paths/admin_platform_earnings_export.yaml
   /admin/platform/earnings/summary:
     $ref: paths/admin_platform_earnings_summary.yaml
   /admin/payments:
@@ -520,6 +540,16 @@ paths:
     $ref: paths/admin_payouts_{id}.yaml
   /admin/payouts/{id}/retry:
     $ref: paths/admin_payouts_{id}_retry.yaml
+  /admin/consultations/bookings:
+    $ref: paths/admin_consultations_bookings.yaml
+  /admin/consultations/bookings/{id}:
+    $ref: paths/admin_consultations_bookings_{id}.yaml
+  /admin/stripe/accounts:
+    $ref: paths/admin_stripe_accounts.yaml
+  /admin/stripe/accounts/{id}:
+    $ref: paths/admin_stripe_accounts_{id}.yaml
+  /admin/settings:
+    $ref: paths/admin_settings.yaml
   /ai/chat:
     $ref: paths/ai_chat.yaml
   /ai/models:

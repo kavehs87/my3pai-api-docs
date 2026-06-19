@@ -1,53 +1,62 @@
 get:
   tags:
     - Admin
-  summary: Get recent activity
-  description: Get recent activity feed for the admin dashboard (admin only)
+  summary: List consultation bookings
+  description: Get paginated list of consultation bookings with optional filters (admin only)
   parameters:
     - name: per_page
       in: query
-      required: false
       schema:
         type: integer
+        default: 15
         minimum: 1
-        maximum: 50
-        default: 10
-      description: Items per page (capped at 50)
-    - name: admin_id
+    - name: status
       in: query
-      required: false
+      schema:
+        type: string
+        enum:
+          - pending
+          - confirmed
+          - completed
+          - cancelled
+    - name: influencer_id
+      in: query
       schema:
         type: integer
-      description: Filter by acting admin user ID
-    - name: action
+    - name: user_id
       in: query
-      required: false
       schema:
-        type: string
-      description: Filter by action type (e.g. created, updated, deleted, refunded)
-    - name: entity_type
-      in: query
-      required: false
-      schema:
-        type: string
-      description: Filter by entity type (e.g. user, order, map, blog_post)
+        type: integer
     - name: date_from
       in: query
-      required: false
       schema:
         type: string
         format: date
-      description: Activity from date (inclusive)
     - name: date_to
       in: query
-      required: false
       schema:
         type: string
         format: date
-      description: Activity up to date (inclusive)
+    - name: sort
+      in: query
+      schema:
+        type: string
+        enum:
+          - scheduled_at
+          - status
+          - created_at
+        default: created_at
+    - name: order
+      in: query
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+        default: desc
   responses:
     '200':
-      description: Activity feed
+      description: Paginated list of consultation bookings
       content:
         application/json:
           schema:
@@ -58,22 +67,21 @@ get:
               data:
                 type: object
                 properties:
-                  activities:
+                  bookings:
                     type: array
                     items:
-                      $ref: ../components/schemas/AdminActivityItem.yaml
+                      $ref: ../components/schemas/AdminConsultationBooking.yaml
                   meta:
                     type: object
                     properties:
-                      total:
+                      current_page:
                         type: integer
-                        description: Total number of activities
+                      last_page:
+                        type: integer
                       per_page:
                         type: integer
-                        description: Items per page
-                      has_more:
-                        type: boolean
-                        description: Whether there are more activities beyond this page
+                      total:
+                        type: integer
     '401':
       description: Unauthorized
       content:
@@ -86,3 +94,9 @@ get:
         application/json:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
