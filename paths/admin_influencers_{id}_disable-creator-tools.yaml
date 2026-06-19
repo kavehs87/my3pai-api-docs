@@ -1,0 +1,95 @@
+post:
+  tags:
+    - Admin
+  summary: Disable or re-enable creator tools
+  description: Disable all creator tools for an influencer (saves original toggle states, sets all to false) or re-enable them (restores original toggle states).
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - disabled
+          properties:
+            disabled:
+              type: boolean
+              description: true to disable, false to re-enable
+            reason:
+              type: string
+              maxLength: 500
+              description: Required when disabled is true
+  responses:
+    '200':
+      description: Creator tools status updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  influencer:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      influencer_settings:
+                        type: object
+                        properties:
+                          maps_enabled:
+                            type: boolean
+                          blog_enabled:
+                            type: boolean
+                          podcast_enabled:
+                            type: boolean
+                          masterclass_enabled:
+                            type: boolean
+                          consultation_enabled:
+                            type: boolean
+                          media_assets_enabled:
+                            type: boolean
+                          creator_profile_enabled:
+                            type: boolean
+                          social_enabled:
+                            type: boolean
+                          social_links_enabled:
+                            type: boolean
+                          creator_tools_disabled:
+                            type: boolean
+                          creator_tools_disabled_reason:
+                            type: string
+                            nullable: true
+                          creator_tools_disabled_at:
+                            type: string
+                            format: date-time
+                            nullable: true
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Influencer not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

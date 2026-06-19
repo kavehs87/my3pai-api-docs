@@ -1,0 +1,24 @@
+allOf:
+  - $ref: ../schemas/AdminInvoice.yaml
+  - type: object
+    properties:
+      amount_due_cents:
+        type: integer
+      notes:
+        type: string
+        nullable: true
+      cancelled_at:
+        type: string
+        format: date-time
+        nullable: true
+      timeline:
+        type: array
+        items:
+          type: object
+          properties:
+            event:
+              type: string
+              enum: [issued, paid, cancelled]
+            timestamp:
+              type: string
+              format: date-time

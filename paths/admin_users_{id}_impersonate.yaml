@@ -1,0 +1,63 @@
+post:
+  tags:
+    - Admin
+  summary: Impersonate a user
+  description: Generate a temporary Sanctum token valid for 60 minutes to act as another user (admin only). Cannot impersonate admins or banned users.
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Impersonation token created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: Sanctum API token for the impersonated user
+                  expires_in_minutes:
+                    type: integer
+                    example: 60
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      email:
+                        type: string
+    '400':
+      description: Cannot impersonate a banned user
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin or cannot impersonate admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: User not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

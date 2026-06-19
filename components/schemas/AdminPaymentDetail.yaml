@@ -1,0 +1,37 @@
+allOf:
+  - $ref: './AdminPayment.yaml'
+  - type: object
+    properties:
+      refunds:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+            amount_cents:
+              type: integer
+            reason:
+              type: string
+            status:
+              type: string
+              enum: [pending, processed, failed]
+            processed_at:
+              type: string
+              format: date-time
+              nullable: true
+      platform_fee_breakdown:
+        type: object
+        properties:
+          commission_cents:
+            type: integer
+          stripe_fee_cents:
+            type: integer
+          total_fee_cents:
+            type: integer
+      stripe_charge_id:
+        type: string
+        nullable: true
+      stripe_balance_transaction_id:
+        type: string
+        nullable: true

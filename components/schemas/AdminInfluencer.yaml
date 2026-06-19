@@ -1,0 +1,60 @@
+type: object
+properties:
+  id:
+    type: integer
+  name:
+    type: string
+  username:
+    type: string
+  email:
+    type: string
+  avatar_url:
+    type: string
+  bio:
+    type: string
+    nullable: true
+  location:
+    type: string
+    nullable: true
+  profile_theme:
+    type: string
+    nullable: true
+  verified:
+    type: boolean
+  created_at:
+    type: string
+    format: date-time
+  stripe_account_status:
+    type: string
+    nullable: true
+  stripe_charges_enabled:
+    type: boolean
+  stripe_payouts_enabled:
+    type: boolean
+  content_counts:
+    type: object
+    properties:
+      maps:
+        type: integer
+      blog_posts:
+        type: integer
+      podcast_episodes:
+        type: integer
+      masterclasses:
+        type: integer
+      media_assets:
+        type: integer
+  total_revenue_cents:
+    type: integer
+  total_payouts_cents:
+    type: integer
+  pending_payout_cents:
+    type: integer
+  is_featured:
+    type: boolean
+  consultation_active:
+    type: boolean
+  total_bookings:
+    type: integer
+  creator_tools_disabled:
+    type: boolean

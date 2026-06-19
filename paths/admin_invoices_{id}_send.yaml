@@ -1,0 +1,71 @@
+post:
+  tags:
+    - Admin
+  summary: Send invoice reminder
+  description: Send an invoice reminder email to the customer (admin only)
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: false
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            to_email:
+              type: string
+              format: email
+            cc:
+              type: array
+              items:
+                type: string
+                format: email
+            message:
+              type: string
+              maxLength: 1000
+  responses:
+    '200':
+      description: Invoice reminder sent
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+    '400':
+      description: Cannot send reminder for paid invoice
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Invoice not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

@@ -1,0 +1,36 @@
+type: object
+properties:
+  podcast_episode:
+    $ref: ./AdminPodcastEpisode.yaml
+  description:
+    type: string
+    nullable: true
+  audio_url:
+    type: string
+    nullable: true
+  tags:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+  sales:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+        buyer_name:
+          type: string
+        buyer_email:
+          type: string
+          nullable: true
+        amount_cents:
+          type: integer
+        purchased_at:
+          type: string
+          format: date-time

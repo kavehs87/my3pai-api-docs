@@ -1,0 +1,53 @@
+type: object
+properties:
+  id:
+    type: integer
+  order_id:
+    type: integer
+  order_number:
+    type: string
+  customer:
+    type: object
+    nullable: true
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      email:
+        type: string
+  influencer:
+    type: object
+    nullable: true
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      username:
+        type: string
+  amount_cents:
+    type: integer
+  platform_fee_cents:
+    type: integer
+  influencer_payout_cents:
+    type: integer
+  method:
+    type: string
+    enum: [stripe, bank_transfer, other]
+  status:
+    type: string
+    enum: [succeeded, failed, refunded, pending]
+  stripe_payment_intent_id:
+    type: string
+    nullable: true
+  processed_at:
+    type: string
+    format: date-time
+    nullable: true
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time

@@ -1,0 +1,89 @@
+allOf:
+  - $ref: ../schemas/AdminOrder.yaml
+  - type: object
+    properties:
+      billing:
+        type: object
+        properties:
+          email:
+            type: string
+            nullable: true
+          name:
+            type: string
+            nullable: true
+          address:
+            type: object
+            nullable: true
+      subtotal_cents:
+        type: integer
+      tax_amount_cents:
+        type: integer
+      discount_amount_cents:
+        type: integer
+      payments:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+            type:
+              type: string
+            amount_cents:
+              type: integer
+            status:
+              type: string
+            payment_method:
+              type: string
+              nullable: true
+            processed_at:
+              type: string
+              format: date-time
+              nullable: true
+      refunds:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+            amount_cents:
+              type: integer
+            reason:
+              type: string
+              nullable: true
+            status:
+              type: string
+            processed_at:
+              type: string
+              format: date-time
+              nullable: true
+      invoice:
+        type: object
+        nullable: true
+        properties:
+          id:
+            type: integer
+          invoice_number:
+            type: string
+          total_amount_cents:
+            type: integer
+          status:
+            type: string
+          pdf_url:
+            type: string
+            nullable: true
+      timeline:
+        type: object
+        properties:
+          created_at:
+            type: string
+            format: date-time
+          paid_at:
+            type: string
+            format: date-time
+            nullable: true
+          cancelled_at:
+            type: string
+            format: date-time
+            nullable: true

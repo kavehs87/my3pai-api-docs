@@ -29,11 +29,22 @@ post:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
     '403':
-      description: Email not verified
+      description: Email not verified or account suspended
       content:
         application/json:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
+        examples:
+          email_not_verified:
+            summary: Email not verified
+            value:
+              success: false
+              error: Please verify your email before logging in.
+          account_suspended:
+            summary: Account suspended
+            value:
+              success: false
+              error: "Your account has been suspended. Reason: Violation of terms. Suspended until: 2025-08-01"
     '422':
       description: Validation failed
       content:

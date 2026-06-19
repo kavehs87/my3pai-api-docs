@@ -1,0 +1,25 @@
+type: object
+properties:
+  media_asset:
+    $ref: ./AdminMediaAsset.yaml
+  description:
+    type: string
+    nullable: true
+  file_url:
+    type: string
+    nullable: true
+  sales:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+        buyer_name:
+          type: string
+        buyer_email:
+          type: string
+          nullable: true
+        purchased_at:
+          type: string
+          format: date-time

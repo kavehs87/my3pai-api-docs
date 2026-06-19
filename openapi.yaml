@@ -402,6 +402,50 @@ paths:
     $ref: paths/swiss-dmo_map.yaml
   /swiss-dmo/classifications:
     $ref: paths/swiss-dmo_classifications.yaml
+  /admin/social-posts:
+    $ref: paths/admin_social_posts.yaml
+  /admin/social-posts/{id}:
+    $ref: paths/admin_social_posts_{id}_delete.yaml
+  /admin/media-assets:
+    $ref: paths/admin_media_assets.yaml
+  /admin/media-assets/{id}:
+    $ref: paths/admin_media_assets_{id}.yaml
+  /admin/media-assets/{id}/activate:
+    $ref: paths/admin_media_assets_{id}_activate.yaml
+  /admin/media-assets/{id}/deactivate:
+    $ref: paths/admin_media_assets_{id}_deactivate.yaml
+  /admin/masterclasses:
+    $ref: paths/admin_masterclasses.yaml
+  /admin/masterclasses/{id}:
+    $ref: paths/admin_masterclasses_{id}.yaml
+  /admin/masterclasses/{id}/publish:
+    $ref: paths/admin_masterclasses_{id}_publish.yaml
+  /admin/masterclasses/{id}/unpublish:
+    $ref: paths/admin_masterclasses_{id}_unpublish.yaml
+  /admin/podcast-episodes:
+    $ref: paths/admin_podcast_episodes.yaml
+  /admin/podcast-episodes/{id}:
+    $ref: paths/admin_podcast_episodes_{id}.yaml
+  /admin/podcast-episodes/{id}/publish:
+    $ref: paths/admin_podcast_episodes_{id}_publish.yaml
+  /admin/podcast-episodes/{id}/unpublish:
+    $ref: paths/admin_podcast_episodes_{id}_unpublish.yaml
+  /admin/blog-posts:
+    $ref: paths/admin_blog_posts.yaml
+  /admin/blog-posts/{id}:
+    $ref: paths/admin_blog_posts_{id}.yaml
+  /admin/blog-posts/{id}/publish:
+    $ref: paths/admin_blog_posts_{id}_publish.yaml
+  /admin/blog-posts/{id}/unpublish:
+    $ref: paths/admin_blog_posts_{id}_unpublish.yaml
+  /admin/maps:
+    $ref: paths/admin_maps.yaml
+  /admin/maps/{id}:
+    $ref: paths/admin_maps_{id}.yaml
+  /admin/maps/{id}/publish:
+    $ref: paths/admin_maps_{id}_publish.yaml
+  /admin/maps/{id}/unpublish:
+    $ref: paths/admin_maps_{id}_unpublish.yaml
   /admin/stats:
     $ref: paths/admin_stats.yaml
   /admin/stats/trends:
@@ -416,10 +460,54 @@ paths:
     $ref: paths/admin_users_{id}_verify.yaml
   /admin/users/{id}/change-password:
     $ref: paths/admin_users_{id}_change-password.yaml
+  /admin/users/{id}/admin-notes:
+    $ref: paths/admin_users_{id}_admin-notes.yaml
+  /admin/users/{id}/ban:
+    $ref: paths/admin_users_{id}_ban.yaml
+  /admin/users/{id}/activity:
+    $ref: paths/admin_users_{id}_activity.yaml
+  /admin/users/{id}/content:
+    $ref: paths/admin_users_{id}_content.yaml
+  /admin/users/{id}/impersonate:
+    $ref: paths/admin_users_{id}_impersonate.yaml
+  /admin/orders:
+    $ref: paths/admin_orders.yaml
+  /admin/orders/{id}:
+    $ref: paths/admin_orders_{id}.yaml
+  /admin/invoices:
+    $ref: paths/admin_invoices.yaml
+  /admin/invoices/{id}:
+    $ref: paths/admin_invoices_{id}.yaml
+  /admin/invoices/export:
+    $ref: paths/admin_invoices_export.yaml
+  /admin/invoices/{id}/download:
+    $ref: paths/admin_invoices_{id}_download.yaml
+  /admin/invoices/{id}/send:
+    $ref: paths/admin_invoices_{id}_send.yaml
+  /admin/influencers:
+    $ref: paths/admin_influencers.yaml
+  /admin/influencers/{id}:
+    $ref: paths/admin_influencers_{id}.yaml
+  /admin/influencers/{id}/verify:
+    $ref: paths/admin_influencers_{id}_verify.yaml
+  /admin/influencers/{id}/feature:
+    $ref: paths/admin_influencers_{id}_feature.yaml
+  /admin/influencers/{id}/disable-creator-tools:
+    $ref: paths/admin_influencers_{id}_disable-creator-tools.yaml
   /admin/platform/earnings:
     $ref: paths/admin_platform_earnings.yaml
   /admin/platform/earnings/summary:
     $ref: paths/admin_platform_earnings_summary.yaml
+  /admin/payments:
+    $ref: paths/admin_payments.yaml
+  /admin/payments/{id}:
+    $ref: paths/admin_payments_{id}.yaml
+  /admin/payouts:
+    $ref: paths/admin_payouts.yaml
+  /admin/payouts/{id}:
+    $ref: paths/admin_payouts_{id}.yaml
+  /admin/payouts/{id}/retry:
+    $ref: paths/admin_payouts_{id}_retry.yaml
   /ai/chat:
     $ref: paths/ai_chat.yaml
   /ai/models:

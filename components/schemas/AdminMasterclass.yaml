@@ -1,0 +1,52 @@
+type: object
+properties:
+  id:
+    type: integer
+  title:
+    type: string
+  slug:
+    type: string
+  author:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      email:
+        type: string
+  type:
+    type: string
+    enum:
+      - course
+      - guide
+      - training
+      - masterclass
+  status:
+    type: string
+    enum:
+      - published
+      - draft
+  is_premium:
+    type: boolean
+  price_cents:
+    type: integer
+  students:
+    type: integer
+  revenue_cents:
+    type: integer
+  rating:
+    type: number
+    format: float
+    nullable: true
+  views:
+    type: integer
+  cover_image_url:
+    type: string
+    nullable: true
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time

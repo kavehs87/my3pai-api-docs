@@ -1,0 +1,85 @@
+post:
+  tags:
+    - Admin
+  summary: Ban or unban a user
+  description: Ban a user with reason and optional expiry, or unban by sending null reason (admin only)
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            reason:
+              type: string
+              nullable: true
+              minLength: 10
+              maxLength: 500
+              description: "Ban reason (send null to unban)"
+            ban_until:
+              type: string
+              format: date
+              nullable: true
+              description: "Optional ban expiry date (null = permanent)"
+        examples:
+          ban:
+            summary: Ban user
+            value:
+              reason: "Violation of terms of service — repeated spam"
+              ban_until: "2025-08-01"
+          unban:
+            summary: Unban user
+            value:
+              reason: null
+              ban_until: null
+  responses:
+    '200':
+      description: User banned or unbanned
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  user:
+                    $ref: ../components/schemas/AdminUser.yaml
+    '400':
+      description: Self-ban or already banned
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: User not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

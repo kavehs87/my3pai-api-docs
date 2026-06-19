@@ -1,0 +1,50 @@
+type: object
+properties:
+  id:
+    type: integer
+  title:
+    type: string
+  author:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      email:
+        type: string
+  type:
+    type: string
+    enum:
+      - Video
+      - Photo
+      - Preset
+      - Audio
+      - Template
+      - Other
+  status:
+    type: string
+    enum:
+      - active
+      - inactive
+  price_cents:
+    type: integer
+  sales:
+    type: integer
+  downloads:
+    type: integer
+  file_format:
+    type: string
+    nullable: true
+  file_size_bytes:
+    type: integer
+    nullable: true
+  preview_url:
+    type: string
+    nullable: true
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time

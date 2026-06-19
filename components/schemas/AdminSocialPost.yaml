@@ -1,0 +1,52 @@
+type: object
+properties:
+  id:
+    type: integer
+  title:
+    type: string
+    nullable: true
+  caption:
+    type: string
+    nullable: true
+  author:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+  type:
+    type: string
+    enum:
+      - youtube
+      - short-form
+  platform:
+    type: string
+    enum:
+      - YouTube
+      - Instagram
+      - TikTok
+      - Facebook
+      - YouTube Shorts
+  status:
+    type: string
+    enum:
+      - published
+      - draft
+  url:
+    type: string
+  thumbnail:
+    type: string
+  views:
+    type: string
+    nullable: true
+  published_at:
+    type: string
+    format: date-time
+    nullable: true
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time

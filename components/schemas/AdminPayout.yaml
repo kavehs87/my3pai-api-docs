@@ -1,0 +1,38 @@
+type: object
+properties:
+  id:
+    type: integer
+  influencer:
+    type: object
+    nullable: true
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      username:
+        type: string
+      avatar_url:
+        type: string
+  amount_cents:
+    type: integer
+  currency:
+    type: string
+  status:
+    type: string
+    enum: [paid, pending, failed]
+  stripe_transfer_id:
+    type: string
+    nullable: true
+  order_count:
+    type: integer
+  paid_at:
+    type: string
+    format: date-time
+    nullable: true
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time

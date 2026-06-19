@@ -1,0 +1,21 @@
+type: object
+properties:
+  map:
+    $ref: ./AdminMap.yaml
+  sales:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+        buyer_name:
+          type: string
+        buyer_email:
+          type: string
+          nullable: true
+        amount_cents:
+          type: integer
+        purchased_at:
+          type: string
+          format: date-time

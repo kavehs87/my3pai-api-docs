@@ -1,0 +1,71 @@
+put:
+  tags:
+    - Admin
+  summary: Update admin notes for a user
+  description: Set internal admin notes on a user (admin only)
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            admin_notes:
+              type: string
+              nullable: true
+              maxLength: 5000
+          required: []
+        examples:
+          set_notes:
+            summary: Set admin notes
+            value:
+              admin_notes: "VIP user. Followed up on June 20."
+          clear_notes:
+            summary: Clear admin notes
+            value:
+              admin_notes: null
+  responses:
+    '200':
+      description: Admin notes updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  user:
+                    $ref: ../components/schemas/AdminUser.yaml
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: User not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

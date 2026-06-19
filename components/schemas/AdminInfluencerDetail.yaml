@@ -1,0 +1,179 @@
+type: object
+properties:
+  id:
+    type: integer
+  name:
+    type: string
+  username:
+    type: string
+  email:
+    type: string
+  avatar_url:
+    type: string
+    nullable: true
+  bio:
+    type: string
+    nullable: true
+  location:
+    type: string
+    nullable: true
+  tagline:
+    type: string
+    nullable: true
+  profile_theme:
+    type: string
+    nullable: true
+  verified:
+    type: boolean
+  created_at:
+    type: string
+    format: date-time
+  stripe_account:
+    type: object
+    nullable: true
+    properties:
+      account_id:
+        type: string
+      status:
+        type: string
+      charges_enabled:
+        type: boolean
+      payouts_enabled:
+        type: boolean
+      requirements:
+        type: object
+        properties:
+          currently_due:
+            type: array
+            items:
+              type: string
+          eventually_due:
+            type: array
+            items:
+              type: string
+          pending_verification:
+            type: array
+            items:
+              type: string
+      connected_at:
+        type: string
+        format: date-time
+        nullable: true
+  earnings_summary:
+    type: object
+    properties:
+      total_revenue_cents:
+        type: integer
+      platform_fees_cents:
+        type: integer
+      net_earnings_cents:
+        type: integer
+      total_payouts_cents:
+        type: integer
+      pending_payout_cents:
+        type: integer
+      this_month_revenue_cents:
+        type: integer
+      this_month_payout_cents:
+        type: integer
+  influencer_settings:
+    type: object
+    properties:
+      maps_enabled:
+        type: boolean
+      blog_enabled:
+        type: boolean
+      podcast_enabled:
+        type: boolean
+      masterclass_enabled:
+        type: boolean
+      consultation_enabled:
+        type: boolean
+      media_assets_enabled:
+        type: boolean
+      creator_profile_enabled:
+        type: boolean
+      social_enabled:
+        type: boolean
+      social_links_enabled:
+        type: boolean
+      creator_tools_disabled:
+        type: boolean
+      creator_tools_disabled_reason:
+        type: string
+        nullable: true
+      creator_tools_disabled_at:
+        type: string
+        format: date-time
+        nullable: true
+  content:
+    type: object
+    properties:
+      maps:
+        type: object
+        properties:
+          total:
+            type: integer
+          published:
+            type: integer
+          for_sale:
+            type: integer
+      blog_posts:
+        type: object
+        properties:
+          total:
+            type: integer
+          published:
+            type: integer
+          premium:
+            type: integer
+      podcast_episodes:
+        type: object
+        properties:
+          total:
+            type: integer
+          published:
+            type: integer
+          premium:
+            type: integer
+      masterclasses:
+        type: object
+        properties:
+          total:
+            type: integer
+          published:
+            type: integer
+          premium:
+            type: integer
+      media_assets:
+        type: object
+        properties:
+          total:
+            type: integer
+          active:
+            type: integer
+  consultation_stats:
+    type: object
+    properties:
+      is_active:
+        type: boolean
+      total_bookings:
+        type: integer
+      completed_bookings:
+        type: integer
+      cancelled_bookings:
+        type: integer
+      pending_bookings:
+        type: integer
+      average_rating:
+        type: number
+        nullable: true
+  social_links:
+    type: array
+    items:
+      type: object
+      properties:
+        platform:
+          type: string
+        url:
+          type: string

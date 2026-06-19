@@ -45,7 +45,7 @@ get:
                   users:
                     type: array
                     items:
-                      $ref: ../components/schemas/User.yaml
+                      $ref: ../components/schemas/AdminUser.yaml
                   meta:
                     $ref: ../components/schemas/PaginationMeta.yaml
     '401':
@@ -91,7 +91,7 @@ post:
                 type: object
                 properties:
                   user:
-                    $ref: ../components/schemas/User.yaml
+                    $ref: ../components/schemas/AdminUser.yaml
               message:
                 type: string
     '401':

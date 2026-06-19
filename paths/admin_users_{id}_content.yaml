@@ -1,0 +1,134 @@
+get:
+  tags:
+    - Admin
+  summary: Get user content summary
+  description: Show a breakdown of everything a user has created on the platform (admin only)
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Content summary for user
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  maps:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        title:
+                          type: string
+                        status:
+                          type: string
+                          enum: [published, draft]
+                        is_for_sale:
+                          type: boolean
+                        price_cents:
+                          type: integer
+                        purchases:
+                          type: integer
+                        created_at:
+                          type: string
+                          format: date-time
+                  blog_posts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        title:
+                          type: string
+                        status:
+                          type: string
+                          enum: [published, draft]
+                        is_premium:
+                          type: boolean
+                        views:
+                          type: integer
+                        created_at:
+                          type: string
+                          format: date-time
+                  podcast_episodes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        title:
+                          type: string
+                        status:
+                          type: string
+                          enum: [published, draft]
+                        is_premium:
+                          type: boolean
+                        created_at:
+                          type: string
+                          format: date-time
+                  masterclasses:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        title:
+                          type: string
+                        status:
+                          type: string
+                          enum: [published, draft]
+                        price_cents:
+                          type: integer
+                        created_at:
+                          type: string
+                          format: date-time
+                  media_assets:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        title:
+                          type: string
+                        status:
+                          type: string
+                        price_cents:
+                          type: integer
+                        sales:
+                          type: integer
+                        created_at:
+                          type: string
+                          format: date-time
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: User not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

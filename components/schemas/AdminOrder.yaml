@@ -1,0 +1,59 @@
+type: object
+properties:
+  id:
+    type: integer
+  order_number:
+    type: string
+  customer:
+    type: object
+    nullable: true
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      email:
+        type: string
+  influencer:
+    type: object
+    nullable: true
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      username:
+        type: string
+  items:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+        name:
+          type: string
+        quantity:
+          type: integer
+        unit_price_cents:
+          type: integer
+        total_cents:
+          type: integer
+  total_cents:
+    type: integer
+  platform_fee_cents:
+    type: integer
+  influencer_payout_cents:
+    type: integer
+  status:
+    type: string
+  payment_status:
+    type: string
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time

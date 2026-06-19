@@ -1,0 +1,77 @@
+type: object
+properties:
+  id:
+    type: integer
+  name:
+    type: string
+  email:
+    type: string
+    format: email
+  username:
+    type: string
+  role:
+    type: string
+    enum: [user, admin]
+  verified:
+    type: boolean
+  bio:
+    type: string
+    nullable: true
+  location:
+    type: string
+    nullable: true
+  avatar_url:
+    type: string
+    format: uri
+    nullable: true
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
+  banned_at:
+    type: string
+    format: date-time
+    nullable: true
+  banned_reason:
+    type: string
+    nullable: true
+  banned_until:
+    type: string
+    format: date-time
+    nullable: true
+  admin_notes:
+    type: string
+    nullable: true
+  stripe_account_status:
+    type: string
+    nullable: true
+  stripe_account_id:
+    type: string
+    nullable: true
+  stripe_charges_enabled:
+    type: boolean
+  stripe_payouts_enabled:
+    type: boolean
+  has_influencer_settings:
+    type: boolean
+  content_counts:
+    type: object
+    properties:
+      maps:
+        type: integer
+      blog_posts:
+        type: integer
+      podcast_episodes:
+        type: integer
+      masterclasses:
+        type: integer
+      media_assets:
+        type: integer
+    required:
+      - maps
+      - blog_posts
+      - podcast_episodes
+      - masterclasses
+      - media_assets

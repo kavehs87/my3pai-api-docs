@@ -1,0 +1,41 @@
+post:
+  tags:
+    - Admin
+  summary: Toggle influencer verification
+  description: Toggle the verified status of an influencer. Also updates email_verified_at accordingly.
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Verification toggled
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  influencer:
+                    $ref: ../components/schemas/AdminInfluencer.yaml
+              message:
+                type: string
+                example: Influencer verified
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Influencer not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

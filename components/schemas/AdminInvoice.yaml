@@ -1,0 +1,77 @@
+type: object
+properties:
+  id:
+    type: integer
+  invoice_number:
+    type: string
+  order_id:
+    type: integer
+  order_number:
+    type: string
+  customer:
+    type: object
+    nullable: true
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      email:
+        type: string
+  influencer:
+    type: object
+    nullable: true
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      username:
+        type: string
+  perspective:
+    type: string
+    enum: [sent, received]
+  line_items:
+    type: array
+    items:
+      type: object
+      properties:
+        description:
+          type: string
+        quantity:
+          type: integer
+        unit_price_cents:
+          type: integer
+        total_cents:
+          type: integer
+  subtotal_cents:
+    type: integer
+  tax_cents:
+    type: integer
+  total_cents:
+    type: integer
+  amount_paid_cents:
+    type: integer
+  status:
+    type: string
+    enum: [draft, paid, sent, overdue, cancelled]
+  due_date:
+    type: string
+    format: date
+    nullable: true
+  issued_at:
+    type: string
+    format: date-time
+  paid_at:
+    type: string
+    format: date-time
+    nullable: true
+  pdf_url:
+    type: string
+    nullable: true
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
