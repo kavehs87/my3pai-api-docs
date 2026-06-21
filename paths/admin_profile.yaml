@@ -1,0 +1,58 @@
+put:
+  tags:
+    - Admin
+  summary: Update admin profile
+  description: Update the currently authenticated admin's name and email.
+  security:
+    - bearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - name
+            - email
+          properties:
+            name:
+              type: string
+              minLength: 2
+              maxLength: 100
+            email:
+              type: string
+              format: email
+              maxLength: 255
+  responses:
+    '200':
+      description: Profile updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  admin:
+                    $ref: ../components/schemas/AdminUser.yaml
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

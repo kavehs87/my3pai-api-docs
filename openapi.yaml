@@ -550,6 +550,14 @@ paths:
     $ref: paths/admin_stripe_accounts_{id}.yaml
   /admin/settings:
     $ref: paths/admin_settings.yaml
+  /admin/profile:
+    $ref: paths/admin_profile.yaml
+  /admin/change-password:
+    $ref: paths/admin_change-password.yaml
+  /admin/forgot-password:
+    $ref: paths/admin_forgot-password.yaml
+  /admin/reset-password:
+    $ref: paths/admin_reset-password.yaml
   /ai/chat:
     $ref: paths/ai_chat.yaml
   /ai/models:
