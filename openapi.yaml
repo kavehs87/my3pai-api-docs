@@ -97,6 +97,8 @@ tags:
     description: Switzerland DMO open data (mySwitzerland.com) integration
   - name: Webhooks
     description: Webhook endpoints for external service callbacks
+  - name: Notifications
+    description: In-app notification management (bell notifications)
 security:
   - BearerAuth: []
 paths:

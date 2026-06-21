@@ -1,0 +1,34 @@
+type: object
+properties:
+  id:
+    type: string
+    format: uuid
+    example: "550e8400-e29b-41d4-a716-446655440000"
+  category:
+    type: string
+    enum:
+      - business
+      - system
+    example: business
+  severity:
+    type: string
+    enum:
+      - info
+      - success
+      - warning
+      - error
+    example: info
+  title:
+    type: string
+    example: Payment Confirmed
+  action_url:
+    type: string
+    nullable: true
+    example: "/orders/ORD-ABC123"
+  read:
+    type: boolean
+    example: false
+  created_at:
+    type: string
+    format: date-time
+    example: "2026-06-21T12:00:00Z"
