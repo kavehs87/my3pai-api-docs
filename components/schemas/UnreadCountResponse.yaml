@@ -1,0 +1,20 @@
+type: object
+properties:
+  success:
+    type: boolean
+    example: true
+  data:
+    type: object
+    properties:
+      count:
+        type: integer
+        example: 5
+      by_category:
+        type: object
+        properties:
+          business:
+            type: integer
+            example: 3
+          system:
+            type: integer
+            example: 2

@@ -1,0 +1,17 @@
+get:
+  tags:
+    - Notifications
+  summary: Get unread notification count
+  responses:
+    '200':
+      description: Unread notification count with category breakdown
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/UnreadCountResponse.yaml
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

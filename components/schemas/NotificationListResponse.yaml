@@ -1,0 +1,23 @@
+type: object
+properties:
+  success:
+    type: boolean
+    example: true
+  data:
+    type: object
+    properties:
+      notifications:
+        type: array
+        items:
+          $ref: ./Notification.yaml
+      meta:
+        type: object
+        properties:
+          current_page:
+            type: integer
+          last_page:
+            type: integer
+          per_page:
+            type: integer
+          total:
+            type: integer

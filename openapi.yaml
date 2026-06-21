@@ -124,6 +124,16 @@ paths:
     $ref: paths/reset-password.yaml
   /me:
     $ref: paths/me.yaml
+  /notifications:
+    $ref: paths/notifications.yaml
+  /notifications/unread-count:
+    $ref: paths/notifications_unread_count.yaml
+  /notifications/read-all:
+    $ref: paths/notifications_read_all.yaml
+  /notifications/{id}:
+    $ref: paths/notifications_{id}.yaml
+  /notifications/{id}/read:
+    $ref: paths/notifications_{id}_read.yaml
   /logout:
     $ref: paths/logout.yaml
   /profile:

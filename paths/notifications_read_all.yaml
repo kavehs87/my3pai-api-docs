@@ -1,0 +1,43 @@
+post:
+  tags:
+    - Notifications
+  summary: Mark all notifications as read
+  requestBody:
+    required: false
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            category:
+              type: string
+              enum: [business, system]
+  responses:
+    '200':
+      description: Notifications marked as read
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  marked_read:
+                    type: integer
+                    example: 5
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
