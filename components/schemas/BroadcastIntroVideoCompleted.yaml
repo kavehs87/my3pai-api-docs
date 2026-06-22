@@ -1,0 +1,28 @@
+type: object
+description: >
+  Payload sent over WebSocket when an influencer's intro video finishes
+  processing. Broadcast on `App.Models.User.{userId}` channel as event
+  `App\Events\IntroVideoProcessingCompleted`.
+properties:
+  status:
+    type: string
+    enum:
+      - ready
+      - failed
+    description: Processing result status
+    example: ready
+  video_url:
+    type: string
+    nullable: true
+    description: Public URL of the processed intro video
+    example: "https://storage.googleapis.com/my3pai-public/videos/intro_123.mp4"
+  thumbnail_url:
+    type: string
+    nullable: true
+    description: Public URL of the video thumbnail
+    example: "https://storage.googleapis.com/my3pai-public/thumbs/intro_123.jpg"
+  duration:
+    type: integer
+    nullable: true
+    description: Video duration in seconds
+    example: 45

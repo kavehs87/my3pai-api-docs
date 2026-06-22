@@ -99,9 +99,24 @@ tags:
     description: Webhook endpoints for external service callbacks
   - name: Notifications
     description: In-app notification management (bell notifications)
+  - name: WebSocket
+    description: >
+      Real-time WebSocket connections via Laravel Reverb. Clients connect using
+      `laravel-echo` + `pusher-js`. Events are broadcast on private channel
+      `App.Models.User.{id}`. Connect with `REVERB_APP_KEY`, `REVERB_APP_ID`, and
+      `REVERB_APP_SECRET` from `.env`. Authentication is handled via `POST /broadcasting/auth`.
+
+      **Broadcast events:**
+
+      - `Illuminate\Notifications\Events\BroadcastNotificationCreated` — in-app notifications
+      - `App\Events\NewContactMessage` — new contact message for an influencer
+      - `App\Events\IntroVideoProcessingCompleted` — intro video processing result
+      - `App\Events\PoiMediaProcessingCompleted` — POI media processing result
 security:
   - BearerAuth: []
 paths:
+  /broadcasting/auth:
+    $ref: paths/broadcasting_auth.yaml
   /health:
     $ref: paths/health.yaml
   /pois/filters/metadata:

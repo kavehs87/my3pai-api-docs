@@ -1,0 +1,34 @@
+type: object
+description: >
+  Payload sent over WebSocket when POI media finishes processing. Broadcast on
+  `App.Models.User.{userId}` channel as event `App\Events\PoiMediaProcessingCompleted`.
+properties:
+  map_id:
+    type: integer
+    description: ID of the map containing the POI
+    example: 42
+  poi_id:
+    type: integer
+    description: ID of the POI
+    example: 128
+  media_id:
+    type: integer
+    description: ID of the processed PoiMedia record
+    example: 256
+  status:
+    type: string
+    enum:
+      - ready
+      - failed
+    description: Processing result status
+    example: ready
+  thumbnail_url:
+    type: string
+    nullable: true
+    description: Public URL of the processed video thumbnail
+    example: "https://storage.googleapis.com/my3pai-public/thumbs/poi_128.mp4.jpg"
+  error_message:
+    type: string
+    nullable: true
+    description: Error details if processing failed
+    example: null
