@@ -130,6 +130,14 @@ paths:
     $ref: paths/broadcasting_auth.yaml
   /health:
     $ref: paths/health.yaml
+  /health/bucket:
+    $ref: paths/health_bucket.yaml
+  /health/database:
+    $ref: paths/health_database.yaml
+  /health/logs:
+    $ref: paths/health_logs.yaml
+  /health/redis:
+    $ref: paths/health_redis.yaml
   /pois/filters/metadata:
     $ref: paths/pois_filters_metadata.yaml
   /pois/fetch-unsplash-images:
@@ -141,13 +149,21 @@ paths:
   /login:
     $ref: paths/login.yaml
   /email/verify:
-    $ref: paths/email-verify.yaml
+    $ref: paths/email_verify.yaml
   /email/resend:
-    $ref: paths/email-resend.yaml
+    $ref: paths/email_resend.yaml
   /forgot-password:
-    $ref: paths/forgot-password.yaml
+    $ref: paths/forgot_password.yaml
   /reset-password:
-    $ref: paths/reset-password.yaml
+    $ref: paths/reset_password.yaml
+  /auth/google:
+    $ref: paths/auth_google.yaml
+  /auth/google/callback:
+    $ref: paths/auth_google_callback.yaml
+  /auth/google/reverify:
+    $ref: paths/auth_google_reverify.yaml
+  /auth/google/reverify/callback:
+    $ref: paths/auth_google_reverify_callback.yaml
   /me:
     $ref: paths/me.yaml
   /notifications:
@@ -171,7 +187,7 @@ paths:
   /profile/preferences:
     $ref: paths/profile_preferences.yaml
   /profile/change-password:
-    $ref: paths/profile_change-password.yaml
+    $ref: paths/profile_change_password.yaml
   /profile/account:
     $ref: paths/profile_account.yaml
   /influencer/socials:
@@ -181,11 +197,11 @@ paths:
   /influencer/socials/reorder:
     $ref: paths/influencer_socials_reorder.yaml
   /influencer/social-posts:
-    $ref: paths/influencer_social-posts.yaml
+    $ref: paths/influencer_social_posts.yaml
   /influencer/social-posts/{id}:
-    $ref: paths/influencer_social-posts_{id}.yaml
+    $ref: paths/influencer_social_posts_{id}.yaml
   /influencer/social-posts/reorder:
-    $ref: paths/influencer_social-posts_reorder.yaml
+    $ref: paths/influencer_social_posts_reorder.yaml
   /influencer/languages:
     $ref: paths/influencer_languages.yaml
   /influencer/languages/{id}:
@@ -201,9 +217,9 @@ paths:
   /influencer/certifications/{id}:
     $ref: paths/influencer_certifications_{id}.yaml
   /influencer/external-links:
-    $ref: paths/influencer_external-links.yaml
+    $ref: paths/influencer_external_links.yaml
   /influencer/external-links/{id}:
-    $ref: paths/influencer_external-links_{id}.yaml
+    $ref: paths/influencer_external_links_{id}.yaml
   /influencer/blog:
     $ref: paths/influencer_blog.yaml
   /influencer/blog/reorder:
@@ -225,17 +241,17 @@ paths:
   /influencer/podcast/{id}/cover:
     $ref: paths/influencer_podcast_{id}_cover.yaml
   /influencer/podcast/{id}/detail-cover:
-    $ref: paths/influencer_podcast_{id}_detail-cover.yaml
+    $ref: paths/influencer_podcast_{id}_detail_cover.yaml
   /influencer/contact-messages:
-    $ref: paths/influencer_contact-messages.yaml
+    $ref: paths/influencer_contact_messages.yaml
   /influencer/contact-messages/stats:
-    $ref: paths/influencer_contact-messages_stats.yaml
+    $ref: paths/influencer_contact_messages_stats.yaml
   /influencer/contact-messages/{id}:
-    $ref: paths/influencer_contact-messages_{id}.yaml
+    $ref: paths/influencer_contact_messages_{id}.yaml
   /influencer/contact-messages/{id}/read:
-    $ref: paths/influencer_contact-messages_{id}_read.yaml
+    $ref: paths/influencer_contact_messages_{id}_read.yaml
   /influencer/contact-settings:
-    $ref: paths/influencer_contact-settings.yaml
+    $ref: paths/influencer_contact_settings.yaml
   /map/pois:
     $ref: paths/map_pois.yaml
   /influencers:
@@ -273,7 +289,7 @@ paths:
   /influencers/{username}/contact:
     $ref: paths/influencers_{username}_contact.yaml
   /influencers/{username}/contact-info:
-    $ref: paths/influencers_{username}_contact-info.yaml
+    $ref: paths/influencers_{username}_contact_info.yaml
   /influencer/consultation:
     $ref: paths/influencer_consultation.yaml
   /influencer/consultation/bookings:
@@ -287,47 +303,47 @@ paths:
   /consultations/{id}/book:
     $ref: paths/consultations_{id}_book.yaml
   /consultations/{id}/book-and-pay:
-    $ref: paths/consultations_{id}_book-and-pay.yaml
+    $ref: paths/consultations_{id}_book_and_pay.yaml
   /consultations/{id}/availability:
     $ref: paths/consultations_{id}_availability.yaml
   /consultations/my-bookings:
-    $ref: paths/consultations_my-bookings.yaml
+    $ref: paths/consultations_my_bookings.yaml
   /consultations/bookings/{id}:
     $ref: paths/consultations_bookings_{id}.yaml
   /consultations/bookings/{bookingId}/cancel:
     $ref: paths/consultations_bookings_{bookingId}_cancel.yaml
   /consultations/bookings/{bookingId}/cancellation-policy:
-    $ref: paths/consultations_bookings_{bookingId}_cancellation-policy.yaml
+    $ref: paths/consultations_bookings_{bookingId}_cancellation_policy.yaml
   /consultations/bookings/{bookingId}/payment-session:
-    $ref: paths/consultations_bookings_{bookingId}_payment-session.yaml
+    $ref: paths/consultations_bookings_{bookingId}_payment_session.yaml
   /influencers/{username}/media-assets:
-    $ref: paths/influencers_{username}_media-assets.yaml
+    $ref: paths/influencers_{username}_media_assets.yaml
   /influencers/{username}/media-assets/{id}:
-    $ref: paths/influencers_{username}_media-assets_{id}.yaml
+    $ref: paths/influencers_{username}_media_assets_{id}.yaml
   /influencers/{username}/social-posts:
-    $ref: paths/influencers_{username}_social-posts.yaml
+    $ref: paths/influencers_{username}_social_posts.yaml
   /influencer/media-assets:
-    $ref: paths/influencer_media-assets.yaml
+    $ref: paths/influencer_media_assets.yaml
   /influencer/media-assets/{id}:
-    $ref: paths/influencer_media-assets_{id}.yaml
+    $ref: paths/influencer_media_assets_{id}.yaml
   /influencer/media-assets/{id}/file:
-    $ref: paths/influencer_media-assets_{id}_file.yaml
+    $ref: paths/influencer_media_assets_{id}_file.yaml
   /influencer/media-assets/{id}/image:
-    $ref: paths/influencer_media-assets_{id}_image.yaml
+    $ref: paths/influencer_media_assets_{id}_image.yaml
   /media-assets/{id}/purchase:
-    $ref: paths/media-assets_{id}_purchase.yaml
+    $ref: paths/media_assets_{id}_purchase.yaml
   /media-assets/my-purchases:
-    $ref: paths/media-assets_my-purchases.yaml
+    $ref: paths/media_assets_my_purchases.yaml
   /user/blog-purchases:
-    $ref: paths/user_blog-purchases.yaml
+    $ref: paths/user_blog_purchases.yaml
   /user/podcast-purchases:
-    $ref: paths/user_podcast-purchases.yaml
+    $ref: paths/user_podcast_purchases.yaml
   /purchased-products:
-    $ref: paths/purchased-products.yaml
+    $ref: paths/purchased_products.yaml
   /purchased-products/{purchase}:
-    $ref: paths/purchased-products_{purchase}.yaml
+    $ref: paths/purchased_products_{purchase}.yaml
   /media-assets/download:
-    $ref: paths/media-assets_download.yaml
+    $ref: paths/media_assets_download.yaml
   /influencer/masterclasses:
     $ref: paths/influencer_masterclasses.yaml
   /influencer/masterclasses/reorder:
@@ -337,15 +353,15 @@ paths:
   /influencer/masterclasses/{id}/cover:
     $ref: paths/influencer_masterclasses_{id}_cover.yaml
   /influencer/intro-video:
-    $ref: paths/influencer_intro-video.yaml
+    $ref: paths/influencer_intro_video.yaml
   /influencer/intro-video/thumbnail:
-    $ref: paths/influencer_intro-video_thumbnail.yaml
+    $ref: paths/influencer_intro_video_thumbnail.yaml
   /influencer/logo:
     $ref: paths/influencer_logo.yaml
   /influencer/settings:
     $ref: paths/influencer_settings.yaml
   /influencer/creator-tools-visibility:
-    $ref: paths/influencer_creator-tools-visibility.yaml
+    $ref: paths/influencer_creator_tools_visibility.yaml
   /influencer/payouts:
     $ref: paths/influencer_payouts.yaml
   /influencer/payouts/{id}:
@@ -362,12 +378,10 @@ paths:
     $ref: paths/stripe_connect.yaml
   /webhooks/stripe:
     $ref: paths/webhooks_stripe.yaml
-  /webhooks/video-worker:
-    $ref: paths/webhooks_video-worker.yaml
   /maps:
     $ref: paths/maps.yaml
   /maps/parse-url:
-    $ref: paths/maps_parse-url.yaml
+    $ref: paths/maps_parse_url.yaml
   /maps/{map}:
     $ref: paths/maps_{map}.yaml
   /maps/{map}/pois:
@@ -375,7 +389,7 @@ paths:
   /maps/{map}/pois/batch:
     $ref: paths/maps_{map}_pois_batch.yaml
   /maps/{map}/pois/batch/toggle-visibility:
-    $ref: paths/maps_{map}_pois_batch_toggle-visibility.yaml
+    $ref: paths/maps_{map}_pois_batch_toggle_visibility.yaml
   /maps/{map}/pois/draft:
     $ref: paths/maps_{map}_pois_draft.yaml
   /maps/{map}/pois/{poi}:
@@ -398,8 +412,6 @@ paths:
     $ref: paths/pois_{poi}_europeana.yaml
   /pois/{poi}/europeana/search:
     $ref: paths/pois_{poi}_europeana_search.yaml
-  /pois/{poi}/europeana/attach:
-    $ref: paths/pois_{poi}_europeana_attach.yaml
   /pois/{poi}/europeana/{europeanaItem}:
     $ref: paths/pois_{poi}_europeana_{europeanaItem}.yaml
   /pois/{poi}/dzt:
@@ -407,9 +419,7 @@ paths:
   /pois/{poi}/dzt/search:
     $ref: paths/pois_{poi}_dzt_search.yaml
   /pois/{poi}/dzt/search-nearby:
-    $ref: paths/pois_{poi}_dzt_search-nearby.yaml
-  /pois/{poi}/dzt/attach:
-    $ref: paths/pois_{poi}_dzt_attach.yaml
+    $ref: paths/pois_{poi}_dzt_search_nearby.yaml
   /pois/{poi}/dzt/details:
     $ref: paths/pois_{poi}_dzt_details.yaml
   /pois/{poi}/dzt/{dztItem}:
@@ -421,25 +431,25 @@ paths:
   /dzt/cache/stats:
     $ref: paths/dzt_cache_stats.yaml
   /swiss-dmo/search:
-    $ref: paths/swiss-dmo_search.yaml
+    $ref: paths/swiss_dmo_search.yaml
   /swiss-dmo/nearby:
-    $ref: paths/swiss-dmo_nearby.yaml
+    $ref: paths/swiss_dmo_nearby.yaml
   /swiss-dmo/destinations:
-    $ref: paths/swiss-dmo_destinations.yaml
+    $ref: paths/swiss_dmo_destinations.yaml
   /swiss-dmo/destinations/{swissId}:
-    $ref: paths/swiss-dmo_destinations_{swissId}.yaml
+    $ref: paths/swiss_dmo_destinations_{swissId}.yaml
   /swiss-dmo/attractions:
-    $ref: paths/swiss-dmo_attractions.yaml
+    $ref: paths/swiss_dmo_attractions.yaml
   /swiss-dmo/attractions/{swissId}:
-    $ref: paths/swiss-dmo_attractions_{swissId}.yaml
+    $ref: paths/swiss_dmo_attractions_{swissId}.yaml
   /swiss-dmo/tours:
-    $ref: paths/swiss-dmo_tours.yaml
+    $ref: paths/swiss_dmo_tours.yaml
   /swiss-dmo/tours/{swissId}:
-    $ref: paths/swiss-dmo_tours_{swissId}.yaml
+    $ref: paths/swiss_dmo_tours_{swissId}.yaml
   /swiss-dmo/map:
-    $ref: paths/swiss-dmo_map.yaml
+    $ref: paths/swiss_dmo_map.yaml
   /swiss-dmo/classifications:
-    $ref: paths/swiss-dmo_classifications.yaml
+    $ref: paths/swiss_dmo_classifications.yaml
   /places/autocomplete:
     $ref: paths/places_autocomplete.yaml
   /places/nearby:
@@ -511,9 +521,9 @@ paths:
   /admin/users/{id}/verify:
     $ref: paths/admin_users_{id}_verify.yaml
   /admin/users/{id}/change-password:
-    $ref: paths/admin_users_{id}_change-password.yaml
+    $ref: paths/admin_users_{id}_change_password.yaml
   /admin/users/{id}/admin-notes:
-    $ref: paths/admin_users_{id}_admin-notes.yaml
+    $ref: paths/admin_users_{id}_admin_notes.yaml
   /admin/users/{id}/ban:
     $ref: paths/admin_users_{id}_ban.yaml
   /admin/users/{id}/activity:
@@ -551,17 +561,15 @@ paths:
   /admin/influencers/{id}/feature:
     $ref: paths/admin_influencers_{id}_feature.yaml
   /admin/influencers/{id}/disable-creator-tools:
-    $ref: paths/admin_influencers_{id}_disable-creator-tools.yaml
+    $ref: paths/admin_influencers_{id}_disable_creator_tools.yaml
   /admin/contact-messages:
-    $ref: paths/admin_contact-messages.yaml
+    $ref: paths/admin_contact_messages.yaml
   /admin/contact-messages/{id}:
-    $ref: paths/admin_contact-messages_{id}.yaml
+    $ref: paths/admin_contact_messages_{id}.yaml
   /admin/contact-messages/{id}/mark-read:
-    $ref: paths/admin_contact-messages_{id}_mark-read.yaml
+    $ref: paths/admin_contact_messages_{id}_mark_read.yaml
   /admin/contact-messages/{id}/mark-unread:
-    $ref: paths/admin_contact-messages_{id}_mark-unread.yaml
-  /admin/contact-messages/{id}/delete:
-    $ref: paths/admin_contact-messages_{id}_delete.yaml
+    $ref: paths/admin_contact_messages_{id}_mark_unread.yaml
   /admin/platform/earnings:
     $ref: paths/admin_platform_earnings.yaml
   /admin/platform/earnings/export:
@@ -591,11 +599,11 @@ paths:
   /admin/profile:
     $ref: paths/admin_profile.yaml
   /admin/change-password:
-    $ref: paths/admin_change-password.yaml
+    $ref: paths/admin_change_password.yaml
   /admin/forgot-password:
-    $ref: paths/admin_forgot-password.yaml
+    $ref: paths/admin_forgot_password.yaml
   /admin/reset-password:
-    $ref: paths/admin_reset-password.yaml
+    $ref: paths/admin_reset_password.yaml
   /ai/chat:
     $ref: paths/ai_chat.yaml
   /ai/models:
@@ -618,6 +626,8 @@ paths:
     $ref: paths/orders_sold.yaml
   /orders/{id}:
     $ref: paths/orders_{id}.yaml
+  /orders/{id}/cancel:
+    $ref: paths/orders_{id}_cancel.yaml
   /orders/{id}/download:
     $ref: paths/orders_{id}_download.yaml
   /orders/{id}/refund:

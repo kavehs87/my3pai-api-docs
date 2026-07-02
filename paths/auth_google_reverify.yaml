@@ -1,4 +1,6 @@
 get:
+  tags:
+    - Authentication
   summary: Redirect to Google OAuth for account deletion re-verification
   description: |
     Initiates Google OAuth flow to re-verify user identity for account deletion.
@@ -13,6 +15,6 @@ get:
       description: Frontend URL to redirect to after verification completes
   responses:
     '302':
-      description: Redirect to Google OAuth authorization URL
-    '302_error':
-      description: Redirect to frontend with ?reverify=error if user is not authenticated via session
+      description: >
+        Redirect to Google OAuth authorization URL. If user is not authenticated
+        via session, redirects to frontend with ?reverify=error.

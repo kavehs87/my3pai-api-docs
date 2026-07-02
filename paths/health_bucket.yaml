@@ -1,0 +1,23 @@
+get:
+  tags:
+    - Public
+  summary: Health check — storage bucket
+  description: Returns the health status of the storage bucket connection
+  security: []
+  responses:
+    '200':
+      description: Storage bucket is reachable
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: ok
+    '503':
+      description: Storage bucket is unreachable
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

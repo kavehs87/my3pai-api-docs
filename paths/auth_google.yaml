@@ -1,0 +1,12 @@
+get:
+  tags:
+    - Authentication
+  summary: Redirect to Google OAuth
+  description: >
+    Initiates Google OAuth 2.0 flow for user registration/login.
+    Redirects the user to Google's authorization page.
+    Requires session cookie authentication.
+  security: []
+  responses:
+    '302':
+      description: Redirect to Google OAuth authorization URL

@@ -1,0 +1,34 @@
+get:
+  tags:
+    - Public
+  summary: Health check — logging
+  description: >
+    Tests logging in Cloud Run. Sends error, warning, and info level log messages
+    and returns confirmation. Check Cloud Run logs viewer for the messages.
+  security: []
+  responses:
+    '200':
+      description: Log test completed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: ok
+              message:
+                type: string
+                example: Log test completed - Check Cloud Run logs viewer for error, warning, and info messages
+              timestamp:
+                type: string
+                format: date-time
+              logs_sent:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  warning:
+                    type: string
+                  info:
+                    type: string

@@ -1,4 +1,6 @@
 get:
+  tags:
+    - Authentication
   summary: Handle Google OAuth re-verification callback
   description: |
     Handles the Google OAuth callback for account deletion re-verification.
@@ -6,6 +8,7 @@ get:
     a short-lived cache flag (5min TTL) and redirects back to the frontend with ?reverify=success.
   responses:
     '302':
-      description: Redirect to frontend with ?reverify=success on successful verification
-    '302_error':
-      description: Redirect to frontend with ?reverify=error on failure (invalid token, missing google_id, email mismatch, or exception)
+      description: >
+        Redirect to frontend. On success, redirects with ?reverify=success.
+        On failure (invalid token, missing google_id, email mismatch, or exception),
+        redirects with ?reverify=error.
