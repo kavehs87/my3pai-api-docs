@@ -1,0 +1,38 @@
+type: object
+description: >
+  Nearby services response combining nearest public transport and
+  nearby service establishments (post offices, pharmacies, etc.).
+properties:
+  nearest_public_transport:
+    type: object
+    nullable: true
+    description: Nearest bus/train station
+    properties:
+      name:
+        type: string
+      distance_km:
+        type: number
+      walking_time_minutes:
+        type: integer
+      type:
+        type: string
+        description: Transport subcategory (e.g., `bus_station`, `train_station`)
+      formatted:
+        type: string
+        description: Human-readable string (e.g., `5 min walk to Bus Station`)
+  nearby_services:
+    type: array
+    description: Up to 5 nearby services, sorted by distance
+    items:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          description: Service subcategory (e.g., `post_office`, `pharmacy`)
+        distance_km:
+          type: number
+        formatted:
+          type: string
+          description: Human-readable string (e.g., `Post Office 3 min walk`)

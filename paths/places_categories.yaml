@@ -1,0 +1,57 @@
+get:
+  tags:
+    - Unified Places
+  summary: Category taxonomy
+  description: |
+    Returns the full unified category tree enriched with frontend place types
+    and a flat `type_mapping` for subcategory → frontend type lookup.
+    Replaces the static `GOOGLE_TYPE_MAP` on the frontend.
+
+    Response is cached in Redis for 1 hour.
+
+    **Rate limit:** 60 requests/minute
+  responses:
+    '200':
+      description: Category tree and type mapping
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  categories:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/UnifiedPlaceCategory.yaml
+                  type_mapping:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        place_type:
+                          type: string
+                          description: Frontend place type
+                        activity:
+                          type: string
+                          description: Activity tag
+                    description: >
+                      Flat lookup: subcategory slug → { place_type, activity }.
+                      Frontend uses this instead of static GOOGLE_TYPE_MAP.
+    '503':
+      description: Unified place service unavailable
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: Service unavailable

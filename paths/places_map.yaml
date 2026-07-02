@@ -1,0 +1,88 @@
+get:
+  tags:
+    - Unified Places
+  summary: Map bounding box query
+  description: |
+    Query places within a bounding box. Results do not include
+    `distance_km` (no center point to measure from). Supports
+    cursor-based pagination for large result sets.
+
+    **Rate limit:** 120 requests/minute
+  parameters:
+    - name: bbox
+      in: query
+      required: true
+      schema:
+        type: string
+        pattern: '^-?\d+(\.\d+)?,-?\d+(\.\d+)?,-?\d+(\.\d+)?,-?\d+(\.\d+)?$'
+      description: >
+        Bounding box as `minLon,minLat,maxLon,maxLat`
+        (e.g., `7.5,45.8,7.9,46.2`)
+    - name: unified_category
+      in: query
+      schema:
+        type: string
+        maxLength: 200
+      description: Filter by unified category slug
+    - name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 200
+        default: 50
+      description: Maximum number of entities to return
+    - name: cursor
+      in: query
+      schema:
+        type: string
+        maxLength: 500
+      description: Cursor for pagination (from `pagination.next_cursor`)
+  responses:
+    '200':
+      description: Places in bounding box
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  entities:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/UnifiedPlaceEntity.yaml
+                  total:
+                    type: integer
+                    description: Total matching results
+                  pagination:
+                    type: object
+                    properties:
+                      next_cursor:
+                        type: string
+                        nullable: true
+                      has_more:
+                        type: boolean
+    '422':
+      description: Validation error (invalid bbox format or range)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+    '503':
+      description: Unified place service unavailable
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: Service unavailable

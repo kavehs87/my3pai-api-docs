@@ -1,0 +1,34 @@
+type: object
+description: >
+  Payload sent over WebSocket when a notification is broadcast to the user.
+  Mirrors the `toDatabase()` shape from `BaseNotification`.
+properties:
+  category:
+    type: string
+    enum:
+      - business
+      - system
+    example: business
+  severity:
+    type: string
+    enum:
+      - info
+      - success
+      - warning
+      - error
+    example: info
+  title:
+    type: string
+    example: Payment Confirmed
+  message:
+    type: string
+    nullable: true
+    example: Your payment for order ORD-ABC123 has been confirmed.
+  context:
+    type: object
+    nullable: true
+    description: Structured context data (IDs, dates, amounts).
+  action_url:
+    type: string
+    nullable: true
+    example: "/orders/ORD-ABC123"

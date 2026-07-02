@@ -1,0 +1,43 @@
+type: object
+description: >
+  Autocomplete prediction matching Google Places AutocompletePrediction shape.
+  Returned by the Unified Place Service bridge for search-as-you-type.
+properties:
+  place_id:
+    type: string
+    description: >
+      Composite identifier in format `{source}/{source_id}` (e.g., `osm/12345`, `rexby/abc123`)
+  description:
+    type: string
+    description: Primary display text (entity name)
+  structured_formatting:
+    type: object
+    properties:
+      main_text:
+        type: string
+        description: Entity name
+      secondary_text:
+        type: string
+        description: Location context (locality, region, country)
+  place_type:
+    type: string
+    description: >
+      Frontend place type derived from unified category mapping
+      (e.g., `instagrammable`, `restaurant`, `transport`)
+  unified_category:
+    type: string
+    nullable: true
+    description: Unified top-level category slug
+  thumbnail_url:
+    type: string
+    format: uri
+    nullable: true
+    description: URL to entity thumbnail image
+  latitude:
+    type: number
+    nullable: true
+    description: Latitude coordinate
+  longitude:
+    type: number
+    nullable: true
+    description: Longitude coordinate

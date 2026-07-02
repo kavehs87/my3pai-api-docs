@@ -1,0 +1,184 @@
+type: object
+description: >
+  Full detail for a single place entity. Extends UnifiedPlaceEntity with
+  rich fields: media, classifications, accessibility, opening hours, pricing.
+properties:
+  id:
+    type: string
+    description: Internal UUID
+  place_id:
+    type: string
+    description: Composite `{source}/{source_id}` identifier
+  name:
+    type: string
+  slug:
+    type: string
+    nullable: true
+    description: URL-friendly slug
+  place_type:
+    type: string
+    description: Frontend place type
+  activities:
+    type: array
+    items:
+      type: string
+  unified_category:
+    type: string
+    nullable: true
+  unified_subcategory:
+    type: string
+    nullable: true
+  secondary_types:
+    type: array
+    nullable: true
+    items:
+      type: string
+    description: Additional type tags from the source
+  summary:
+    type: string
+    nullable: true
+  description:
+    type: string
+    nullable: true
+    description: Full HTML description
+  country:
+    type: string
+    nullable: true
+    description: ISO 3166-1 alpha-2 country code
+  region:
+    type: string
+    nullable: true
+    description: Region/state name
+  locality:
+    type: string
+    nullable: true
+    description: City/town name
+  address:
+    type: string
+    nullable: true
+    description: Full formatted address
+  phone:
+    type: string
+    nullable: true
+    description: Contact phone number
+  website:
+    type: string
+    format: uri
+    nullable: true
+  is_free:
+    type: boolean
+    description: Whether the place is free to visit
+  source:
+    type: string
+    description: Data source identifier (e.g., `osm`, `rexby`, `swiss_dmo`)
+  source_id:
+    type: string
+    description: Source-specific identifier
+  source_url:
+    type: string
+    format: uri
+    nullable: true
+    description: URL to the entity on the source platform
+  coordinates:
+    type: object
+    nullable: true
+    properties:
+      lat:
+        type: number
+      lng:
+        type: number
+  opening_hours:
+    type: string
+    nullable: true
+    description: >
+      Formatted opening hours string (e.g., `Mo-Su 08:00-17:00`).
+      May be joined from multiple period entries.
+  price_level:
+    type: integer
+    nullable: true
+    description: Price indicator 0 (free) to 4 (very expensive)
+  price_min:
+    type: number
+    nullable: true
+    description: Minimum price in local currency
+  price_max:
+    type: number
+    nullable: true
+    description: Maximum price in local currency
+  currency:
+    type: string
+    nullable: true
+    description: ISO 4217 currency code
+  is_open:
+    type: boolean
+    nullable: true
+    description: Whether the place is currently open
+  opens_at:
+    type: string
+    format: date-time
+    nullable: true
+    description: Next opening time (ISO 8601)
+  closes_at:
+    type: string
+    format: date-time
+    nullable: true
+    description: Next closing time (ISO 8601)
+  accessibility:
+    type: object
+    properties:
+      wheelchair_accessible:
+        type: boolean
+      is_barrier_free:
+        type: boolean
+  rating:
+    type: number
+    nullable: true
+    description: Average rating (0.0–5.0)
+  rating_count:
+    type: integer
+    nullable: true
+    description: Number of reviews
+  thumbnail_url:
+    type: string
+    format: uri
+    nullable: true
+  media:
+    type: array
+    description: Media items (photos, videos)
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+          format: uri
+        media_type:
+          type: string
+          enum: [image, video]
+        width:
+          type: integer
+          nullable: true
+        height:
+          type: integer
+          nullable: true
+        name:
+          type: string
+          nullable: true
+  classifications:
+    type: array
+    description: >
+      Source-specific classification tags (e.g., Swiss DMO categories)
+    items:
+      type: object
+      properties:
+        category:
+          type: string
+          description: Classification system name (e.g., `swiss_dmo`)
+        value_code:
+          type: string
+          description: Classification code
+        value_title:
+          type: string
+          nullable: true
+          description: Human-readable classification title

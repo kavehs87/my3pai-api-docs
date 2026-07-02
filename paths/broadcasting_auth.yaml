@@ -1,0 +1,38 @@
+post:
+  tags:
+    - WebSocket
+  summary: Authorize private channel subscription
+  description: >
+    Called automatically by Laravel Echo when the client attempts to subscribe
+    to a private channel (e.g., `App.Models.User.{id}`). Authenticates the
+    user and returns authorization to listen on the channel.
+  operationId: broadcastingAuth
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/x-www-form-urlencoded:
+        schema:
+          type: object
+          properties:
+            channel_name:
+              type: string
+              example: "private-App.Models.User.1"
+            server_data:
+              type: string
+              description: Base64-encoded JSON from Reverb server.
+  responses:
+    "200":
+      description: Channel authorized successfully.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              socket:
+                type: string
+              channel:
+                type: string
+    "403":
+      description: User not authorized for this channel.

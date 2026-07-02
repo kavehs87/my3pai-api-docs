@@ -1,0 +1,69 @@
+get:
+  tags:
+    - Unified Places
+  summary: Nearby services and transport
+  description: |
+    Find the nearest public transport stop and nearby service establishments
+    (post offices, pharmacies, ATMs, etc.) around a coordinate point.
+    Replaces Google Places NearbySearch for transport/services use case.
+
+    Response is cached in Redis for 5 minutes per coordinate/radius combination.
+
+    **Rate limit:** 120 requests/minute
+  parameters:
+    - name: lat
+      in: query
+      required: true
+      schema:
+        type: number
+        minimum: -90
+        maximum: 90
+      description: Latitude of the search center
+    - name: lon
+      in: query
+      required: true
+      schema:
+        type: number
+        minimum: -180
+        maximum: 180
+      description: Longitude of the search center
+    - name: radius_km
+      in: query
+      schema:
+        type: number
+        minimum: 0
+        maximum: 50
+        default: 1.0
+      description: Search radius in kilometers
+  responses:
+    '200':
+      description: Nearby services and transport
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                $ref: ../components/schemas/UnifiedPlaceNearbyServices.yaml
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+    '503':
+      description: Unified place service unavailable
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: Service unavailable

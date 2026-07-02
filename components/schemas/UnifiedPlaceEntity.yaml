@@ -1,0 +1,78 @@
+type: object
+description: >
+  Normalized place entity returned in list results (nearby, map, search).
+  Shape is consistent across all list endpoints for frontend consumption.
+properties:
+  id:
+    type: string
+    description: Internal UUID of the entity
+  place_id:
+    type: string
+    description: >
+      Composite identifier in format `{source}/{source_id}` (e.g., `osm/12345`)
+  name:
+    type: string
+    description: Entity name
+  place_type:
+    type: string
+    description: >
+      Frontend place type derived from unified category mapping
+      (e.g., `instagrammable`, `restaurant`, `transport`, `nature`)
+  activities:
+    type: array
+    items:
+      type: string
+    description: >
+      Activity tags derived from subcategory and secondary types
+      (e.g., `viewpoint`, `hiking`, `museum`)
+  unified_category:
+    type: string
+    nullable: true
+    description: Unified top-level category slug
+  unified_subcategory:
+    type: string
+    nullable: true
+    description: Unified subcategory slug
+  summary:
+    type: string
+    nullable: true
+    description: Short description/abstract
+  address:
+    type: string
+    nullable: true
+    description: >
+      Formatted address string, built from locality/region/country components
+  coordinates:
+    type: object
+    nullable: true
+    properties:
+      lat:
+        type: number
+        description: Latitude
+      lng:
+        type: number
+        description: Longitude
+  distance_km:
+    type: number
+    nullable: true
+    description: >
+      Distance from query center in kilometers.
+      Present in `nearby` results; omitted in `map` results.
+  thumbnail_url:
+    type: string
+    format: uri
+    nullable: true
+    description: URL to primary thumbnail image
+  website:
+    type: string
+    format: uri
+    nullable: true
+    description: Official website URL
+  rating:
+    type: number
+    nullable: true
+    description: Average rating (0.0–5.0)
+  rating_count:
+    type: integer
+    nullable: true
+    description: Number of reviews

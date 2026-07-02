@@ -1,0 +1,50 @@
+type: object
+description: >
+  Category tree node from the Unified Place Service taxonomy.
+  Top-level categories may have `children` (subcategories).
+properties:
+  id:
+    type: string
+    description: Category identifier
+  slug:
+    type: string
+    description: URL-friendly category slug (e.g., `attractions`, `food_drink`)
+  name:
+    type: string
+    description: Display name
+  icon:
+    type: string
+    nullable: true
+    description: Icon/emoji for the category
+  frontend_place_type:
+    type: string
+    description: >
+      Mapped frontend place type for this category
+      (e.g., `instagrammable`, `restaurant`)
+  count:
+    type: integer
+    description: Number of entities in this category
+  children:
+    type: array
+    nullable: true
+    description: Subcategories
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+        slug:
+          type: string
+          description: Subcategory slug (e.g., `viewpoint`, `museum`)
+        name:
+          type: string
+        parent_slug:
+          type: string
+          description: Parent category slug
+        frontend_place_type:
+          type: string
+        frontend_activity:
+          type: string
+          description: Activity tag (usually same as slug)
+        count:
+          type: integer

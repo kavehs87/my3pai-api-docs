@@ -40,6 +40,12 @@ info:
 
     - Public map endpoint: 60 requests per minute per IP
 
+    - Unified Places autocomplete/detail: 300 requests per minute per IP
+
+    - Unified Places nearby/map: 120 requests per minute per IP
+
+    - Unified Places categories: 60 requests per minute per IP
+
     - Rate limit exceeded returns HTTP 429
 
 
@@ -95,6 +101,11 @@ tags:
     description: DZT Knowledge Graph (Open Data Germany) integration
   - name: Swiss DMO
     description: Switzerland DMO open data (mySwitzerland.com) integration
+  - name: Unified Places
+    description: >
+      Unified Place Service bridge — aggregates places from multiple sources
+      (OpenStreetMap, Rexby, Swiss DMO, etc.) into a normalized API.
+      Replaces Google Places Autocomplete, NearbySearch, and FetchFields.
   - name: Webhooks
     description: Webhook endpoints for external service callbacks
   - name: Notifications
@@ -429,6 +440,18 @@ paths:
     $ref: paths/swiss-dmo_map.yaml
   /swiss-dmo/classifications:
     $ref: paths/swiss-dmo_classifications.yaml
+  /places/autocomplete:
+    $ref: paths/places_autocomplete.yaml
+  /places/nearby:
+    $ref: paths/places_nearby.yaml
+  /places/categories:
+    $ref: paths/places_categories.yaml
+  /places/map:
+    $ref: paths/places_map.yaml
+  /places/nearby-services:
+    $ref: paths/places_nearby_services.yaml
+  /places/{source}/{source_id}:
+    $ref: paths/places_{source}_{source_id}.yaml
   /admin/social-posts:
     $ref: paths/admin_social_posts.yaml
   /admin/social-posts/{id}:

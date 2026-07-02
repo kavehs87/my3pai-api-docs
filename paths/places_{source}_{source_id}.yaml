@@ -1,0 +1,64 @@
+get:
+  tags:
+    - Unified Places
+  summary: Place detail
+  description: |
+    Fetch full details for a single place by its composite identifier.
+    Replaces Google Places FetchFields. Returns rich data including media,
+    classifications, accessibility, opening hours, and pricing.
+
+    **Rate limit:** 300 requests/minute
+  parameters:
+    - name: source
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: '^[a-zA-Z_][a-zA-Z0-9_]*$'
+      description: >
+        Data source identifier (e.g., `osm`, `rexby`, `swiss_dmo`)
+    - name: source_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Source-specific entity identifier
+  responses:
+    '200':
+      description: Place detail
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                $ref: ../components/schemas/UnifiedPlaceDetail.yaml
+    '404':
+      description: Place not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: Place not found
+    '503':
+      description: Unified place service unavailable
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: Service unavailable
