@@ -1,0 +1,67 @@
+post:
+  tags:
+    - MCP
+  summary: Model Context Protocol endpoint (admin automation)
+  description: >
+    Streamable HTTP transport endpoint for the MCP (Model Context Protocol) admin server.
+    Enables LLM agents (e.g. opencode) to perform admin operations: dashboard stats,
+    user/influencer management, content moderation, billing reads, platform settings.
+
+    Requires an admin Sanctum token with the `mcp-admin` ability (see
+    `php artisan user:create-mcp-token`). All mutating operations are written to
+    ActivityLog with action prefix `mcp:`.
+
+    Protocol flow (per MCP spec):
+    1. POST `initialize` -> response includes the `Mcp-Session-Id` header
+    2. Subsequent requests send `Mcp-Session-Id` + `Mcp-Protocol-Version` headers
+       with `tools/list`, `tools/call`, `ping`, etc.
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            jsonrpc:
+              type: string
+              enum: ['2.0']
+            id:
+              type: integer
+            method:
+              type: string
+              description: MCP method (initialize, tools/list, tools/call, ping, ...)
+            params:
+              type: object
+  responses:
+    '200':
+      description: JSON-RPC response (or SSE stream for GET)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              jsonrpc:
+                type: string
+              id:
+                type: integer
+                nullable: true
+              result:
+                type: object
+                description: Successful result (e.g. tools list, tool call result)
+              error:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+    '401':
+      description: Unauthenticated
+    '403':
+      description: Forbidden (non-admin or unverified email)
+    '405':
+      description: Method not allowed (only POST is supported)
+    '429':
+      description: Too many requests

@@ -1,8 +1,8 @@
 post:
   tags:
     - Admin Payouts
-  summary: Retry failed payout
-  description: Retry a failed payout by resetting its status to pending. Only payouts with status 'failed' can be retried.
+  summary: Requeue failed payout
+  description: Mark a failed payout as pending for re-processing. Status management only — no money movement is performed. Only payouts with status 'failed' can be requeued.
   parameters:
     - name: id
       in: path
@@ -11,7 +11,7 @@ post:
         type: integer
   responses:
     '200':
-      description: Payout retry initiated
+      description: Payout marked for re-processing
       content:
         application/json:
           schema:

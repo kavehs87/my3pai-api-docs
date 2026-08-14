@@ -378,6 +378,8 @@ paths:
     $ref: paths/stripe_connect.yaml
   /webhooks/stripe:
     $ref: paths/webhooks_stripe.yaml
+  /mcp:
+    $ref: paths/mcp.yaml
   /maps:
     $ref: paths/maps.yaml
   /maps/parse-url:
