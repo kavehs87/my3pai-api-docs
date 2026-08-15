@@ -22,13 +22,21 @@ post:
      merge semantics: absent = untouched, present = set, `null` clears
      nullable fields, `[]` clears relation arrays; `status`/`sort_order`/
      `draft_version` are never changed; optional `version` optimistic lock;
-     `isFeatured` capped at 2 per map) and `poi_delete` (`confirm` guard;
-     removes the POI's S3 media files first: images from the public bucket,
-     videos + thumbnails from the source bucket). Read-only POI helpers:
-     `poi_reference_options` (reference vocabularies, allowed enum values and
-     existing tag keys for authoring POI payloads), `poi_list` (per-map
-     summary, no tips/media bodies) and `poi_show` (full public PoiResource
-     shape).
+      `isFeatured` capped at 2 per map) and `poi_delete` (`confirm` guard;
+      removes the POI's S3 media files first: images from the public bucket,
+      videos + thumbnails from the source bucket). Media tools:
+      `poi_add_media` (adds image media from up to 20 public URLs in one
+      all-or-nothing batch — non-image content, download errors or the
+      10 MB / 20-image caps reject the whole call before anything is
+      written; optional `image_credit` sets the POI-wide credit; a POI
+      needs at least one image to become publishable) and
+      `map_add_thumbnail` (sets the map thumbnail from a public image URL
+      or a public-bucket S3 path — exactly one; the previous thumbnail
+      file is deleted and the `?v=` cache-buster refreshes). Read-only POI
+      helpers: `poi_reference_options` (reference vocabularies, allowed
+      enum values and existing tag keys for authoring POI payloads),
+      `poi_list` (per-map summary, no tips/media bodies) and `poi_show`
+      (full public PoiResource shape).
 
     Protocol flow (per MCP spec):
     1. POST `initialize` -> response includes the `Mcp-Session-Id` header
