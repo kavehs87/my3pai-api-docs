@@ -24,12 +24,16 @@ post:
      `draft_version` are never changed; optional `version` optimistic lock;
       `isFeatured` capped at 2 per map) and `poi_delete` (`confirm` guard;
       removes the POI's S3 media files first: images from the public bucket,
-      videos + thumbnails from the source bucket). Media tools:
-      `poi_add_media` (adds image media from up to 20 public URLs in one
-      all-or-nothing batch — non-image content, download errors or the
-      10 MB / 20-image caps reject the whole call before anything is
-      written; optional `image_credit` sets the POI-wide credit; a POI
-      needs at least one image to become publishable) and
+      videos + thumbnails from the source bucket).       Media tools:
+      `poi_add_media` (adds media from public URLs — at least one of
+      `urls` image batch (JPEG/PNG/WebP, 10 MB, max 20; a POI needs
+      at least one image to become publishable), `video_urls` (MP4/MOV/
+      WebM/MKV, 50 MB, max 10; stored in the source bucket and processed
+      asynchronously, status `pending` until the worker finishes),
+      `audio_url` (50 MB; replaces any existing audio) and `pdf_url`
+      (20 MB; replaces any existing PDF); every file is validated before
+      anything is written, so one bad URL rejects the whole call;
+      optional `image_credit` sets the POI-wide credit) and
       `map_add_thumbnail` (sets the map thumbnail from a public image URL
       or a public-bucket S3 path — exactly one; the previous thumbnail
       file is deleted and the `?v=` cache-buster refreshes). Read-only POI
