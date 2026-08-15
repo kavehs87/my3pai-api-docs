@@ -14,11 +14,21 @@ post:
      Map & POI tools: `map_create` (creates a map record for a chosen creator:
      `creator_id` + title, price in cents, creator must have an active Stripe
      account when `is_for_sale`), `map_update` (title/slug, for-sale + price,
-     publish toggle which cascades POI status like the public updateMap), and
-     the read-only POI helpers `poi_reference_options` (reference vocabularies,
-     allowed enum values and existing tag keys for authoring POI payloads),
-     `poi_list` (per-map summary, no tips/media bodies) and `poi_show` (full
-     public PoiResource shape).
+     publish toggle which cascades POI status like the public updateMap),
+     `poi_create` (full POI payload mirroring the public POI create payload;
+     the POI belongs to the map owner, created as draft; country accepts an
+     ISO code or full country name; `isFeatured` honored with a max-2-per-map
+     cap; POI money fields are decimal, not cents), `poi_update` (partial-
+     merge semantics: absent = untouched, present = set, `null` clears
+     nullable fields, `[]` clears relation arrays; `status`/`sort_order`/
+     `draft_version` are never changed; optional `version` optimistic lock;
+     `isFeatured` capped at 2 per map) and `poi_delete` (`confirm` guard;
+     removes the POI's S3 media files first: images from the public bucket,
+     videos + thumbnails from the source bucket). Read-only POI helpers:
+     `poi_reference_options` (reference vocabularies, allowed enum values and
+     existing tag keys for authoring POI payloads), `poi_list` (per-map
+     summary, no tips/media bodies) and `poi_show` (full public PoiResource
+     shape).
 
     Protocol flow (per MCP spec):
     1. POST `initialize` -> response includes the `Mcp-Session-Id` header
