@@ -7,9 +7,18 @@ post:
     Enables LLM agents (e.g. opencode) to perform admin operations: dashboard stats,
     user/influencer management, content moderation, billing reads, platform settings.
 
-    Requires an admin Sanctum token with the `mcp-admin` ability (see
-    `php artisan user:create-mcp-token`). All mutating operations are written to
-    ActivityLog with action prefix `mcp:`.
+     Requires an admin Sanctum token with the `mcp-admin` ability (see
+     `php artisan user:create-mcp-token`). All mutating operations are written to
+     ActivityLog with action prefix `mcp:`.
+
+     Map & POI tools: `map_create` (creates a map record for a chosen creator:
+     `creator_id` + title, price in cents, creator must have an active Stripe
+     account when `is_for_sale`), `map_update` (title/slug, for-sale + price,
+     publish toggle which cascades POI status like the public updateMap), and
+     the read-only POI helpers `poi_reference_options` (reference vocabularies,
+     allowed enum values and existing tag keys for authoring POI payloads),
+     `poi_list` (per-map summary, no tips/media bodies) and `poi_show` (full
+     public PoiResource shape).
 
     Protocol flow (per MCP spec):
     1. POST `initialize` -> response includes the `Mcp-Session-Id` header
