@@ -1,0 +1,22 @@
+type: object
+description: Status of the current admin's dedicated MCP tokens. The raw token value is intentionally omitted.
+required:
+  - exists
+  - active_count
+  - newest_created_at
+  - last_used_at
+properties:
+  exists:
+    type: boolean
+  active_count:
+    type: integer
+    minimum: 0
+  newest_created_at:
+    type: string
+    format: date-time
+    nullable: true
+  last_used_at:
+    type: string
+    format: date-time
+    nullable: true
+additionalProperties: false

@@ -508,6 +508,8 @@ paths:
     $ref: paths/admin_maps_{id}_publish.yaml
   /admin/maps/{id}/unpublish:
     $ref: paths/admin_maps_{id}_unpublish.yaml
+  /admin/mcp/token:
+    $ref: paths/admin_mcp_token.yaml
   /admin/stats:
     $ref: paths/admin_stats.yaml
   /admin/stats/trends:

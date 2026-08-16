@@ -1,0 +1,25 @@
+type: object
+description: A newly created admin MCP token. The token value is returned only once and cannot be retrieved later.
+required:
+  - token
+  - name
+  - abilities
+  - created_at
+properties:
+  token:
+    type: string
+    description: Plain-text Sanctum token. The admin panel should require the user to store it immediately.
+  name:
+    type: string
+    enum:
+      - mcp-admin
+  abilities:
+    type: array
+    items:
+      type: string
+    enum:
+      - - mcp-admin
+  created_at:
+    type: string
+    format: date-time
+additionalProperties: false

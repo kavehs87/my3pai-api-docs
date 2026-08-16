@@ -1,0 +1,8 @@
+type: object
+description: Request body for creating or rotating the current admin's MCP token.
+properties:
+  revoke_existing:
+    type: boolean
+    default: false
+    description: When true, revoke all existing `mcp-admin` tokens for the current admin before creating the new token.
+additionalProperties: false

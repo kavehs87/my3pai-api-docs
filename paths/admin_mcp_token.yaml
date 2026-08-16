@@ -1,0 +1,146 @@
+get:
+  tags:
+    - Admin
+  summary: Get admin MCP token status
+  description: Returns status for the currently authenticated admin's dedicated `/api/mcp` token. The raw token value is never returned.
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: MCP token status
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - success
+              - data
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                required:
+                  - mcp_token
+                properties:
+                  mcp_token:
+                    $ref: ../components/schemas/AdminMcpTokenStatus.yaml
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+post:
+  tags:
+    - Admin
+  summary: Create or rotate admin MCP token
+  description: >
+    Creates a dedicated Sanctum token named `mcp-admin` with ability `mcp-admin`
+    for the currently authenticated admin. If `revoke_existing` is true, all
+    existing `mcp-admin` tokens for that admin are revoked first. The raw token
+    is returned only once in this response.
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: false
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/StoreAdminMcpTokenRequest.yaml
+  responses:
+    '201':
+      description: MCP token created
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - success
+              - message
+              - data
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+                example: MCP token created
+              data:
+                type: object
+                required:
+                  - mcp_token
+                  - mcp_endpoint
+                properties:
+                  mcp_token:
+                    $ref: ../components/schemas/AdminMcpTokenCreated.yaml
+                  mcp_endpoint:
+                    type: string
+                    example: /api/mcp
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+delete:
+  tags:
+    - Admin
+  summary: Revoke admin MCP tokens
+  description: Revokes all dedicated `mcp-admin` tokens for the currently authenticated admin. Normal admin login tokens are unaffected.
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: MCP tokens revoked
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - success
+              - message
+              - data
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+                example: MCP token revoked
+              data:
+                type: object
+                required:
+                  - revoked_count
+                properties:
+                  revoked_count:
+                    type: integer
+                    minimum: 0
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
