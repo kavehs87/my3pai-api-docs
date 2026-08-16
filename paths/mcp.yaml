@@ -32,11 +32,19 @@ post:
       `cover_image` and `intro_video`
       (`url`, `status`, `thumbnail_url`, `duration_seconds`).
 
-      Blog tools: `blog_post_create` (creates a post for a chosen author;
-      `author_id` + title required, content is sanitized as blog HTML, and
-      premium posts require `price_cents > 0` plus an active author Stripe
-      account) and `blog_post_set_cover` (`source_url` or `source_path`,
-      exactly one; JPEG/PNG/WebP, 10 MB max, previous cover file deleted).
+       Blog tools: `blog_post_create` (creates a post for a chosen author;
+       `author_id` + title required, content is sanitized as blog HTML, and
+       premium posts require `price_cents > 0` plus an active author Stripe
+       account), `blog_post_update` (partial edit by `id`; optional `data` may
+       include any of title, preview, content, is_premium, price_cents,
+       currency; title changes regenerate the slug, content is sanitized as
+       blog HTML, premium updates enforce the same price/Stripe rules, and
+       `is_premium=false` clears price; use `blog_post_publish` /
+       `blog_post_unpublish` and `blog_post_set_cover` for publication state
+       and cover changes) and `blog_post_set_cover` (`source_url` or
+       `source_path`, exactly one; JPEG/PNG/WebP, 10 MB max, previous cover
+       file deleted).
+
 
       Map & POI tools: `map_create` (creates a map record for a chosen creator:
      `creator_id` + title, price in cents, creator must have an active Stripe
