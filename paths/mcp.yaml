@@ -38,7 +38,8 @@ post:
        `cover_image`, `intro_video`
        (`url`, `status`, `thumbnail_url`, `duration_seconds`) and
        `preferences` (including `wants_to_become_influencer` and payout
-       `country`).
+       `country`); `influencer_show` also exposes `role` and the full
+       per-tool `settings` toggles plus `creator_tools_disabled`.
 
 
        Blog tools: `blog_post_create` (creates a post for a chosen author;
