@@ -11,6 +11,13 @@ post:
      `php artisan user:create-mcp-token`). All mutating operations are written to
      ActivityLog with action prefix `mcp:`.
 
+     Influencer provisioning: `influencer_create` atomically creates a new
+     user (role=influencer, verified by default) and their creator-settings
+     row, so the influencer appears in the admin Influencers dashboard
+     immediately without waiting for their first session in the public app;
+     optional per-tool `*_enabled` toggles (maps, blog, podcast,
+     masterclass, consultation, media_assets) default to true.
+
      Map & POI tools: `map_create` (creates a map record for a chosen creator:
      `creator_id` + title, price in cents, creator must have an active Stripe
      account when `is_for_sale`), `map_update` (title/slug, for-sale + price,
