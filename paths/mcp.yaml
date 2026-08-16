@@ -11,12 +11,18 @@ post:
      `php artisan user:create-mcp-token`). All mutating operations are written to
      ActivityLog with action prefix `mcp:`.
 
-     Influencer provisioning: `influencer_create` atomically creates a new
-     user (role=influencer, verified by default) and their creator-settings
-     row, so the influencer appears in the admin Influencers dashboard
-     immediately without waiting for their first session in the public app;
-     optional per-tool `*_enabled` toggles (maps, blog, podcast,
-      masterclass, consultation, media_assets) default to true.
+      Influencer provisioning: `influencer_create` atomically creates a new
+      user (role=influencer, verified by default), their creator-settings row
+      with every tool enabled, and the website preference row with
+      `wants_to_become_influencer=true`, so the influencer appears in the
+      admin Influencers dashboard and the public app does not show the
+      first-login Become an Influencer modal without waiting for their first
+      session. Optional per-tool `*_enabled` toggles (maps, blog, podcast,
+      masterclass, consultation, media_assets) default to true. Optional
+      `country` (ISO code or full country name) sets the payout country and
+      is inferred from `location` when recognizable; optional `currency`,
+      `language` and `timezone` default to USD, en and UTC.
+
 
       Profile media: `user_set_avatar`, `user_set_cover` and `user_set_logo`
       accept `source_url` or `source_path` (exactly one), validate the real
@@ -28,9 +34,12 @@ post:
       the source bucket, sets `intro_video_status=processing`, and dispatches
       the async video worker; `influencer_clear_intro_video` removes the
       video, source/public artifacts, thumbnail, status and duration.
-      `user_show` and `influencer_show` expose `avatar_url`, `logo_url`,
-      `cover_image` and `intro_video`
-      (`url`, `status`, `thumbnail_url`, `duration_seconds`).
+       `user_show` and `influencer_show` expose `avatar_url`, `logo_url`,
+       `cover_image`, `intro_video`
+       (`url`, `status`, `thumbnail_url`, `duration_seconds`) and
+       `preferences` (including `wants_to_become_influencer` and payout
+       `country`).
+
 
        Blog tools: `blog_post_create` (creates a post for a chosen author;
        `author_id` + title required, content is sanitized as blog HTML, and

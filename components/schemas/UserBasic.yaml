@@ -22,8 +22,26 @@ properties:
     type: string
   last_name:
     type: string
+  username:
+    type: string
+    nullable: true
+  role:
+    type: string
+    enum:
+      - user
+      - influencer
+      - admin
+  verified:
+    type: boolean
+  preferences:
+    $ref: ./UserPreferences.yaml
+    nullable: true
   joinedDate:
     type: string
     format: date-time
     nullable: true
     description: Date when the user joined (ISO 8601 format)
+  hasPassword:
+    type: boolean
+  hasGoogleAccount:
+    type: boolean
