@@ -3,9 +3,9 @@ get:
     - AI
   summary: List supported AI models
   description: >
-    Returns the currently configured AI model and a list of all Gemini models
-    supported by the application. Use this endpoint to discover which models
-    are available for use with the chat endpoint.
+    Returns the currently configured AI model (via OpenRouter) and a list of
+    model options supported by the application. Use this endpoint to discover
+    which models are available for use with the chat endpoint.
 
     This endpoint is public and does not require authentication.
   security: []
@@ -26,15 +26,15 @@ get:
                   configured:
                     type: object
                     properties:
+                      provider:
+                        type: string
+                        example: openrouter
                       model:
                         type: string
-                        example: gemini-2.5-flash-lite
-                      region:
+                        example: openrouter/free
+                      base_url:
                         type: string
-                        example: europe-west1
-                      project_id:
-                        type: string
-                        example: third-anvil-478617-d4
+                        example: https://openrouter.ai/api/v1
                   supported:
                     type: array
                     items:
@@ -45,7 +45,7 @@ get:
                         description:
                           type: string
     '500':
-      description: Server error or Vertex AI API error
+      description: Server error or OpenRouter API error
       content:
         application/json:
           schema:

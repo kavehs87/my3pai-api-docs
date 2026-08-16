@@ -1,10 +1,11 @@
 post:
   tags:
     - AI
-  summary: Generate content with Vertex AI Gemini
+  summary: Generate content with the AI model
   description: >
-    Flexible content generation endpoint. Accepts custom system prompts and
-    temperature overrides.
+    Flexible content generation endpoint powered by OpenRouter. Accepts custom
+    system prompts and temperature overrides. Uses the configured model
+    (default: the Free Models Router, "openrouter/free").
 
     **Authentication:**
     Send `X-AI-Token` header with the general AI token to authenticate, or
@@ -90,7 +91,7 @@ post:
                     example:
                       - "The message field is required."
     '500':
-      description: Server error or Vertex AI API error
+      description: Server error or OpenRouter API error
       content:
         application/json:
           schema:

@@ -1,10 +1,11 @@
 post:
   tags:
     - AI
-  summary: Chat with Vertex AI Gemini
+  summary: Chat with the AI model
   description: >
-    Send a message to Google Vertex AI Gemini model and receive a generated text response.
-    Uses the gemini-1.5-flash-001 model (or configured model) via Vertex AI API.
+    Send a message to the AI model and receive a generated text response.
+    Runs on OpenRouter using the configured model (default: the Free Models Router,
+    "openrouter/free"; pin a specific model with the AI_MODEL environment variable).
     
     **Authentication:**
     Requires valid Sanctum authentication token.
@@ -66,7 +67,7 @@ post:
                     example:
                       - "The message field is required."
     '500':
-      description: Server error or Vertex AI API error
+      description: Server error or OpenRouter API error
       content:
         application/json:
           schema:
@@ -81,5 +82,5 @@ post:
               error:
                 type: string
                 description: Error message (only shown in local/development environments)
-                example: "Vertex AI API error: Invalid credentials"
+                example: "OpenRouter API error (401): API key is invalid or missing"
 

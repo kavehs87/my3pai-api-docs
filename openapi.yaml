@@ -92,7 +92,7 @@ tags:
   - name: Admin
     description: Administrative endpoints (admin only)
   - name: AI
-    description: AI-powered endpoints using Google Vertex AI
+    description: AI-powered endpoints using OpenRouter
   - name: Public
     description: Public endpoints that don't require authentication
   - name: Billing
