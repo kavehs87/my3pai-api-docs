@@ -23,6 +23,11 @@ get:
       in: query
       schema:
         type: integer
+    - name: influencer_id
+      in: query
+      description: Return orders where this influencer is the seller (at least one order item belongs to this creator).
+      schema:
+        type: integer
     - name: item_type
       in: query
       schema:

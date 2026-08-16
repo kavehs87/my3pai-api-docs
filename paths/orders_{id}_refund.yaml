@@ -2,7 +2,12 @@ post:
   tags:
     - Billing
   summary: Process refund for order
-  description: Admin-only endpoint to process a refund for an order. Buyers/sellers cannot call this route directly.
+  description: |
+    Admin-only endpoint to process a full or partial refund for an order.
+
+    - Omit `amount_cents` to refund the full remaining refundable amount.
+    - Send `amount_cents` to refund a specific amount in cents.
+    - Repeated partial refunds are allowed as long as their total does not exceed the order total.
   security:
     - BearerAuth: []
   parameters:
@@ -30,6 +35,10 @@ post:
             reason_description:
               type: string
               nullable: true
+            amount_cents:
+              type: integer
+              minimum: 1
+              description: Optional partial refund amount in cents. When omitted, the full remaining amount is refunded.
   responses:
     '200':
       description: Refund processed successfully
@@ -41,9 +50,25 @@ post:
               success:
                 type: boolean
               data:
-                $ref: ../components/schemas/Payment.yaml
+                type: object
+                properties:
+                  refund_id:
+                    type: integer
+                  amount_refunded:
+                    type: number
+                    format: float
+                    description: Refunded amount in dollars.
+                  status:
+                    type: string
+                    enum: [pending, succeeded]
     '400':
       description: Order cannot be refunded
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed (invalid `amount_cents` or amount exceeds remaining refundable amount)
       content:
         application/json:
           schema:
