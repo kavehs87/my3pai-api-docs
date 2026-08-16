@@ -11,7 +11,7 @@ properties:
     type: string
   role:
     type: string
-    enum: [user, admin]
+    enum: [user, influencer, admin]
   verified:
     type: boolean
   bio:
@@ -24,6 +24,31 @@ properties:
     type: string
     format: uri
     nullable: true
+  logo_url:
+    type: string
+    format: uri
+    nullable: true
+  cover_image:
+    type: string
+    format: uri
+    nullable: true
+  intro_video:
+    type: object
+    nullable: true
+    properties:
+      url:
+        type: string
+        nullable: true
+      status:
+        type: string
+        nullable: true
+      thumbnail_url:
+        type: string
+        format: uri
+        nullable: true
+      duration_seconds:
+        type: integer
+        nullable: true
   created_at:
     type: string
     format: date-time

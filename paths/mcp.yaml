@@ -16,7 +16,21 @@ post:
      row, so the influencer appears in the admin Influencers dashboard
      immediately without waiting for their first session in the public app;
      optional per-tool `*_enabled` toggles (maps, blog, podcast,
-     masterclass, consultation, media_assets) default to true.
+      masterclass, consultation, media_assets) default to true.
+
+      Profile media: `user_set_avatar`, `user_set_cover` and `user_set_logo`
+      accept `source_url` or `source_path` (exactly one), validate the real
+      content, replace the previous file, and return the updated user
+      (avatar is center-cropped to 256x256; logo also accepts SVG).
+      `user_clear_avatar`, `user_clear_cover` and `user_clear_logo` are
+      idempotent. `influencer_set_intro_thumbnail` sets the intro picture.
+      `influencer_set_intro_video` accepts `video_url`, stores the master in
+      the source bucket, sets `intro_video_status=processing`, and dispatches
+      the async video worker; `influencer_clear_intro_video` removes the
+      video, source/public artifacts, thumbnail, status and duration.
+      `user_show` and `influencer_show` expose `avatar_url`, `logo_url`,
+      `cover_image` and `intro_video`
+      (`url`, `status`, `thumbnail_url`, `duration_seconds`).
 
      Map & POI tools: `map_create` (creates a map record for a chosen creator:
      `creator_id` + title, price in cents, creator must have an active Stripe
