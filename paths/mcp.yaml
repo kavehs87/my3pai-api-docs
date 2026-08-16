@@ -32,7 +32,13 @@ post:
       `cover_image` and `intro_video`
       (`url`, `status`, `thumbnail_url`, `duration_seconds`).
 
-     Map & POI tools: `map_create` (creates a map record for a chosen creator:
+      Blog tools: `blog_post_create` (creates a post for a chosen author;
+      `author_id` + title required, content is sanitized as blog HTML, and
+      premium posts require `price_cents > 0` plus an active author Stripe
+      account) and `blog_post_set_cover` (`source_url` or `source_path`,
+      exactly one; JPEG/PNG/WebP, 10 MB max, previous cover file deleted).
+
+      Map & POI tools: `map_create` (creates a map record for a chosen creator:
      `creator_id` + title, price in cents, creator must have an active Stripe
      account when `is_for_sale`), `map_update` (title/slug, for-sale + price,
      publish toggle which cascades POI status like the public updateMap),
