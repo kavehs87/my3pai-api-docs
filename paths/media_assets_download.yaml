@@ -1,53 +1,59 @@
 get:
   tags:
     - Media Assets
-  summary: Download media asset file
-  description: Download purchased media asset using signed URL
-  security: []
+  summary: Download purchased media asset file
+  description: |
+    Entitlement-gated download for a purchased media asset. The endpoint re-validates
+    authentication, ownership, payment state, refund state and the download window on every
+    request, then 302-redirects to a short-lived (15 minute) signed S3 URL for the immutable
+    purchase snapshot (or the original source file). This is the single enforced download gate —
+    no long-lived or token-based download links are ever exposed.
+
+    Legacy anonymous token links (`?token=...&expires=...&path=...`) are rejected with `410`.
+  security:
+    - BearerAuth: []
   parameters:
-    - name: token
+    - name: purchase
       in: query
       required: true
-      schema:
-        type: string
-    - name: expires
-      in: query
-      required: true
+      description: The media asset purchase ID
       schema:
         type: integer
-    - name: path
-      in: query
-      required: true
-      schema:
-        type: string
   responses:
-    '200':
-      description: File download
-      content:
-        application/octet-stream:
+    '302':
+      description: Redirect to a short-lived signed download URL
+      headers:
+        Location:
+          description: Short-lived signed S3 URL for the file
           schema:
             type: string
-            format: binary
+            format: uri
     '400':
-      description: Invalid download link
+      description: Invalid or missing purchase parameter
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '401':
+      description: Unauthenticated
       content:
         application/json:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
     '403':
-      description: Invalid token
+      description: Purchase does not belong to the user, or payment is pending/failed/refunded
       content:
         application/json:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
     '404':
-      description: File not found
+      description: Purchase not found or file not found
       content:
         application/json:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
     '410':
-      description: Download link expired
+      description: Legacy token link, or download window has expired
       content:
         application/json:
           schema:

@@ -2,7 +2,18 @@ post:
   tags:
     - Media Assets
   summary: Purchase media asset
-  description: Customer purchases a media asset
+  description: |
+    Creates (or resumes) a purchase for a media asset and returns a Stripe PaymentIntent
+    client secret. No download URL is generated before payment: the customer completes
+    checkout with the client secret, and the `downloadUrl` only becomes available on the
+    purchase once the PaymentIntent has succeeded (via webhook or `POST /payments/confirm`).
+
+    Idempotent per customer + asset:
+    - If a purchase is already paid and its download window is active, returns `400`.
+    - If a pending purchase has an actionable PaymentIntent, returns `200` with the same
+      client secret to resume.
+    - If the pending purchase's PaymentIntent has already succeeded, finalizes it and returns
+      `200` with the now-available download URL.
   parameters:
     - name: id
       in: path
@@ -10,6 +21,31 @@ post:
       schema:
         type: integer
   responses:
+    '200':
+      description: Existing purchase resumed (pending PaymentIntent) or finalized (PaymentIntent already succeeded)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  purchase:
+                    $ref: ../components/schemas/MediaAssetPurchase.yaml
+                  paymentIntent:
+                    type: object
+                    properties:
+                      clientSecret:
+                        type: string
+                      amount:
+                        type: integer
+                      currency:
+                        type: string
+              message:
+                type: string
     '201':
       description: Purchase created successfully
       content:
@@ -36,7 +72,7 @@ post:
               message:
                 type: string
     '400':
-      description: Cannot purchase own asset or asset not available
+      description: Cannot purchase own asset, asset not available, asset has no file, or asset already purchased (active download window)
       content:
         application/json:
           schema:

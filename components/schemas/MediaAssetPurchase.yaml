@@ -2,6 +2,30 @@ type: object
 properties:
   id:
     type: integer
+  downloadUrl:
+    type: string
+    format: uri
+    nullable: true
+    description: >
+      Auth-gated download endpoint for this purchase. Only present while the purchase is paid
+      and within its download window; null otherwise. This is a redirect endpoint, never a
+      long-lived file URL.
+  downloadExpiresAt:
+    type: string
+    format: date-time
+  purchasedAt:
+    type: string
+    format: date-time
+  isImmutable:
+    type: boolean
+    description: Whether an immutable snapshot of the file has been created
+  paymentStatus:
+    type: string
+    enum:
+      - pending
+      - paid
+      - failed
+      - refunded
   mediaAsset:
     type: object
     nullable: true
@@ -26,12 +50,17 @@ properties:
         type: string
       username:
         type: string
-  downloadUrl:
-    type: string
-    format: uri
-  downloadExpiresAt:
-    type: string
-    format: date-time
-  purchasedAt:
-    type: string
-    format: date-time
+  snapshot:
+    type: object
+    nullable: true
+    description: Present when the purchase has an immutable snapshot
+    properties:
+      manifestPath:
+        type: string
+      timestamp:
+        type: string
+      createdAt:
+        type: string
+        format: date-time
+      fileCount:
+        type: integer
