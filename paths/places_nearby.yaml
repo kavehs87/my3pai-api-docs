@@ -33,6 +33,14 @@ get:
         maximum: 50
         default: 0.1
       description: Search radius in kilometers
+    - name: source
+      in: query
+      schema:
+        type: string
+        maxLength: 200
+      description: >
+        Restrict results to a single data source (e.g., `dzt`, `swiss_dmo`,
+        `osm`, `rexby`). Omit to search all sources.
     - name: unified_category
       in: query
       schema:
