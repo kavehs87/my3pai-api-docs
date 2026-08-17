@@ -97,10 +97,6 @@ tags:
     description: Public endpoints that don't require authentication
   - name: Billing
     description: Shopping cart, orders, payments, and invoicing
-  - name: DZT
-    description: DZT Knowledge Graph (Open Data Germany) integration
-  - name: Swiss DMO
-    description: Switzerland DMO open data (mySwitzerland.com) integration
   - name: Unified Places
     description: >
       Unified Place Service bridge — aggregates places from multiple sources
@@ -416,42 +412,6 @@ paths:
     $ref: paths/pois_{poi}_europeana_search.yaml
   /pois/{poi}/europeana/{europeanaItem}:
     $ref: paths/pois_{poi}_europeana_{europeanaItem}.yaml
-  /pois/{poi}/dzt:
-    $ref: paths/pois_{poi}_dzt.yaml
-  /pois/{poi}/dzt/search:
-    $ref: paths/pois_{poi}_dzt_search.yaml
-  /pois/{poi}/dzt/search-nearby:
-    $ref: paths/pois_{poi}_dzt_search_nearby.yaml
-  /pois/{poi}/dzt/details:
-    $ref: paths/pois_{poi}_dzt_details.yaml
-  /pois/{poi}/dzt/{dztItem}:
-    $ref: paths/pois_{poi}_dzt_{dztItem}.yaml
-  /dzt/nearby:
-    $ref: paths/dzt_nearby.yaml
-  /dzt/nearby-cached:
-    $ref: paths/dzt_nearby_cached.yaml
-  /dzt/cache/stats:
-    $ref: paths/dzt_cache_stats.yaml
-  /swiss-dmo/search:
-    $ref: paths/swiss_dmo_search.yaml
-  /swiss-dmo/nearby:
-    $ref: paths/swiss_dmo_nearby.yaml
-  /swiss-dmo/destinations:
-    $ref: paths/swiss_dmo_destinations.yaml
-  /swiss-dmo/destinations/{swissId}:
-    $ref: paths/swiss_dmo_destinations_{swissId}.yaml
-  /swiss-dmo/attractions:
-    $ref: paths/swiss_dmo_attractions.yaml
-  /swiss-dmo/attractions/{swissId}:
-    $ref: paths/swiss_dmo_attractions_{swissId}.yaml
-  /swiss-dmo/tours:
-    $ref: paths/swiss_dmo_tours.yaml
-  /swiss-dmo/tours/{swissId}:
-    $ref: paths/swiss_dmo_tours_{swissId}.yaml
-  /swiss-dmo/map:
-    $ref: paths/swiss_dmo_map.yaml
-  /swiss-dmo/classifications:
-    $ref: paths/swiss_dmo_classifications.yaml
   /places/autocomplete:
     $ref: paths/places_autocomplete.yaml
   /places/nearby:
