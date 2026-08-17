@@ -24,10 +24,9 @@ properties:
     nullable: true
   isPremium:
     type: boolean
-  price:
-    type: number
-    format: float
-    description: Price in dollars (null if free)
+  price_cents:
+    type: integer
+    description: Price in cents (null if free)
     nullable: true
   currency:
     type: string

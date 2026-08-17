@@ -28,10 +28,9 @@ get:
                 properties:
                   id:
                     type: integer
-                  amount:
-                    type: number
-                    format: float
-                    description: Amount in dollars
+                  amount_cents:
+                    type: integer
+                    description: Amount in cents
                   currency:
                     type: string
                   status:
@@ -67,10 +66,9 @@ get:
                           type: integer
                         order_id:
                           type: integer
-                        amount:
-                          type: number
-                          format: float
-                          description: Amount in dollars
+                        amount_cents:
+                          type: integer
+                          description: Amount in cents
                         fee_percentage:
                           type: number
                           format: float

@@ -61,7 +61,7 @@ get:
           - updated_at
           - download_count
           - type
-          - price
+          - price_cents
         default: created_at
     - name: order
       in: query

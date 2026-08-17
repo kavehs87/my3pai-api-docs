@@ -51,7 +51,7 @@ post:
                       clientSecret:
                         type: string
                         description: Stripe payment intent client secret
-                      amount:
+                      amount_cents:
                         type: integer
                         description: Amount in cents
                       currency:

@@ -13,9 +13,8 @@ properties:
     type: string
     format: uri
     nullable: true
-  price:
-    type: number
-    format: float
+  price_cents:
+    type: integer
     minimum: 0
   type:
     type: string

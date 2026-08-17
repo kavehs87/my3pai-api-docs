@@ -20,10 +20,9 @@ properties:
   isPremium:
     type: boolean
     default: false
-  price:
-    type: number
-    format: float
-    description: Price in dollars (stored as cents in DB)
+  price_cents:
+    type: integer
+    description: Price in cents (stored as cents in DB)
     nullable: true
   currency:
     type: string

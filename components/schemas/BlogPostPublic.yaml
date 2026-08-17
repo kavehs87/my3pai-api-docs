@@ -23,9 +23,9 @@ properties:
   readTime:
     type: string
     description: 5 min read
-  price:
-    type: number
-    description: Price in dollars (e.g., 3.00). Null if free or not set.
+  price_cents:
+    type: integer
+    description: Price in cents (e.g., 3.00). Null if free or not set.
     nullable: true
   currency:
     type: string

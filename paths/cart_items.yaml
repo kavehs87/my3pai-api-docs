@@ -29,7 +29,7 @@ post:
 
     **Stripe Account Requirement for Maps:**
 
-    Paid maps (where `is_for_sale` is true and `price` > 0) can only be added to
+    Paid maps (where `is_for_sale` is true and `price_cents` > 0) can only be added to
     the cart if the influencer who created the map has a connected and active
     Stripe account. If the creator has not set up payments, the request will fail
     with a 422 error. Free maps are not affected by this restriction.

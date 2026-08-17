@@ -64,9 +64,8 @@ post:
             is_for_sale:
               type: boolean
               default: false
-            price:
-              type: number
-              format: decimal
+            price_cents:
+              type: integer
               minimum: 0
               nullable: true
               description: Required if isForSale or is_for_sale is true
@@ -79,7 +78,7 @@ post:
               title: Premium Travel Map
               isPublished: true
               isForSale: true
-              price: 29.99
+              price_cents: 2999
   responses:
     '201':
       description: Map created successfully

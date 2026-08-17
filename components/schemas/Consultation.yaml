@@ -6,9 +6,8 @@ properties:
     type: string
   description:
     type: string
-  price:
-    type: number
-    format: float
+  price_cents:
+    type: integer
   currency:
     type: string
     minLength: 3

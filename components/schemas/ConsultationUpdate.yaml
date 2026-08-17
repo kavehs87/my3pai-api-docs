@@ -3,7 +3,7 @@ required:
   - title
   - description
   - duration_minutes
-  - price
+  - price_cents
   - currency
 properties:
   title:
@@ -16,9 +16,8 @@ properties:
     type: integer
     minimum: 15
     maximum: 240
-  price:
-    type: number
-    format: float
+  price_cents:
+    type: integer
     minimum: 0
   currency:
     type: string

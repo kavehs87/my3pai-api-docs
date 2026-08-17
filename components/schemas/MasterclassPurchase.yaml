@@ -6,10 +6,10 @@ properties:
     type: string
     format: date-time
   purchasePrice:
-    type: number
-    format: float
-    description: "Purchase price in dollars (converted from cents)"
-    example: 49.99
+    type: integer
+    minimum: 0
+    description: "Purchase price in cents"
+    example: 4999
   masterclass:
     type: object
     nullable: true
@@ -27,11 +27,10 @@ properties:
         type: string
         nullable: true
         description: "Cover image URL"
-      price:
-        type: number
-        format: float
-        description: "Price in dollars"
-        example: 49.99
+      price_cents:
+        type: integer
+        description: "Price in cents"
+        example: 4999
       isPremium:
         type: boolean
       isPublished:

@@ -81,9 +81,8 @@ put:
               type: boolean
             is_for_sale:
               type: boolean
-            price:
-              type: number
-              format: decimal
+            price_cents:
+              type: integer
               minimum: 0
               nullable: true
               description: Required if isForSale or is_for_sale is true

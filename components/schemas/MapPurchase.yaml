@@ -11,15 +11,15 @@ properties:
     type: string
     example: "USD"
   unitPrice:
-    type: number
-    format: float
-    description: "Price per unit in dollars (converted from cents)"
-    example: 150.00
+    type: integer
+    minimum: 0
+    description: "Price per unit in cents"
+    example: 15000
   totalPrice:
-    type: number
-    format: float
-    description: "Total price in dollars (converted from cents)"
-    example: 150.00
+    type: integer
+    minimum: 0
+    description: "Total price in cents"
+    example: 15000
   map:
     type: object
     nullable: true
@@ -34,7 +34,7 @@ properties:
         type: boolean
       isForSale:
         type: boolean
-      price:
+      price_cents:
         type: string
         nullable: true
       poiCount:

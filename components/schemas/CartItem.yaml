@@ -56,9 +56,8 @@ properties:
       description:
         type: string
         nullable: true
-      price:
-        type: number
-        format: float
+      price_cents:
+        type: integer
         nullable: true
       coverImage:
         type: string

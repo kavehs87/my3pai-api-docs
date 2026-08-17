@@ -54,10 +54,10 @@ post:
                 properties:
                   refund_id:
                     type: integer
-                  amount_refunded:
-                    type: number
-                    format: float
-                    description: Refunded amount in dollars.
+                  amount_refunded_cents:
+                    type: integer
+                    minimum: 0
+                    description: Refunded amount in cents.
                   status:
                     type: string
                     enum: [pending, succeeded]

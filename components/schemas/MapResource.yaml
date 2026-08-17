@@ -9,11 +9,11 @@ properties:
   isForSale:
     type: boolean
     description: Whether the map is available for purchase
-  price:
-    type: string
-    format: decimal
+  price_cents:
+    type: integer
     nullable: true
-    description: Price in decimal format (e.g., "29.99"). Null if isForSale is false.
+    minimum: 0
+    description: Price in cents. Null if isForSale is false.
   slug:
     type: string
     nullable: true

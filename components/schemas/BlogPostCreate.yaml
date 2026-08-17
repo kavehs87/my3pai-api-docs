@@ -18,10 +18,9 @@ properties:
   isPublished:
     type: boolean
     default: false
-  price:
-    type: number
-    format: float
-    description: Price in dollars
+  price_cents:
+    type: integer
+    description: Price in cents
     nullable: true
   currency:
     type: string

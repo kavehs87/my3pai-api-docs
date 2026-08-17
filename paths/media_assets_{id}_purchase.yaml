@@ -44,7 +44,7 @@ post:
                     properties:
                       clientSecret:
                         type: string
-                      amount:
+                      amount_cents:
                         type: integer
                       currency:
                         type: string
@@ -69,7 +69,7 @@ post:
                     properties:
                       clientSecret:
                         type: string
-                      amount:
+                      amount_cents:
                         type: integer
                       currency:
                         type: string

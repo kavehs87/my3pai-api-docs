@@ -10,9 +10,8 @@ properties:
     type: string
   duration_minutes:
     type: integer
-  price:
-    type: number
-    format: float
+  price_cents:
+    type: integer
   currency:
     type: string
   is_active:

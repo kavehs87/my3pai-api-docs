@@ -45,7 +45,7 @@ get:
       in: query
       schema:
         type: string
-        enum: [invoice_number, total_amount, status, due_at, created_at]
+        enum: [invoice_number, total_amount_cents, status, due_at, created_at]
         default: created_at
     - name: order
       in: query

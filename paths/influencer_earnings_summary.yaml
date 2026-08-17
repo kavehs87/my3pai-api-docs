@@ -38,25 +38,24 @@ get:
                     type: number
                     format: float
                     description: >-
-                      Total earnings in dollars (sum of all paid and pending
+                      Total earnings in cents (sum of all paid and pending
                       payouts minus any reversed payouts)
-                  total_payouts:
-                    type: number
-                    format: float
+                  total_payouts_cents:
+                    type: integer
                     description: >-
-                      Total payouts in dollars (sum of paid payouts minus
+                      Total payouts in cents (sum of paid payouts minus
                       reversed payouts)
                   pending_payouts:
                     type: number
                     format: float
                     description: >-
-                      Pending payouts in dollars (pending/processing payouts
+                      Pending payouts in cents (pending/processing payouts
                       minus reversed payouts, never below zero)
                   platform_fees_paid:
                     type: number
                     format: float
                     description: >-
-                      Platform fees collected in dollars (15% commission from
+                      Platform fees collected in cents (15% commission from
                       collected platform earnings minus reversals)
     '401':
       description: Unauthenticated

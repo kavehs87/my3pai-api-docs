@@ -63,7 +63,7 @@ get:
           - updated_at
           - views_count
           - rating
-          - price
+          - price_cents
         default: created_at
     - name: order
       in: query

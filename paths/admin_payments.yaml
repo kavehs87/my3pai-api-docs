@@ -46,7 +46,7 @@ get:
       in: query
       schema:
         type: string
-        enum: [amount, status, created_at]
+        enum: [amount_cents, status, created_at]
         default: created_at
     - name: order
       in: query
