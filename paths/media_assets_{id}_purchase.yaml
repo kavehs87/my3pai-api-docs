@@ -14,6 +14,10 @@ post:
       client secret to resume.
     - If the pending purchase's PaymentIntent has already succeeded, finalizes it and returns
       `200` with the now-available download URL.
+
+    Free assets (`paymentIntent.amount === 0`): the purchase is finalized immediately on the
+    server - do NOT call `stripe.confirmCardPayment` with the client secret; the download is
+    already available.
   parameters:
     - name: id
       in: path

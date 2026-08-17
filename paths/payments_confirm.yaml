@@ -106,7 +106,7 @@ post:
                 type: string
                 example: Order does not belong to you.
     '404':
-      description: Order or payment intent not found
+      description: Order or payment intent not found (including payment intents for direct media-asset purchases, which have no order — their purchase is finalized by the webhook/resume flow; re-fetch the purchase list to see the state)
       content:
         application/json:
           schema:
