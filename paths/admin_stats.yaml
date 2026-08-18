@@ -31,7 +31,7 @@ get:
                         type: integer
                       new_today:
                         type: integer
-                  revenue_cents:
+                  revenue:
                     type: object
                     properties:
                       this_month:

@@ -20,15 +20,6 @@ allOf:
               type: string
               format: date-time
               nullable: true
-      platform_fee_breakdown:
-        type: object
-        properties:
-          commission_cents:
-            type: integer
-          stripe_fee_cents:
-            type: integer
-          total_fee_cents:
-            type: integer
       stripe_charge_id:
         type: string
         nullable: true

@@ -25,7 +25,7 @@ get:
               data:
                 type: object
                 properties:
-                  revenue_cents:
+                  revenue:
                     type: array
                     description: Revenue from completed orders
                     items:

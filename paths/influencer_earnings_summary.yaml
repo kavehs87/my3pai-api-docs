@@ -34,9 +34,8 @@ get:
               data:
                 type: object
                 properties:
-                  total_earnings:
-                    type: number
-                    format: float
+                  total_earnings_cents:
+                    type: integer
                     description: >-
                       Total earnings in cents (sum of all paid and pending
                       payouts minus any reversed payouts)
@@ -45,15 +44,13 @@ get:
                     description: >-
                       Total payouts in cents (sum of paid payouts minus
                       reversed payouts)
-                  pending_payouts:
-                    type: number
-                    format: float
+                  pending_payouts_cents:
+                    type: integer
                     description: >-
                       Pending payouts in cents (pending/processing payouts
                       minus reversed payouts, never below zero)
-                  platform_fees_paid:
-                    type: number
-                    format: float
+                  platform_fees_paid_cents:
+                    type: integer
                     description: >-
                       Platform fees collected in cents (15% commission from
                       collected platform earnings minus reversals)
