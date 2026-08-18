@@ -29,18 +29,41 @@ get:
               data:
                 type: object
                 properties:
-                  total_paid:
-                    type: number
-                    format: float
-                  total_received:
-                    type: number
-                    format: float
-                  paid_count:
-                    type: integer
-                  received_count:
-                    type: integer
-                  status_breakdown:
+                  paid:
                     type: object
+                    properties:
+                      count:
+                        type: integer
+                      total_cents:
+                        type: integer
+                        description: Sum of invoice totals (customer perspective) in cents
+                      total_formatted:
+                        type: string
+                        example: "1234.56"
+                  received:
+                    type: object
+                    properties:
+                      count:
+                        type: integer
+                      total_cents:
+                        type: integer
+                        description: Sum of influencer payouts (creator perspective) in cents
+                      total_formatted:
+                        type: string
+                        example: "1234.56"
+                  status_breakdown:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                        count:
+                          type: integer
+                        total_cents:
+                          type: integer
+                        total_formatted:
+                          type: string
     '401':
       description: Unauthenticated
       content:

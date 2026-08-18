@@ -23,6 +23,8 @@ The API powers a multi-sided marketplace connecting **creators** (influencers, m
 - 🎬 **Digital Media Marketplace** — stock footage, presets, templates, and more
 - 💳 **Full Commerce Stack** — cart, orders, payments, invoicing, and payouts
 
+> **💰 Money convention (since 2026-08-18):** every money value is an **integer in minor units (cents)** under a `*_cents` key. No dollar floats on the wire. `*_formatted` fields are display-only strings; percentages keep `*_percentage` names. See [MIGRATION-money-cents-2026-08-18.md](MIGRATION-money-cents-2026-08-18.md) for the full endpoint-by-endpoint impact and frontend display guidance.
+
 ---
 
 <p align="center">
