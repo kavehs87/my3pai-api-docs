@@ -4,10 +4,16 @@ post:
   summary: Confirm payment
   description: |
     Confirm payment after Stripe Payment Intent succeeds. This endpoint:
+    - Resolves the order from the payment intent (read-only) and verifies
+      order ownership BEFORE any payment side effects run
     - Validates the payment intent with Stripe
     - Creates payment, invoice, and earnings records
     - Updates order status to paid
-    - Verifies order ownership (order must belong to authenticated user)
+
+    **Ownership / probing:** unknown payment intents, intents with no
+    order (direct media-asset purchases), and intents for orders that do
+    not belong to the caller all return the same 404. Responses are not
+    distinguishable, so they cannot be used to probe order existence.
 
     **Free Orders:**
     - This endpoint should NOT be called for free orders (total = $0)
@@ -15,7 +21,7 @@ post:
     - If called with a free order, will return 400 error
 
     The `order_id` parameter is optional but recommended for validation.
-    If provided, it will be verified against the payment intent's order.
+    If provided, it will be verified to match the payment intent's order.
   security:
     - BearerAuth: []
   requestBody:
@@ -92,8 +98,14 @@ post:
               message:
                 type: string
                 example: Unauthenticated
-    '403':
-      description: Forbidden - Order does not belong to authenticated user
+    '404':
+      description: >-
+        Payment intent not found, has no associated order, or the order does
+        not belong to the authenticated user. All three cases return the same
+        response on purpose — ownership is verified before any fulfilment and
+        responses must not be distinguishable. Also returned for direct
+        media-asset purchase intents (no order — finalized by the
+        webhook/resume flow; re-fetch the purchase list to see the state).
       content:
         application/json:
           schema:
@@ -104,13 +116,7 @@ post:
                 example: false
               error:
                 type: string
-                example: Order does not belong to you.
-    '404':
-      description: Order or payment intent not found (including payment intents for direct media-asset purchases, which have no order — their purchase is finalized by the webhook/resume flow; re-fetch the purchase list to see the state)
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/ErrorResponse.yaml
+                example: Payment intent not found or does not belong to you.
     '500':
       description: Internal server error
       content:
