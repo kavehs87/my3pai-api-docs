@@ -2,7 +2,18 @@ get:
   tags:
     - Maps
   summary: Get map
-  description: Get map details. Accessible to owner or public if published.
+  description: |
+    Get map details. Accessible to the map's owner or, for published maps,
+    to any authenticated user.
+
+    The POI list depends on the caller:
+    - **Owner:** every POI, unfiltered (creator editor view), including
+      hidden (`isVisible: false`) and draft POIs. `poiCount` is the total.
+    - **Other viewer:** the same POI policy as the public map page — only
+      visible and publishable POIs are included; for maps for sale the
+      viewer has no access to, non-featured POIs are returned as locked
+      stubs (`LockedPoiResource`: id, name, coordinates). `poiCount` is the
+      number of POIs the caller actually receives.
   parameters:
     - name: map
       in: path
