@@ -51,6 +51,10 @@ properties:
     type: string
     maxLength: 64
     nullable: true
+    description: >
+      Partner voucher/promo code. Public data by contract for POIs that pass
+      the map's public visibility rules (visible and publishable, and not
+      paywalled for the viewer); never present on hidden POIs or locked stubs.
   voucherPartner:
     type: string
     maxLength: 128
