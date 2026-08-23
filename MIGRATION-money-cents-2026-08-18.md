@@ -89,8 +89,10 @@ Schemas: `MasterclassPublic`, `MasterclassFull`, `MediaAsset`, `BlogPostPublic`,
 
 | Endpoint | Change |
 |---|---|
-| `POST /api/media-assets/{id}/purchase` | **S** `data.paymentIntent: {clientSecret, amount_cents (int), currency}`; on completed purchase `data.purchase` (schema `MediaAssetPurchase`, no money fields) |
-| `GET /api/media-assets/my-purchases` | unchanged shape (no money fields on `MediaAssetPurchaseResource`) |
+| `POST /api/media-assets/{id}/purchase` | **S** `data.paymentIntent: {clientSecret, amount_cents (int), currency}`; on completed purchase `data.purchase` (schema `MediaAssetPurchase`) |
+| `GET /api/media-assets/my-purchases` | **S** rows carry `amount_cents` (int, nullable for pre-2026-08-23 rows) + `currency` (schema `MediaAssetPurchase`) |
+
+> **Correction (2026-08-23):** the `amount_cents`/`currency` columns added on 2026-08-18 were never written — they were missing from `MediaAssetPurchase::$fillable`, so every row stored `amount_cents = NULL` and the resource exposed no money fields. Fixed on `fix/codebase-cleanup`: both fields are fillable, stored on every new purchase, and now exposed on the resource (nullable for older rows, whose amount lives only on the Stripe PaymentIntent).
 | `POST /api/influencers/{username}/blog/{slug}/purchase` | **S** purchase rows `amount_cents` (int) + `currency` (schema `BlogPostPurchase`) |
 | `GET /api/user/blog-purchases` | **S** same schema |
 | `POST /api/influencers/{username}/podcast/{slug}/purchase` | **S** `amount_cents` (int) + `currency` (schema `PodcastEpisodePurchase`) |

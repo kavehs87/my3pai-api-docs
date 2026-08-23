@@ -26,6 +26,17 @@ properties:
       - paid
       - failed
       - refunded
+  amount_cents:
+    type: integer
+    nullable: true
+    description: >
+      Amount paid for this purchase, in cents. Rows created by the app after the
+      2026-08-23 ledger fix always carry this; older rows may be null (the amount
+      then exists only on the Stripe PaymentIntent referenced by the purchase).
+  currency:
+    type: string
+    example: USD
+    description: ISO-4217 uppercase currency code of the paid amount
   mediaAsset:
     type: object
     nullable: true
