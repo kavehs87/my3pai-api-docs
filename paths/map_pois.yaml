@@ -10,6 +10,11 @@ get:
     Returns POIs that are either:
     - Published individually (status='published'), OR
     - Belong to a published map (even if POI status is draft)
+
+    **Paywall:** POIs belonging to maps for sale (`isForSale: true`) are
+    returned as locked stubs (`LockedPoiResource`: id, name, coordinates only)
+    unless the caller is the map's owner or has purchased the map. POIs of free
+    or individually published maps are returned in full (`PoiResource`).
   security: []
   parameters:
     - name: bbox
@@ -97,7 +102,9 @@ get:
               data:
                 type: array
                 items:
-                  $ref: ../components/schemas/PoiResource.yaml
+                  oneOf:
+                    - $ref: ../components/schemas/PoiResource.yaml
+                    - $ref: ../components/schemas/LockedPoiResource.yaml
               meta:
                 type: object
                 properties:
