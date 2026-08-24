@@ -1,0 +1,46 @@
+get:
+  tags:
+    - Authentication
+  summary: Start explicit Google account linking
+  description: >
+    Starts the explicit, user-initiated flow for attaching a Google account to
+    an existing profile. This is the **only** way a `google_id` is ever linked
+    to an account: the login callback (`GET /auth/google/callback`) never
+    links silently on email match.
+
+    Because the caller must hold a valid session (password proof), linking is
+    a consented action. The user must not already have a Google account
+    linked (`422 google_already_linked`), and suspended (banned) accounts
+    cannot start the flow (`403 account_suspended`).
+
+    Redirects to Google's authorization page with a one-time, HMAC-signed
+    `state` that is bound to the initiating user id and revalidated in
+    `GET /auth/google/link/callback`.
+  security:
+    - bearerAuth: []
+  responses:
+    '302':
+      description: >
+        Redirect to the Google OAuth authorization URL (carries a user-bound,
+        one-time signed `state` parameter).
+    '401':
+      description: Not authenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: >
+        Account is suspended. Body carries `error=account_suspended`.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: >
+        A Google account is already linked to this profile. Body carries
+        `error=google_already_linked`.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

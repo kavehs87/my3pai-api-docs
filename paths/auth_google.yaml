@@ -3,10 +3,16 @@ get:
     - Authentication
   summary: Redirect to Google OAuth
   description: >
-    Initiates Google OAuth 2.0 flow for user registration/login.
+    Initiates the Google OAuth 2.0 flow for user registration/login.
     Redirects the user to Google's authorization page.
-    Requires session cookie authentication.
+
+    The authorization URL carries a random `state` parameter that is stored in
+    the server session and verified in `GET /api/auth/google/callback`, which
+    closes the login-CSRF vector. Requires the session cookie to be sent (SPA
+    stateful context).
   security: []
   responses:
     '302':
-      description: Redirect to Google OAuth authorization URL
+      description: >
+        Redirect to the Google OAuth authorization URL (includes a session-bound
+        `state` parameter).

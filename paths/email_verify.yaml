@@ -8,6 +8,10 @@ post:
     The frontend receives the verification link with `email` and `token` query parameters,
     then calls this endpoint to complete verification. On success, the user receives
     an authentication token and a welcome notification.
+
+    **Enumeration-safe:** unknown emails and invalid tokens produce the exact same
+    400 response (no user-existence oracle). Re-verifying an already-verified
+    account with a still-valid token succeeds idempotently.
   security: []
   requestBody:
     required: true
@@ -28,19 +32,10 @@ post:
           schema:
             $ref: ../components/schemas/AuthResponse.yaml
     '400':
-      description: Invalid or expired verification token
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/ErrorResponse.yaml
-    '404':
-      description: User not found
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/ErrorResponse.yaml
-    '409':
-      description: Email address has already been verified
+      description: >
+        Invalid or expired verification token. Also returned for unknown emails —
+        the response is intentionally identical so the endpoint cannot be used
+        to enumerate registered addresses.
       content:
         application/json:
           schema:

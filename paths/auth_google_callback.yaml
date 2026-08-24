@@ -3,11 +3,33 @@ get:
     - Authentication
   summary: Handle Google OAuth callback
   description: >
-    Handles the Google OAuth callback after user authorization.
-    Creates or updates the user account and redirects back to the frontend.
+    Handles the Google OAuth callback after user authorization. Verifies the
+    session-bound OAuth `state`, then:
+
+    - an account already linked to **this exact Google id** is logged in;
+    - a brand-new Google identity (no matching account) is registered and
+      marked email-verified;
+    - an account that exists with the same **email** but a different or no
+      `google_id` is **never** logged in or silently linked. The callback
+      redirects to the frontend with `code=google_email_registered`
+      (or `code=google_id_mismatch` when the account is already linked to a
+      different Google id). Linking is a separate, user-initiated flow — see
+      `GET /api/auth/google/link`.
+
+    The frontend must branch on the `code` query parameter:
+
+    | code | meaning |
+    |---|---|
+    | `google_email_registered` | email already registered — prompt for password sign-in, then link from profile settings |
+    | `google_id_mismatch` | email registered and linked to a different Google account — prompt for password sign-in |
+    | `account_suspended` | the matched account is banned |
+    | `google_email_unverified` | Google did not verify the address |
+    | `google_email_missing` | Google returned no email |
+    | `authentication_failed` | state verification failed, Google error, or unexpected exception |
   security: []
   responses:
     '302':
       description: >
-        Redirect to frontend. On success, redirects to the dashboard.
-        On failure, redirects to the login page with an error query parameter.
+        Redirect to the frontend `/auth/callback`. On success no `code`
+        parameter is present. On failure the URL carries
+        `error=<human message>&code=<machine-readable code>`.

@@ -6,6 +6,10 @@ post:
     Resend the email verification link to a user who has not yet verified their email.
     
     The verification token expires after 60 minutes by default.
+
+    **Enumeration-safe:** unknown, already-verified, and pending emails all
+    receive the same generic success response, so the endpoint cannot be used
+    to enumerate registered addresses.
   security: []
   requestBody:
     required: true
@@ -19,7 +23,10 @@ post:
               email: jane@example.com
   responses:
     '200':
-      description: Verification email sent
+      description: >
+        Always returned when the email passes basic validation, regardless of
+        whether the address is registered, already verified, or pending. The
+        response body is intentionally uniform to prevent email enumeration.
       content:
         application/json:
           schema:
@@ -30,33 +37,15 @@ post:
                 example: true
               message:
                 type: string
-                example: Verification email sent.
-    '404':
-      description: User not found
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/ErrorResponse.yaml
-    '409':
-      description: Email address has already been verified
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/ErrorResponse.yaml
+                example: If that email address is registered and unverified, a verification email has been sent.
     '422':
-      description: Validation failed
+      description: Validation failed (missing or malformed email)
       content:
         application/json:
           schema:
             $ref: ../components/schemas/ValidationError.yaml
     '429':
       description: Rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/ErrorResponse.yaml
-    '500':
-      description: Internal server error
       content:
         application/json:
           schema:

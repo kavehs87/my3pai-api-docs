@@ -156,6 +156,10 @@ paths:
     $ref: paths/auth_google.yaml
   /auth/google/callback:
     $ref: paths/auth_google_callback.yaml
+  /auth/google/link:
+    $ref: paths/auth_google_link.yaml
+  /auth/google/link/callback:
+    $ref: paths/auth_google_link_callback.yaml
   /auth/google/reverify:
     $ref: paths/auth_google_reverify.yaml
   /auth/google/reverify/callback:

@@ -1,0 +1,25 @@
+get:
+  tags:
+    - Authentication
+  summary: Handle Google linking callback
+  description: >
+    Handles the Google OAuth callback for the explicit linking flow started by
+    `GET /auth/google/link`. Validates the one-time, HMAC-signed `state`
+    (a forged, tampered, missing, or already-consumed state is rejected),
+    exchanges the code, and — if the Google email is present and verified by
+    Google — attaches the returned `google_id` to the user the state was
+    issued for. A `social_linked` audit entry is written.
+
+    All outcomes redirect back to the frontend profile settings page with a
+    `social` query parameter the SPA should branch on:
+
+    | social | meaning |
+    |---|---|
+    | `linked` | Google account attached successfully |
+    | `already-linked` | the profile gained a linked Google id in the meantime |
+    | `error` | state invalid/consumed/replayed, user missing, Google email missing or unverified, or Google error |
+  security: []
+  responses:
+    '302':
+      description: >
+        Redirect to the frontend `/profile?tab=settings&social=<status>`.
