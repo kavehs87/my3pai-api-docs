@@ -46,7 +46,7 @@ put:
   tags:
     - Admin
   summary: Update user
-  description: Update user information (admin only)
+  description: "Update user information (admin only). Role changes are guarded: cannot remove the last admin, cannot demote yourself; an unchanged role is a no-op."
   parameters:
     - name: id
       in: path
@@ -95,7 +95,7 @@ put:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
     '422':
-      description: Validation failed
+      description: Validation failed, or role change rejected (last admin / self-demotion)
       content:
         application/json:
           schema:

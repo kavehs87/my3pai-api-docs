@@ -26,6 +26,8 @@ properties:
     type: boolean
   role:
     type: string
+    description: "Role changes are guarded: cannot remove the last admin or demote yourself. An unchanged role is a no-op."
     enum:
       - user
+      - influencer
       - admin
