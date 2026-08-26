@@ -109,8 +109,9 @@ tags:
   - name: WebSocket
     description: >
       Real-time WebSocket connections via Laravel Reverb. Clients connect using
-      `laravel-echo` + `pusher-js`. Events are broadcast on private channel
-      `App.Models.User.{id}`. Connect with `REVERB_APP_KEY`, `REVERB_APP_ID`, and
+      `laravel-echo` + `pusher-js`. Events are broadcast on private channels
+      `App.Models.User.{id}` (notifications, video processing) and `map.{mapId}`
+      (live map drafts, owner-only). Connect with `REVERB_APP_KEY`, `REVERB_APP_ID`, and
       `REVERB_APP_SECRET` from `.env`. Authentication is handled via `POST /broadcasting/auth`.
 
       **Broadcast events:**
@@ -119,6 +120,10 @@ tags:
       - `App\Events\NewContactMessage` — new contact message for an influencer
       - `App\Events\IntroVideoProcessingCompleted` — intro video processing result
       - `App\Events\PoiMediaProcessingCompleted` — POI media processing result
+      - `App\Events\PoiDraftCreated` (`poi.draft.created` on `private map.{mapId}`) — draft POI created
+      - `App\Events\PoiDraftPatched` (`poi.draft.patched` on `private map.{mapId}`) — draft POI patched `{map_id, poi_id, base_version, new_version, patch:[{path,value}], poi, actor_id}`
+      - `App\Events\PoiDraftDeleted` (`poi.draft.deleted` on `private map.{mapId}`) — draft POI deleted
+      - `App\Events\MapDraftPatched` (`map.draft.patched` on `private map.{mapId}`) — map patched
 security:
   - BearerAuth: []
 paths:

@@ -1,0 +1,48 @@
+type: object
+required:
+  - baseVersion
+  - patch
+description: >
+  Delta patch for a draft POI. Only touched leafs are sent; absent paths are left untouched
+  (no wipe). Works with server-owned `draft_version` optimistic lock and single-transaction fanout
+  on `private map.{mapId}` (`poi.draft.patched`).
+
+  **Path list** is dot notation matching `UpdatePoiDraftRequest` keys (`basic.name`, `basic.summary`,
+  `category.placeType`, `category.activities`, `category.audience`, `difficulty.terrain`,
+  `amenities.amenities`, `amenities.accessibility`, `regions.tags`, `media.socialPosts`,
+  `media.videos`, `pricing.costType`, etc.). `value: null` clears scalar, `[]` clears relation.
+
+  Server validates `baseVersion` must equal current `draft_version`; on mismatch returns 409 with current POI.
+properties:
+  baseVersion:
+    type: integer
+    minimum: 0
+    description: >
+      Expected current `draftVersion` from last read/patch response. Server does
+      `WHERE draft_version = baseVersion` atomically and bumps to `draft_version+1` on success.
+      On 409 refresh from response `data.poi.draftVersion`.
+    example: 5
+  patch:
+    type: array
+    minItems: 1
+    maxItems: 100
+    description: >
+      List of leaf patches. Only listed paths are mutated; absent relations are preserved
+      (fix for scalar-vs-relation wipe). Broadcast `poi.draft.patched` fans out same patch.
+    items:
+      type: object
+      required:
+        - path
+      properties:
+        path:
+          type: string
+          maxLength: 128
+          description: Dot path of POI field, e.g. `basic.name`, `pricing.costType`, `category.activities`
+          example: basic.name
+        value:
+          description: New value for the path (`null` clears scalar, `[]` clears relation)
+          nullable: true
+          example: "Renamed Lake"
+      example:
+        path: basic.name
+        value: "Renamed Lake"

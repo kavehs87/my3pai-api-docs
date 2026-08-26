@@ -11,7 +11,12 @@ post:
           properties:
             category:
               type: string
-              enum: [business, system]
+              enum: [order, refund, consultation, media_asset, invoice, payout, stripe, video, contact, auth, admin, system, business]
+              description: Filter by data.category (frozen enum D8).
+            audience:
+              type: string
+              enum: [customer, creator, admin, transactional]
+              description: Filter by data.audience (D10).
   responses:
     '200':
       description: Notifications marked as read

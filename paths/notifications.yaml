@@ -8,7 +8,15 @@ get:
       required: false
       schema:
         type: string
-        enum: [business, system]
+        enum: [order, refund, consultation, media_asset, invoice, payout, stripe, video, contact, auth, admin, system, business]
+      description: Filter by data.category (frozen enum D8, business kept for backward-compat).
+    - name: audience
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: [customer, creator, admin, transactional]
+      description: Filter by data.audience (D10) for reliable frontend filtering.
     - name: severity
       in: query
       required: false

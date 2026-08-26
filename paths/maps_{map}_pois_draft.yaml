@@ -11,10 +11,11 @@ post:
     the regular update endpoint or the draft update endpoint.
     
     **Optimistic Locking:**
-    The `draft_version` field is required. For new POI creation, always use `0`.
-    The response will contain `draftVersion: 0`, which you must use for subsequent updates.
+    `draft_version` is server-owned and ignored if sent — server always creates at `draftVersion: 0`
+    (`api/app/Services/PoiService.php:554`). Use response `draftVersion` for subsequent `PUT`/`PATCH`.
+    Broadcasts `poi.draft.created` on `private map.{mapId}` via Reverb.
     
-    **Use Case:** Frontend auto-save functionality for work-in-progress POIs.
+    **Use Case:** Frontend auto-save for work-in-progress POIs (prefer `PATCH` delta for updates).
   parameters:
     - name: map
       in: path

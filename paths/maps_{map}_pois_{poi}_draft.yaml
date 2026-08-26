@@ -2,16 +2,23 @@ put:
   tags:
     - Maps
     - POIs
-  summary: Update draft POI in map
+  summary: Update draft POI in map (legacy full merge)
   description: >
     Update a draft POI with minimal validation. Allows auto-saving incomplete data
     without hitting 422 validation errors. All fields are optional (nullable).
     
     The POI's status will be set to (or remain) `'draft'` after update.
-    
+    Since 2026-08 this endpoint preserves absent relations (fix for scalar-vs-relation wipe
+    `api/app/Services/PoiService.php:642` — only touched paths are synced, absent = leave).
+    Scalar merge is still by path presence; relations use `preserve_absent_relations=true` and
+    single-transaction version bump. Broadcasts `poi.draft.patched` on `private map.{mapId}` via Reverb (`toOthers`).
+
+    Prefer `PATCH` with delta `{baseVersion, patch:[{path,value}]}` for snappy autosave (smaller payload,
+    Reverb fanout to other tabs, <100ms cross-tab sync). `PUT` is kept for backward compat.
+
     **Optimistic Locking:**
     This endpoint uses optimistic locking to prevent concurrent edit conflicts. The `draft_version`
-    field is required and must match the current database version exactly.
+    field is required and must match the current database version exactly (server-owned, set to 0 on create).
     
     - **Version Matching:** Client must send the exact current `draftVersion` from the last response
     - **On Success:** Server increments the version atomically and returns the new version in response
@@ -25,10 +32,10 @@ put:
     **Field Deletion Behavior:**
     - Sending `null` for a nullable field will **clear** that field (set to NULL in database)
     - Sending `""` (empty string) for a nullable field will also **clear** that field (normalized to null)
-    - Not including a field in the request will **not update** that field (partial update)
+    - Not including a field in the request will **not update** that field (partial update — now for relations too)
     - The response will return `null` for cleared fields
     
-    **Use Case:** Frontend auto-save functionality for work-in-progress POIs with conflict prevention.
+    **Use Case:** Frontend auto-save (legacy). New code should use `PATCH` delta.
   parameters:
     - name: map
       in: path
@@ -149,6 +156,117 @@ put:
                     $ref: ../components/schemas/PoiResource.yaml
     '422':
       description: Validation failed (invalid enum values, type mismatches, etc.)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+patch:
+  tags:
+    - Maps
+    - POIs
+  summary: Patch draft POI via delta (Reverb live sync)
+  description: >
+    Delta patch for a draft POI. Send only touched leafs as `patch:[{path,value}]` with `baseVersion`
+    (optimistic lock). Server does `WHERE draft_version = baseVersion` atomically, bumps to `+1` inside
+    a single transaction (scalar + touched relations together, no split race `api/app/Services/PoiService.php:662`),
+    and broadcasts `poi.draft.patched` on `private map.{mapId}` to other tabs (`api/app/Events/PoiDraftPatched.php:10`)
+    via Reverb. Absent paths are left untouched (fix for wipe). `value: null` clears scalar, `[]` clears relation.
+
+    Use with `X-Socket-ID: Echo.socketId()` so `toOthers()` suppresses own echo. On 409 refresh from `data.poi.draftVersion`.
+    Throttled `120/min` (`api/routes/api.php:352`). Prefer this over `PUT` for autosave (10-50× smaller payload, <100ms cross-tab sync).
+  parameters:
+    - name: map
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The map ID
+    - name: poi
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The POI ID
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/PatchPoiDraftRequest.yaml
+        examples:
+          rename:
+            summary: Rename (scalar-only, relations preserved)
+            value:
+              baseVersion: 5
+              patch:
+                - path: basic.name
+                  value: "Renamed Lake"
+          relation:
+            summary: Replace activities, clear tags
+            value:
+              baseVersion: 5
+              patch:
+                - path: category.activities
+                  value: ["hiking_area"]
+                - path: regions.tags
+                  value: []
+          clear:
+            summary: Clear scalar
+            value:
+              baseVersion: 6
+              patch:
+                - path: basic.phone
+                  value: null
+  responses:
+    '200':
+      description: Draft POI patched successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  poi:
+                    $ref: ../components/schemas/PoiResource.yaml
+    '403':
+      description: Forbidden - not owner
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: POI or map not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '409':
+      description: >
+        Version conflict — `baseVersion` != current `draft_version`.
+        Response `data.poi` is current state; rebase and retry.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: "Version conflict - the POI has been modified by another session"
+              data:
+                type: object
+                properties:
+                  poi:
+                    $ref: ../components/schemas/PoiResource.yaml
+    '422':
+      description: Validation failed (patch.path unknown or baseVersion missing)
       content:
         application/json:
           schema:

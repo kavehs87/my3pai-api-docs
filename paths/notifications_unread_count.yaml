@@ -2,9 +2,24 @@ get:
   tags:
     - Notifications
   summary: Get unread notification count
+  parameters:
+    - name: category
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: [order, refund, consultation, media_asset, invoice, payout, stripe, video, contact, auth, admin, system, business]
+      description: Filter count by data.category (D8).
+    - name: audience
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: [customer, creator, admin, transactional]
+      description: Filter count by data.audience (D10).
   responses:
     '200':
-      description: Unread notification count with category breakdown
+      description: Unread notification count with category and audience breakdown
       content:
         application/json:
           schema:

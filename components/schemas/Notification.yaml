@@ -4,12 +4,33 @@ properties:
     type: string
     format: uuid
     example: "550e8400-e29b-41d4-a716-446655440000"
+  audience:
+    type: string
+    enum:
+      - customer
+      - creator
+      - admin
+      - transactional
+    example: customer
+    description: Target audience for reliable frontend filtering (D10). Keep type (FQCN) internal.
   category:
     type: string
     enum:
-      - business
+      - order
+      - refund
+      - consultation
+      - media_asset
+      - invoice
+      - payout
+      - stripe
+      - video
+      - contact
+      - auth
+      - admin
       - system
-    example: business
+      - business
+    example: order
+    description: Frozen expanded enum (§4.7, D8). `business` kept for backward-compat reads.
   severity:
     type: string
     enum:
@@ -17,17 +38,38 @@ properties:
       - success
       - warning
       - error
-    example: info
+    example: success
   title:
     type: string
-    example: Payment Confirmed
+    example: Payment Successful
+    description: Human-readable title (never bare class name for customer/creator).
+  message:
+    type: string
+    nullable: true
+    example: Your payment of $25.00 for Summer Map was confirmed.
+    description: Short body; null only for transactional/admin suppressed rows (should not appear in bell).
+  context:
+    type: object
+    nullable: true
+    description: Structured context (IDs, amounts in cents, dates). Example for order.
+    example:
+      order_id: 123
+      order_number: "ORD-ABC123"
+      payment_id: 456
+      amount_cents: 2500
   action_url:
     type: string
     nullable: true
-    example: "/orders/ORD-ABC123"
+    example: "/profile?tab=order-detail&orderId=123"
+    description: Verified deep-link from website/src/main.js + Profile.vue (no /creator/*, no /payouts, no /media-assets/{id}). See §4.8.
   read:
     type: boolean
     example: false
+  read_at:
+    type: string
+    format: date-time
+    nullable: true
+    example: null
   created_at:
     type: string
     format: date-time

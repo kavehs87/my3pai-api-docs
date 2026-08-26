@@ -1,6 +1,4 @@
 type: object
-required:
-  - draft_version
 description: >
   Draft POI creation request. All fields are optional (nullable) to allow
   creating POIs with incomplete data without validation errors.
@@ -12,7 +10,8 @@ description: >
   (e.g., `country` must be 2 characters if provided, `placeType` must be
   a valid enum value if provided).
   
-  The POI will be created with `status = 'draft'`.
+  The POI will be created with `status = 'draft'` and server-owned `draftVersion = 0`
+  (`draft_version` in request is ignored if sent — kept for backward compat).
 properties:
   basic:
     type: object
@@ -323,10 +322,7 @@ properties:
   draft_version:
     type: integer
     minimum: 0
+    nullable: true
     description: >
-      Initial version number for optimistic locking (required).
-      
-      For new POI creation, always use `0` as the initial version.
-      The server will set the POI's `draftVersion` to `0` in the response.
-      
-      Subsequent updates must use the exact `draftVersion` from the last response.
+      Deprecated — server-owned. If sent it is ignored; server always creates
+      at `draftVersion = 0`. Subsequent updates use `draftVersion`/`baseVersion` from response.
