@@ -30,7 +30,10 @@ properties:
     nullable: true
   currency:
     type: string
+    enum:
+      - USD
     example: USD
+    description: Only USD is supported (single-currency).
   tags:
     type: array
     items:

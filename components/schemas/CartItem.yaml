@@ -28,6 +28,10 @@ properties:
     description: Total price formatted as dollars
   currency:
     type: string
+    enum:
+      - USD
+    example: USD
+    description: Only USD is supported (single-currency).
   metadata:
     type: object
     nullable: true

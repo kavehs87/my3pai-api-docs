@@ -35,4 +35,8 @@ properties:
     description: Total amount formatted as dollars (e.g., "150.00")
   currency:
     type: string
+    enum:
+      - USD
+    example: USD
+    description: Only USD is supported (single-currency).
     default: USD

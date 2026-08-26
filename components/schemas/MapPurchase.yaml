@@ -9,6 +9,10 @@ properties:
     type: boolean
   currency:
     type: string
+    enum:
+      - USD
+    example: USD
+    description: Only USD is supported (single-currency).
     example: "USD"
   unitPrice:
     type: integer

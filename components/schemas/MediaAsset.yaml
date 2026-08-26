@@ -19,8 +19,10 @@ properties:
     type: integer
   currency:
     type: string
-    minLength: 3
-    maxLength: 3
+    enum:
+      - USD
+    example: USD
+    description: Only USD is supported (single-currency).
   image:
     type: string
     format: uri

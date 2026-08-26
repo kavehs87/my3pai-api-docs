@@ -8,9 +8,7 @@ properties:
     type: string
     enum:
       - USD
-      - EUR
-      - GBP
-      - JPY
+    description: Only USD is supported (single-currency).
   language:
     type: string
     enum:

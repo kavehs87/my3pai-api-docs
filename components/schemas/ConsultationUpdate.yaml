@@ -21,8 +21,10 @@ properties:
     minimum: 0
   currency:
     type: string
-    minLength: 3
-    maxLength: 3
+    enum:
+      - USD
+    example: USD
+    description: Only USD is supported (single-currency).
   timezone:
     type: string
     description: IANA timezone identifier (e.g., "America/New_York"). Saved to the influencer's user preferences.

@@ -26,7 +26,9 @@ properties:
     minimum: 0
   currency:
     type: string
-    minLength: 3
-    maxLength: 3
+    enum:
+      - USD
+    example: USD
+    description: Only USD is supported (single-currency).
   isActive:
     type: boolean

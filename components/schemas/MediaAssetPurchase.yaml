@@ -35,8 +35,10 @@ properties:
       then exists only on the Stripe PaymentIntent referenced by the purchase).
   currency:
     type: string
+    enum:
+      - USD
     example: USD
-    description: ISO-4217 uppercase currency code of the paid amount
+    description: Only USD is supported (single-currency).
   mediaAsset:
     type: object
     nullable: true

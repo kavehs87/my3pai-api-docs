@@ -26,8 +26,10 @@ properties:
     nullable: true
   currency:
     type: string
-    default: USD
-    description: ISO 4217 currency code
+    enum:
+      - USD
+    example: USD
+    description: Only USD is supported (single-currency).
   isPublished:
     type: boolean
     default: false

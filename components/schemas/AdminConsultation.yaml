@@ -14,6 +14,10 @@ properties:
     type: integer
   currency:
     type: string
+    enum:
+      - USD
+    example: USD
+    description: Only USD is supported (single-currency).
   is_active:
     type: boolean
   created_at:

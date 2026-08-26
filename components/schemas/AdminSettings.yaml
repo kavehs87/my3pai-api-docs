@@ -9,8 +9,7 @@ properties:
     type: string
     enum:
       - usd
-      - eur
-      - gbp
+    description: Only USD is supported (single-currency).
   timezone:
     type: string
   platform_fee_percentage:
