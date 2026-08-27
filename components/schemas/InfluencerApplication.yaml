@@ -1,0 +1,84 @@
+type: object
+properties:
+  id:
+    type: integer
+  user_id:
+    type: integer
+  status:
+    type: string
+    enum: [pending, approved, rejected, withdrawn]
+    description: Current application status. Only pending can be approved/rejected/withdrawn.
+  message:
+    type: string
+    nullable: true
+    maxLength: 2000
+    description: Applicant pitch (strip_tags). Optional.
+  documents:
+    type: array
+    nullable: true
+    description: KYC / certificate proofs. Up to 5 entries. Each URL may be a signed S3 URL (expires ~1h, re-fetch detail for fresh).
+    items:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          description: Signed URL or public URL to the document
+        name:
+          type: string
+          nullable: true
+          description: Original file name
+        type:
+          type: string
+          nullable: true
+          description: MIME type (application/pdf, image/jpeg, image/png, image/webp)
+        size:
+          type: integer
+          nullable: true
+          description: File size in bytes
+        signed:
+          type: boolean
+          nullable: true
+          description: True if URL is a temporary signed URL
+      required:
+        - url
+  rejection_reason:
+    type: string
+    nullable: true
+    description: Admin reason when status=rejected (10..1000 chars). Visible to applicant and admin.
+  reviewed_by:
+    type: integer
+    nullable: true
+    description: Admin user id who approved/rejected
+  reviewed_at:
+    type: string
+    format: date-time
+    nullable: true
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
+  user:
+    $ref: ./AdminUser.yaml
+    nullable: true
+    description: Applicant snapshot (present when ?include=user or in admin detail)
+  reviewer:
+    type: object
+    nullable: true
+    description: Reviewing admin snapshot
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      email:
+        type: string
+        format: email
+required:
+  - id
+  - user_id
+  - status
+  - created_at
+  - updated_at

@@ -367,6 +367,14 @@ paths:
     $ref: paths/influencer_settings.yaml
   /influencer/creator-tools-visibility:
     $ref: paths/influencer_creator_tools_visibility.yaml
+  /influencer/apply:
+    $ref: paths/influencer_apply.yaml
+  /influencer/application:
+    $ref: paths/influencer_application.yaml
+  /influencer/applications:
+    $ref: paths/influencer_applications.yaml
+  /influencer/application/withdraw:
+    $ref: paths/influencer_application_withdraw.yaml
   /influencer/payouts:
     $ref: paths/influencer_payouts.yaml
   /influencer/payouts/{id}:
@@ -535,6 +543,14 @@ paths:
     $ref: paths/admin_influencers_{id}_feature.yaml
   /admin/influencers/{id}/disable-creator-tools:
     $ref: paths/admin_influencers_{id}_disable_creator_tools.yaml
+  /admin/influencer-applications:
+    $ref: paths/admin_influencer_applications.yaml
+  /admin/influencer-applications/{id}:
+    $ref: paths/admin_influencer_applications_{id}.yaml
+  /admin/influencer-applications/{id}/approve:
+    $ref: paths/admin_influencer_applications_{id}_approve.yaml
+  /admin/influencer-applications/{id}/reject:
+    $ref: paths/admin_influencer_applications_{id}_reject.yaml
   /admin/contact-messages:
     $ref: paths/admin_contact_messages.yaml
   /admin/contact-messages/{id}:

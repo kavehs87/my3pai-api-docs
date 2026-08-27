@@ -1,0 +1,65 @@
+post:
+  tags:
+    - Admin
+  summary: Approve influencer application
+  description: |
+    Approves a pending application (pending → approved). Atomically: lockForUpdate on application+user(+admin set),
+    set reviewed_by/at, clear pending_guard, ActivityLog approved + role_changed, promote role→influencer via
+    AdminUserRoleService (single writer, last-admin guard), provision InfluencerSetting defaultToggles, sync
+    preferences.wants_to_become_influencer=true, notify applicant (ApplicationApproved DB+broadcast+mail). Idempotency: non-pending 422.
+    Also blocks banned/unverified applicants at approve time.
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Approved
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  application:
+                    $ref: ../components/schemas/InfluencerApplication.yaml
+              message:
+                type: string
+                example: Application approved — user is now an influencer
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Only pending can be approved / banned / unverified
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+          example:
+            success: false
+            error: Only pending applications can be approved.
+            errors:
+              application: ["Only pending applications can be approved."]

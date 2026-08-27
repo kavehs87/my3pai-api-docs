@@ -1,0 +1,48 @@
+get:
+  tags:
+    - Admin
+  summary: Show influencer application (admin)
+  description: |
+    Admin detail with applicant snapshot (user, preferences, influencerSettings), reviewer, documents signed (temporaryUrl +1h, re-fetch for fresh).
+    Includes message, documents (KYC/certificates), status, rejection_reason, reviewed_by/at.
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Application detail
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  application:
+                    $ref: ../components/schemas/InfluencerApplication.yaml
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

@@ -45,3 +45,7 @@ properties:
     type: boolean
   hasGoogleAccount:
     type: boolean
+  influencer_application:
+    $ref: ./InfluencerApplication.yaml
+    nullable: true
+    description: Latest influencer application (null if never applied). New in 2026-08-27 (Option B, pending_guard).

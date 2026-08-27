@@ -1,0 +1,107 @@
+post:
+  tags:
+    - Influencers
+  summary: Submit influencer application
+  description: |
+    Manual admin-approval workflow (Option B, 2026-08-27). Creates a pending influencer application.
+    `PUT /profile/preferences {wants_to_become_influencer}` is deprecated (422). Use this endpoint.
+    Supports KYC / certificate proofs as 0..5 files (PDF/JPG/PNG/WebP, 10MB each) stored to s3_source private bucket
+    as `influencer-applications/{user_id}/{uniq}` and signed on read. Or send JSON `documents: [{url,name,type}]`.
+    One pending per user enforced via DB `pending_guard` UNIQUE + `lockForUpdate`. Rate limited 30/min. Emails on submit+decision.
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: false
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              nullable: true
+              maxLength: 2000
+              description: Applicant pitch (strip_tags).
+            documents:
+              type: array
+              nullable: true
+              maxItems: 5
+              description: Optional pre-uploaded document references
+              items:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    format: uri
+                  name:
+                    type: string
+                    nullable: true
+                  type:
+                    type: string
+                    nullable: true
+        example:
+          message: "I create desert hiking maps around Red Rock Canyon."
+          documents:
+            - url: "https://cdn.my3p.ai/influencer-applications/docs/cert.pdf"
+              name: "certificate.pdf"
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              nullable: true
+              maxLength: 2000
+            documents:
+              type: array
+              items:
+                type: string
+                format: binary
+              description: 0..5 files, each PDF/JPG/PNG/WebP ≤10MB (field `documents[]` or `kyc_documents[]`)
+  responses:
+    '201':
+      description: Application submitted (pending)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  application:
+                    $ref: ../components/schemas/InfluencerApplication.yaml
+              message:
+                type: string
+                example: Application submitted successfully
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Banned or unverified
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed (already influencer, already pending, message too long, documents)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+          example:
+            success: false
+            error: You already have a pending application.
+            errors:
+              application: ["You already have a pending application."]
+    '429':
+      description: Rate limited
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

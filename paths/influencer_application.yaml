@@ -1,0 +1,93 @@
+get:
+  tags:
+    - Influencers
+  summary: Get own latest influencer application
+  description: |
+    Returns the authenticated user's latest influencer application (pending/approved/rejected/withdrawn) or null if never applied.
+    `GET /me.influencer_application` is the enriched alias. New in 2026-08-27 (Option B).
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Latest application or null
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  application:
+                    $ref: ../components/schemas/InfluencerApplication.yaml
+                    nullable: true
+            example:
+              success: true
+              data:
+                application:
+                  id: 123
+                  user_id: 7
+                  status: pending
+                  message: "Travel creator..."
+                  documents:
+                    - url: "https://cdn.my3p.ai/...?X-Amz-Signature=..."
+                      name: "certificate.pdf"
+                      type: "application/pdf"
+                      size: 12345
+                  rejection_reason: null
+                  reviewed_by: null
+                  reviewed_at: null
+                  created_at: "2026-08-27T12:34:56Z"
+                  updated_at: "2026-08-27T12:34:56Z"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+delete:
+  tags:
+    - Influencers
+  summary: Withdraw own pending application
+  description: |
+    Withdraws the caller's pending application (`pending` → `withdrawn`). Allowed at any time. After withdraw/rejected, re-apply via POST /influencer/apply.
+    Also aliased as POST /influencer/application/withdraw.
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Withdrawn
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  application:
+                    $ref: ../components/schemas/InfluencerApplication.yaml
+              message:
+                type: string
+                example: Application withdrawn
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: No pending to withdraw
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+          example:
+            success: false
+            error: No pending application to withdraw.
+            errors:
+              application: ["No pending application to withdraw."]

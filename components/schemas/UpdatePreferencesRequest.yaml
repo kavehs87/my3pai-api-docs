@@ -28,7 +28,6 @@ properties:
         type: boolean
       marketing:
         type: boolean
-  wants_to_become_influencer:
-    type: boolean
   dark_theme:
     type: boolean
+    description: Dark theme preference

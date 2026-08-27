@@ -1,0 +1,37 @@
+post:
+  tags:
+    - Influencers
+  summary: Withdraw own pending application (alias)
+  description: |
+    Alias for DELETE /influencer/application. Withdraws the caller's pending application.
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Withdrawn
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  application:
+                    $ref: ../components/schemas/InfluencerApplication.yaml
+              message:
+                type: string
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: No pending to withdraw
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

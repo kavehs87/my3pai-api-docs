@@ -33,5 +33,7 @@ properties:
         type: boolean
   wants_to_become_influencer:
     type: boolean
+    deprecated: true
+    description: Deprecated 2026-08-27. Use POST /influencer/apply and GET /me.influencer_application. Read-only alias (true only when application approved or role=influencer). Writes 422.
   dark_theme:
     type: boolean

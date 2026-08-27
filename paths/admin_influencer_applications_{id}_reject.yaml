@@ -1,0 +1,77 @@
+post:
+  tags:
+    - Admin
+  summary: Reject influencer application with reason
+  description: |
+    Rejects a pending application (pending → rejected). Requires `reason` 10..1000 chars (strip_tags), stored as `rejection_reason`
+    visible to applicant (GET /influencer/application, GET /me, email, bell context) and admin detail. Applicant may re-apply at any time (new pending row, history preserved).
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - reason
+          properties:
+            reason:
+              type: string
+              minLength: 10
+              maxLength: 1000
+              description: Reason visible to applicant
+              example: "Please complete your bio and add at least 2 published maps before re-applying."
+  responses:
+    '200':
+      description: Rejected
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  application:
+                    $ref: ../components/schemas/InfluencerApplication.yaml
+              message:
+                type: string
+                example: Application rejected
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed (not pending, reason too short/long)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+          example:
+            success: false
+            error: Rejection reason must be at least 10 characters.
+            errors:
+              reason: ["Rejection reason must be at least 10 characters."]
