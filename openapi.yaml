@@ -609,12 +609,8 @@ paths:
     $ref: paths/admin_forgot_password.yaml
   /admin/reset-password:
     $ref: paths/admin_reset_password.yaml
-  /ai/chat:
-    $ref: paths/ai_chat.yaml
   /ai/models:
     $ref: paths/ai_models.yaml
-  /ai/generate:
-    $ref: paths/ai_generate.yaml
   /ai/poi/from-prompt:
     $ref: paths/ai_poi_from_prompt.yaml
   /ai/poi/complete-basic:
