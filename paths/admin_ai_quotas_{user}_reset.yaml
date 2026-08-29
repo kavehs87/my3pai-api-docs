@@ -1,0 +1,48 @@
+post:
+  tags:
+    - Admin
+  summary: Reset AI quota window
+  description: Reset used_tokens to 0 and bump period to next month (admin only). Optionally set period_start.
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: user
+      in: path
+      required: true
+      schema: { type: integer }
+  requestBody:
+    required: false
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            period_start: { type: string, format: date, pattern: ^\d{4}-\d{2}-\d{2}$, description: Y-m-d, defaults to startOfMonth }
+  responses:
+    '200':
+      description: Quota reset
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success: { type: boolean, example: true }
+              data:
+                type: object
+                properties:
+                  user: { type: object, properties: { id: { type: integer }, name: { type: string }, username: { type: string, nullable: true }, email: { type: string }, avatar_url: { type: string, nullable: true } } }
+                  quota:
+                    type: object
+                    properties:
+                      quota_max_tokens: { type: integer, nullable: true }
+                      used_tokens: { type: integer, example: 0 }
+                      remaining_tokens: { type: integer, nullable: true }
+                      period_start: { type: string, format: date-time }
+                      period_end: { type: string, format: date-time }
+                      reset_at: { type: string, format: date-time }
+                      last_used_at: { type: string, format: date-time, nullable: true }
+                      exempt_from_quota: { type: boolean }
+    '401': { description: Unauthorized, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '403': { description: Forbidden, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '404': { description: User not found, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '422': { description: Validation failed, content: { application/json: { schema: { $ref: ../components/schemas/ValidationError.yaml } } } }

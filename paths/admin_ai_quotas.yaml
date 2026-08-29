@@ -1,0 +1,103 @@
+get:
+  tags:
+    - Admin
+  summary: List AI quotas
+  description: List AI token quotas per user with search/sort (admin only). Paginated.
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: search
+      in: query
+      schema:
+        type: string
+        maxLength: 255
+        pattern: ^[a-zA-Z0-9@.\s_-]+$
+    - name: role
+      in: query
+      schema:
+        type: string
+        enum: [influencer, admin, user, all]
+        default: influencer
+    - name: sort
+      in: query
+      schema:
+        type: string
+        enum: [used_tokens, quota_max_tokens, last_used_at, period_end]
+        default: used_tokens
+    - name: order
+      in: query
+      schema:
+        type: string
+        enum: [asc, desc]
+        default: desc
+    - name: per_page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 15
+    - name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+  responses:
+    '200':
+      description: List of quotas
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  quotas:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user:
+                          type: object
+                          properties:
+                            id: { type: integer }
+                            name: { type: string }
+                            username: { type: string, nullable: true }
+                            email: { type: string, format: email }
+                            avatar_url: { type: string, format: uri, nullable: true }
+                            role: { type: string, enum: [user, admin] }
+                        quota:
+                          type: object
+                          properties:
+                            quota_max_tokens: { type: integer, nullable: true, description: null = unlimited }
+                            used_tokens: { type: integer }
+                            remaining_tokens: { type: integer, nullable: true }
+                            period_start: { type: string, format: date-time, nullable: true }
+                            period_end: { type: string, format: date-time, nullable: true }
+                            reset_at: { type: string, format: date-time, nullable: true }
+                            last_used_at: { type: string, format: date-time, nullable: true }
+                            exempt_from_quota: { type: boolean }
+                  meta:
+                    $ref: ../components/schemas/PaginationMeta.yaml
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml

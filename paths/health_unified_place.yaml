@@ -1,0 +1,22 @@
+get:
+  tags:
+    - Public
+  summary: Health check — unified place service
+  description: Checks connectivity to Unified Place Service (192.168.100.10:8000).
+  security: []
+  responses:
+    '200':
+      description: Unified Place reachable
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status: { type: string, example: ok }
+              latency_ms: { type: integer }
+    '503':
+      description: Unified Place unreachable
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

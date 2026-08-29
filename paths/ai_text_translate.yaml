@@ -1,0 +1,36 @@
+post:
+  tags:
+    - AI
+  summary: Translate HTML
+  description: Translate HTML via `text.translate` (`reasoning none`, `temp 0.3`).
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required: [html, target_lang]
+          properties:
+            html: { type: string, maxLength: 5000 }
+            field: { type: string, nullable: true }
+            target_lang: { type: string, enum: [en, es, fr, de, it, pt, zh, ja, ko, ru, ar, tr, nl, pl] }
+  responses:
+    '200':
+      description: Translated HTML
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success: { type: boolean, example: true }
+              data:
+                type: object
+                properties:
+                  html: { type: string }
+                  quota: { type: object, nullable: true }
+    '401': { description: Unauthorized, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '422': { description: Validation failed, content: { application/json: { schema: { $ref: ../components/schemas/ValidationError.yaml } } } }
+    '429': { description: Quota exceeded, content: { application/json: { schema: { type: object } } } }
+    '500': { description: OpenRouter error, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }

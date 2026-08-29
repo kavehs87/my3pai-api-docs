@@ -1,0 +1,45 @@
+get:
+  tags:
+    - AI
+  summary: Get own AI quota (influencer alias)
+  description: Alias of GET /ai/quota for influencer namespace.
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Quota retrieved
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success: { type: boolean, example: true }
+              data:
+                type: object
+                properties:
+                  quota:
+                    type: object
+                    properties:
+                      quota_max_tokens: { type: integer, nullable: true }
+                      used_tokens: { type: integer }
+                      remaining_tokens: { type: integer, nullable: true }
+                      period_start: { type: string, format: date-time, nullable: true }
+                      period_end: { type: string, format: date-time, nullable: true }
+                      reset_at: { type: string, format: date-time, nullable: true }
+                      last_used_at: { type: string, format: date-time, nullable: true }
+                      exempt_from_quota: { type: boolean }
+                  usage:
+                    type: object
+                    properties:
+                      calls_last_30d: { type: integer }
+                      tokens_last_30d: { type: integer }
+                      breakdown_by_route:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            route: { type: string }
+                            calls: { type: integer }
+                            tokens: { type: integer }
+    '401': { description: Unauthorized, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '403': { description: Forbidden, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }

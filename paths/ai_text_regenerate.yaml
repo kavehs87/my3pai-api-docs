@@ -1,0 +1,35 @@
+post:
+  tags:
+    - AI
+  summary: Regenerate HTML
+  description: Regenerate HTML field via `text.regenerate` (`reasoning none`, `temp 0.7`).
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required: [field]
+          properties:
+            field: { type: string, enum: [description, tipsWearAndTake, tipsNearby, tipsInsiderTips, tipsSafetyNotes] }
+            context: { type: object, nullable: true }
+  responses:
+    '200':
+      description: Regenerated HTML
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success: { type: boolean, example: true }
+              data:
+                type: object
+                properties:
+                  html: { type: string }
+                  quota: { type: object, nullable: true }
+    '401': { description: Unauthorized, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '422': { description: Validation failed, content: { application/json: { schema: { $ref: ../components/schemas/ValidationError.yaml } } } }
+    '429': { description: Quota exceeded, content: { application/json: { schema: { type: object } } } }
+    '500': { description: OpenRouter error, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }

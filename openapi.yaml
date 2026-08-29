@@ -139,6 +139,8 @@ paths:
     $ref: paths/health_logs.yaml
   /health/redis:
     $ref: paths/health_redis.yaml
+  /health/unified-place:
+    $ref: paths/health_unified_place.yaml
   /pois/filters/metadata:
     $ref: paths/pois_filters_metadata.yaml
   /pois/fetch-unsplash-images:
@@ -375,6 +377,12 @@ paths:
     $ref: paths/influencer_applications.yaml
   /influencer/application/withdraw:
     $ref: paths/influencer_application_withdraw.yaml
+  /influencer/ai/quota:
+    $ref: paths/influencer_ai_quota.yaml
+  /influencer/ai/usage:
+    $ref: paths/influencer_ai_usage.yaml
+  /influencer/mcp/token:
+    $ref: paths/influencer_mcp_token.yaml
   /influencer/payouts:
     $ref: paths/influencer_payouts.yaml
   /influencer/payouts/{id}:
@@ -393,6 +401,8 @@ paths:
     $ref: paths/webhooks_stripe.yaml
   /mcp:
     $ref: paths/mcp.yaml
+  /mcp/influencer:
+    $ref: paths/mcp_influencer.yaml
   /maps:
     $ref: paths/maps.yaml
   /maps/parse-url:
@@ -487,6 +497,12 @@ paths:
     $ref: paths/admin_maps_{id}_unpublish.yaml
   /admin/mcp/token:
     $ref: paths/admin_mcp_token.yaml
+  /admin/ai/quotas:
+    $ref: paths/admin_ai_quotas.yaml
+  /admin/ai/quotas/{user}:
+    $ref: paths/admin_ai_quotas_{user}.yaml
+  /admin/ai/quotas/{user}/reset:
+    $ref: paths/admin_ai_quotas_{user}_reset.yaml
   /admin/stats:
     $ref: paths/admin_stats.yaml
   /admin/stats/trends:
@@ -599,6 +615,22 @@ paths:
     $ref: paths/ai_models.yaml
   /ai/generate:
     $ref: paths/ai_generate.yaml
+  /ai/poi/from-prompt:
+    $ref: paths/ai_poi_from_prompt.yaml
+  /ai/poi/complete-basic:
+    $ref: paths/ai_poi_complete_basic.yaml
+  /ai/poi/complete-details:
+    $ref: paths/ai_poi_complete_details.yaml
+  /ai/poi/complete-tips:
+    $ref: paths/ai_poi_complete_tips.yaml
+  /ai/text/polish:
+    $ref: paths/ai_text_polish.yaml
+  /ai/text/translate:
+    $ref: paths/ai_text_translate.yaml
+  /ai/text/regenerate:
+    $ref: paths/ai_text_regenerate.yaml
+  /ai/quota:
+    $ref: paths/ai_quota.yaml
   /cart:
     $ref: paths/cart.yaml
   /cart/items:

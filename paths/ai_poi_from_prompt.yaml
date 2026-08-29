@@ -1,0 +1,43 @@
+post:
+  tags:
+    - AI
+  summary: Generate POI from prompt
+  description: Server-owned prompt `poi.fromPrompt` (config/ai_prompts.php). Uses OpenRouter `deepseek/v4-flash-0731` via `Baidu` with `reasoning:none`, `temperature 0.1`, `max 4096`. Auth required (open in local/testing), throttle 30/min, quota 250k/mo.
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required: [prompt, lat, lng]
+          properties:
+            prompt: { type: string, maxLength: 6000, example: Historic castle near me }
+            lat: { type: number, minimum: -90, maximum: 90, example: 48.8566 }
+            lng: { type: number, minimum: -180, maximum: 180, example: 2.3522 }
+            map_id: { type: integer, nullable: true, description: Map id for fallback center }
+  responses:
+    '200':
+      description: POI generated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success: { type: boolean, example: true }
+              data:
+                type: object
+                properties:
+                  poi: { type: object, description: Partial POI JSON (title, placeType required), example: { title: Eiffel Tower, placeType: culture } }
+                  usage: { type: object, properties: { prompt_tokens: { type: integer }, completion_tokens: { type: integer }, total_tokens: { type: integer } } }
+                  quota: { type: object, nullable: true }
+            headers:
+              X-AI-Quota-Max: { schema: { type: string } }
+              X-AI-Quota-Used: { schema: { type: string } }
+              X-AI-Quota-Remaining: { schema: { type: string } }
+              X-AI-Quota-ResetAt: { schema: { type: string, format: date-time } }
+    '401': { description: Unauthorized, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '422': { description: Validation failed, content: { application/json: { schema: { $ref: ../components/schemas/ValidationError.yaml } } } }
+    '429': { description: Quota exceeded or throttled, content: { application/json: { schema: { type: object, properties: { success: { type: boolean, example: false }, error: { type: string }, code: { type: string, example: QUOTA_EXCEEDED } } } } }
+    '500': { description: OpenRouter error, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }

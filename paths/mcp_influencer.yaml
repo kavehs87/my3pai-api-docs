@@ -1,0 +1,40 @@
+post:
+  tags:
+    - AI
+  summary: Influencer MCP (Streamable HTTP)
+  description: Influencer MCP endpoint (map/poi only, own content). Requires Sanctum + mcp-influencer ability + verified/banned/influencer + throttle 120/min. See InfluencerMcpServer.
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            jsonrpc: { type: string, example: '2.0' }
+            id: { type: integer }
+            method: { type: string, example: tools/call }
+            params: { type: object }
+  responses:
+    '200':
+      description: MCP JSON-RPC response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              jsonrpc: { type: string }
+              id: { type: integer }
+              result: { type: object }
+    '401': { description: Unauthorized, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '403': { description: Forbidden, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '429': { description: Throttled 120/min, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+get:
+  tags:
+    - AI
+  summary: Influencer MCP GET (same)
+  security:
+    - BearerAuth: []
+  responses:
+    '200': { description: MCP response, content: { application/json: { schema: { type: object } } } }

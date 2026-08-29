@@ -1,0 +1,34 @@
+post:
+  tags:
+    - AI
+  summary: Complete POI details fields
+  description: Fills `costType, difficultyRating, amenities...` via `poi.completeDetails` (`reasoning none`, `temp 0.1`).
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required: [poi]
+          properties:
+            poi: { type: object }
+  responses:
+    '200':
+      description: Updates generated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success: { type: boolean, example: true }
+              data:
+                type: object
+                properties:
+                  updates: { type: object }
+                  quota: { type: object, nullable: true }
+    '401': { description: Unauthorized, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '422': { description: Validation failed, content: { application/json: { schema: { $ref: ../components/schemas/ValidationError.yaml } } } }
+    '429': { description: Quota exceeded, content: { application/json: { schema: { type: object } } } }
+    '500': { description: OpenRouter error, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }

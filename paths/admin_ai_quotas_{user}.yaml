@@ -1,0 +1,110 @@
+get:
+  tags:
+    - Admin
+  summary: Get AI quota for user
+  description: Get single user's AI quota with 30-day usage rollup (admin only).
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: user
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Quota retrieved
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success: { type: boolean, example: true }
+              data:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      id: { type: integer }
+                      name: { type: string }
+                      username: { type: string, nullable: true }
+                      email: { type: string, format: email }
+                      avatar_url: { type: string, format: uri, nullable: true }
+                      role: { type: string }
+                  quota:
+                    type: object
+                    properties:
+                      quota_max_tokens: { type: integer, nullable: true }
+                      used_tokens: { type: integer }
+                      remaining_tokens: { type: integer, nullable: true }
+                      period_start: { type: string, format: date-time, nullable: true }
+                      period_end: { type: string, format: date-time, nullable: true }
+                      reset_at: { type: string, format: date-time, nullable: true }
+                      last_used_at: { type: string, format: date-time, nullable: true }
+                      exempt_from_quota: { type: boolean }
+                  usage_last_30d:
+                    type: object
+                    properties:
+                      calls: { type: integer }
+                      tokens: { type: integer }
+                      breakdown_by_route:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            route: { type: string }
+                            calls: { type: integer }
+                            tokens: { type: integer }
+    '401': { description: Unauthorized, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '403': { description: Forbidden, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '404': { description: User not found, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+patch:
+  tags:
+    - Admin
+  summary: Update AI quota
+  description: Update quota cap or exempt flag (admin only). At least one required.
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: user
+      in: path
+      required: true
+      schema: { type: integer }
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            quota_max_tokens: { type: integer, nullable: true, minimum: 0, maximum: 10000000, description: null = unlimited }
+            exempt_from_quota: { type: boolean }
+  responses:
+    '200':
+      description: Quota updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success: { type: boolean, example: true }
+              data:
+                type: object
+                properties:
+                  user: { type: object, properties: { id: { type: integer }, name: { type: string }, username: { type: string, nullable: true }, email: { type: string }, avatar_url: { type: string, nullable: true } } }
+                  quota:
+                    type: object
+                    properties:
+                      quota_max_tokens: { type: integer, nullable: true }
+                      used_tokens: { type: integer }
+                      remaining_tokens: { type: integer, nullable: true }
+                      period_start: { type: string, format: date-time, nullable: true }
+                      period_end: { type: string, format: date-time, nullable: true }
+                      reset_at: { type: string, format: date-time, nullable: true }
+                      last_used_at: { type: string, format: date-time, nullable: true }
+                      exempt_from_quota: { type: boolean }
+    '401': { description: Unauthorized, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '403': { description: Forbidden, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '404': { description: User not found, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '422': { description: Validation failed, content: { application/json: { schema: { $ref: ../components/schemas/ValidationError.yaml } } } }

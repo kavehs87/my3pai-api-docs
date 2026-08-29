@@ -1,0 +1,37 @@
+post:
+  tags:
+    - AI
+  summary: Polish HTML
+  description: Polish HTML field via `text.polish` (`reasoning none`, `temp 0.7`, `max 1024`).
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required: [html, field, mode]
+          properties:
+            html: { type: string, maxLength: 5000 }
+            field: { type: string, enum: [description, tipsWearAndTake, tipsNearby, tipsInsiderTips, tipsSafetyNotes] }
+            mode: { type: string, enum: [polish, formalize, elaborate, shorten] }
+            context: { type: object, nullable: true }
+  responses:
+    '200':
+      description: Polished HTML
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success: { type: boolean, example: true }
+              data:
+                type: object
+                properties:
+                  html: { type: string }
+                  quota: { type: object, nullable: true }
+    '401': { description: Unauthorized, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '422': { description: Validation failed, content: { application/json: { schema: { $ref: ../components/schemas/ValidationError.yaml } } } }
+    '429': { description: Quota exceeded, content: { application/json: { schema: { type: object } } } }
+    '500': { description: OpenRouter error, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }

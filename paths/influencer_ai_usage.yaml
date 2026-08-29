@@ -1,0 +1,42 @@
+get:
+  tags:
+    - AI
+  summary: List own AI usage logs
+  description: Paginated AI usage history for current influencer.
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: per_page
+      in: query
+      schema: { type: integer, minimum: 1, maximum: 100, default: 15 }
+    - name: page
+      in: query
+      schema: { type: integer, minimum: 1 }
+  responses:
+    '200':
+      description: Usage logs
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success: { type: boolean, example: true }
+              data:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        created_at: { type: string, format: date-time, nullable: true }
+                        route: { type: string, example: poi.fromPrompt }
+                        model: { type: string, example: deepseek/deepseek-v4-flash-0731 }
+                        prompt_tokens: { type: integer }
+                        completion_tokens: { type: integer }
+                        total_tokens: { type: integer }
+                  meta:
+                    $ref: ../components/schemas/PaginationMeta.yaml
+    '401': { description: Unauthorized, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '403': { description: Forbidden, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '422': { description: Validation failed, content: { application/json: { schema: { $ref: ../components/schemas/ValidationError.yaml } } } }

@@ -1,0 +1,37 @@
+post:
+  tags:
+    - AI
+  summary: Complete POI tips
+  description: Generates `tipsWearAndTake, tipsNearby, tipsInsiderTips, tipsSafetyNotes` HTML via `poi.completeTips` (`reasoning none`).
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required: [poi]
+          properties:
+            poi: { type: object }
+            fields:
+              type: array
+              items: { type: string, enum: [tipsWearAndTake, tipsNearby, tipsInsiderTips, tipsSafetyNotes] }
+  responses:
+    '200':
+      description: Tips generated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success: { type: boolean, example: true }
+              data:
+                type: object
+                properties:
+                  tips: { type: object }
+                  quota: { type: object, nullable: true }
+    '401': { description: Unauthorized, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '422': { description: Validation failed, content: { application/json: { schema: { $ref: ../components/schemas/ValidationError.yaml } } } }
+    '429': { description: Quota exceeded, content: { application/json: { schema: { type: object } } } }
+    '500': { description: OpenRouter error, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }

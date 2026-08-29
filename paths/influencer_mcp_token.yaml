@@ -1,0 +1,58 @@
+get:
+  tags:
+    - AI
+  summary: Get influencer MCP token status
+  description: Get current influencer MCP token status (auth:sanctum+influencer).
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Token status
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success: { type: boolean, example: true }
+              data: { type: object, properties: { has_token: { type: boolean }, created_at: { type: string, format: date-time, nullable: true } } }
+    '401': { description: Unauthorized, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '403': { description: Forbidden, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+post:
+  tags:
+    - AI
+  summary: Create influencer MCP token
+  description: Create or rotate influencer MCP token (plainText shown once).
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: false
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            revoke_existing: { type: boolean, default: false }
+  responses:
+    '201':
+      description: Token created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success: { type: boolean, example: true }
+              data:
+                type: object
+                properties:
+                  mcp_token: { type: object, properties: { token: { type: string }, name: { type: string }, abilities: { type: array, items: { type: string } }, created_at: { type: string, format: date-time } } }
+                  mcp_endpoint: { type: string, example: /api/mcp/influencer }
+    '401': { description: Unauthorized, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+delete:
+  tags:
+    - AI
+  summary: Revoke influencer MCP token
+  security:
+    - BearerAuth: []
+  responses:
+    '204': { description: Revoked }
+    '401': { description: Unauthorized, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
