@@ -4,12 +4,17 @@ properties:
     type: integer
   downloadUrl:
     type: string
-    format: uri
+    format: uri-reference
     nullable: true
+    example: /api/media-assets/download?purchase=123
     description: >
-      Auth-gated download endpoint for this purchase. Only present while the purchase is paid
-      and within its download window; null otherwise. This is a redirect endpoint, never a
-      long-lived file URL.
+      Relative auth-gated download endpoint for this purchase (e.g. /api/media-assets/download?purchase=123).
+      Only present while the purchase is paid and within its download window; null otherwise.
+      This is a redirect endpoint (302 to a short-lived S3 signed URL), never a long-lived file URL.
+      Returned as a relative path so the browser resolves it against the frontend origin (which proxies
+      /api to the backend) and the session cookie is sent — an absolute backend URL would be cross-origin
+      and return 401 (F-038). The frontend should open/fetch this path via its configured API base
+      (or plain relative fetch) without prepending a backend host.
   downloadExpiresAt:
     type: string
     format: date-time
