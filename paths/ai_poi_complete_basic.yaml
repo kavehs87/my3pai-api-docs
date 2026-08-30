@@ -2,7 +2,7 @@ post:
   tags:
     - AI
   summary: Complete POI basic fields
-  description: Fills missing `title, placeType, activities, description...` via `poi.completeBasic` (`reasoning none`, `temp 0.1`, `max 4096`).
+  description: Fills missing `title, placeType, activities, description...` via `poi.completeBasic` (`reasoning none`, `temp 0.1`, `max 4096`). Response `updates` is sanitized — only in-vocabulary values and correct types are returned (elevation etc. handled in details).
   security:
     - BearerAuth: []
   requestBody:
@@ -26,7 +26,44 @@ post:
               data:
                 type: object
                 properties:
-                  updates: { type: object, description: Partial POI fields }
+                  updates:
+                    type: object
+                    description: Sanitized partial POI fields — only in-vocabulary, correctly typed. Unknown/OOV values are dropped.
+                    properties:
+                      title: { type: string, nullable: true, example: "Grand Bazaar" }
+                      placeType:
+                        type: string
+                        nullable: true
+                        enum: [food_drink, nature, culture, adventure, nightlife, shopping, wellness, accommodation, transportation, instagrammable, other]
+                      activities:
+                        type: array
+                        nullable: true
+                        items: { type: string, example: hiking_area }
+                        description: snake_case activity keys
+                      description: { type: string, nullable: true, example: "A vibrant market..." }
+                      shortTitle: { type: string, nullable: true }
+                      address: { type: string, nullable: true }
+                      phone: { type: string, nullable: true }
+                      website: { type: string, nullable: true, format: uri }
+                      openingHours: { type: string, nullable: true }
+                      estimatedDuration:
+                        type: string
+                        nullable: true
+                        description: Human-readable duration like "2-3 hours", never a number
+                        example: "2-3 hours"
+                      tags:
+                        type: array
+                        nullable: true
+                        items: { type: string }
+                      audienceType:
+                        type: array
+                        nullable: true
+                        items: { type: string, enum: [families, couples, solo, groups, digital-nomads, van-lifers] }
+                      ageLimitation:
+                        type: array
+                        nullable: true
+                        items: { type: string, enum: [infant, kids, teens, adults, none] }
+                    additionalProperties: false
                   quota: { type: object, nullable: true }
     '401': { description: Unauthorized, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
     '422': { description: Validation failed, content: { application/json: { schema: { $ref: ../components/schemas/ValidationError.yaml } } } }

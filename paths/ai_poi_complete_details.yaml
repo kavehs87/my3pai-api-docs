@@ -2,7 +2,7 @@ post:
   tags:
     - AI
   summary: Complete POI details fields
-  description: Fills `costType, difficultyRating, amenities...` via `poi.completeDetails` (`reasoning none`, `temp 0.1`).
+  description: Fills `costType, difficultyRating, amenities...` via `poi.completeDetails` (`reasoning none`, `temp 0.1`). Response `updates` is sanitized — only in-vocabulary values and correct types are returned (see PoiRules + PoiReferenceSeeder for vocab source of truth).
   security:
     - BearerAuth: []
   requestBody:
@@ -26,7 +26,82 @@ post:
               data:
                 type: object
                 properties:
-                  updates: { type: object }
+                  updates:
+                    type: object
+                    description: Sanitized partial details — OOV values dropped, types coerced (nearbyServices array→string, elevation word→dropped, priceChargedAs null when costType free, etc.)
+                    properties:
+                      costType:
+                        type: string
+                        nullable: true
+                        enum: [free, paid, mixed]
+                      difficultyRating:
+                        type: string
+                        nullable: true
+                        enum: [very-easy, easy, moderate, challenging, hard, extreme]
+                      requiredFitness:
+                        type: string
+                        nullable: true
+                        enum: [casual, active, fit, athletic, elite]
+                      nearestPublicTransport:
+                        type: string
+                        nullable: true
+                        maxLength: 128
+                        example: "Beyazıt-Kapalıçarşı Tram Stop"
+                      elevation:
+                        type: integer
+                        nullable: true
+                        minimum: 0
+                        maximum: 9000
+                        description: Meters above sea level, integer only — never a word like "low"
+                        example: 1500
+                      terrainType:
+                        type: array
+                        nullable: true
+                        items: { type: string, enum: [paved, gravel, forest-trail, rocky, exposed, narrow-path, steps] }
+                      audienceType:
+                        type: array
+                        nullable: true
+                        items: { type: string, enum: [families, couples, solo, groups, digital-nomads, van-lifers] }
+                      ageLimitation:
+                        type: array
+                        nullable: true
+                        items: { type: string, enum: [infant, kids, teens, adults, none] }
+                      priceChargedAs:
+                        type: string
+                        nullable: true
+                        enum: [per_person, per_group, per_day, per_activity, other]
+                        description: Must be null when costType is free
+                      currency:
+                        type: string
+                        nullable: true
+                        pattern: '^[A-Z]{3}$'
+                        example: TRY
+                      estimatedMinPrice:
+                        type: number
+                        nullable: true
+                        minimum: 0
+                      estimatedMaxPrice:
+                        type: number
+                        nullable: true
+                        minimum: 0
+                      amenities:
+                        type: array
+                        nullable: true
+                        items: { type: string, enum: [wifi, parking, drinking-water, card-payment, reservation-required, outdoor-seating, air-conditioning, heating, live-music, kid-friendly, baby-changing, restaurant, cafe, shop, wc, picnic, bbq, rental] }
+                        description: Singular snake_case; plurals like "shops" are normalized to "shop", "restrooms" → "wc"
+                      accessibility:
+                        type: array
+                        nullable: true
+                        items: { type: string, enum: [wheelchair, stroller, step-free, accessible-toilet] }
+                      nearbyServices:
+                        type: string
+                        nullable: true
+                        description: Comma-separated string like "restaurants, cafes, shops" — never an array
+                        example: "restaurants, cafes, shops"
+                      petFriendly:
+                        type: boolean
+                        nullable: true
+                    additionalProperties: false
                   quota: { type: object, nullable: true }
     '401': { description: Unauthorized, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
     '422': { description: Validation failed, content: { application/json: { schema: { $ref: ../components/schemas/ValidationError.yaml } } } }
