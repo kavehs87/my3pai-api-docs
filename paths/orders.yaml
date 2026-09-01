@@ -37,9 +37,18 @@ post:
 
     - Billing information is required for paid orders
 
-    - Payment intent must be created separately via `/api/payments/intent`
+    - Payment intent must be created separately via `/api/payments/intent` (also usable as pay-later for any pending order)
 
     - Response includes `is_free: false` flag
+
+
+    **De-duplication (pay-later):**
+
+    - If the caller already has a `status=pending` + `payment_status=pending` order
+      containing the exact same set of `item_type`+`item_id` pairs (order-insensitive),
+      no new order is created — the existing pending order is returned (cart is still
+      marked `converted`) so the frontend can mint a fresh Checkout Session for it
+      via `/api/payments/intent`. Guest checkout (no user) is not de-duplicated.
 
 
     **Billing Information:**

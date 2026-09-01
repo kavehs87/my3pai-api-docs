@@ -4,12 +4,14 @@ post:
   summary: Create checkout session
   description: >
     Create a Stripe Checkout Session for an order.
-    
+
     The frontend should redirect the user to the `redirect_url` in the response data to complete payment on Stripe's hosted checkout page.
-    
+
     After successful payment, Stripe will redirect back to `{FRONTEND_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}&order_id={ORDER_ID}`.
-    
+
     If the user cancels, Stripe will redirect to `{FRONTEND_URL}/checkout/cancel?order_id={ORDER_ID}`.
+
+    **Pay-later:** This endpoint works for any pending order (`status=pending` + `payment_status=pending`) regardless of when it was created — cart orders, consultation `book-and-pay` orders, and direct orders (blog post, podcast episode) all mint a fresh session and return `redirect_url` + `checkout_session_id`. Re-calling with the same `order_id` creates a new session (Stripe default 24h expiry, no custom `expires_at`).
   security:
     - BearerAuth: []
   requestBody:

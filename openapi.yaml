@@ -647,6 +647,8 @@ paths:
     $ref: paths/orders_purchased.yaml
   /orders/sold:
     $ref: paths/orders_sold.yaml
+  /orders/stats:
+    $ref: paths/orders_stats.yaml
   /orders/{id}:
     $ref: paths/orders_{id}.yaml
   /orders/{id}/cancel:

@@ -1,0 +1,35 @@
+get:
+  tags:
+    - Billing
+  summary: Get orders stats
+  description: Dashboard widget — counts caller's own pending orders (status=pending AND payment_status=pending) and sums their totals. Pending orders never expire for non-consultation types.
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Orders stats
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  pending_count:
+                    type: integer
+                    description: Number of pending orders
+                    example: 2
+                  pending_total_cents:
+                    type: integer
+                    description: Sum of total_amount_cents over pending orders
+                    example: 8000
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
