@@ -29,8 +29,9 @@ properties:
       - admin
       - system
       - business
+      - sale
     example: order
-    description: Frozen expanded enum (§4.7, D8). `business` kept for backward-compat reads.
+    description: Frozen expanded enum (§4.7, D8). `business` kept for backward-compat reads. `sale` = creator item-sold notifications (ItemSold).
   severity:
     type: string
     enum:

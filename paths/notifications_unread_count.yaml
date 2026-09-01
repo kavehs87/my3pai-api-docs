@@ -8,7 +8,7 @@ get:
       required: false
       schema:
         type: string
-        enum: [order, refund, consultation, media_asset, invoice, payout, stripe, video, contact, auth, admin, system, business]
+        enum: [order, refund, consultation, media_asset, invoice, payout, stripe, video, contact, auth, admin, system, business, sale]
       description: Filter count by data.category (D8).
     - name: audience
       in: query
