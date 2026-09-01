@@ -91,3 +91,12 @@ properties:
   updated_at:
     type: string
     format: date-time
+  expires_at:
+    type: string
+    format: date-time
+    nullable: true
+    description: For pending unpaid non-consultation orders, created_at + ORDER_PENDING_TTL_HOURS (default 1h); otherwise null
+  expires_in_seconds:
+    type: integer
+    nullable: true
+    description: Seconds until expiry (max 0), null if not applicable
