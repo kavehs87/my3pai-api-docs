@@ -68,6 +68,13 @@ put:
     must have an active Stripe Connect account. The request will fail with a 422
     error if the user has not connected their Stripe account. Setting other fields
     (title, isPublished) does not require a Stripe account.
+
+    **Price Requirement (for-sale maps):**
+
+    A for-sale map must always carry a valid price (50–100000 cents). On a partial
+    update `price_cents` is only required when it is being changed, or when the
+    stored price is missing/invalid — unrelated field updates (e.g. a rename) of a
+    healthy for-sale map do not need to resend the price.
   parameters:
     - name: map
       in: path
@@ -96,7 +103,10 @@ put:
               type: integer
               minimum: 0
               nullable: true
-              description: Required if isForSale or is_for_sale is true
+              description: >-
+                Price in cents. Required when isForSale/is_for_sale is being set
+                to true, when changing the price, or when a for-sale map has no
+                valid stored price. For-sale prices must be 50–100000.
   responses:
     '200':
       description: Map updated successfully
