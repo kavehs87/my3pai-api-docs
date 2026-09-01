@@ -301,10 +301,14 @@ paths:
     $ref: paths/influencer_consultation.yaml
   /influencer/consultation/bookings:
     $ref: paths/influencer_consultation_bookings.yaml
+  /influencer/consultation/bookings/stats:
+    $ref: paths/influencer_consultation_bookings_stats.yaml
   /influencer/consultation/bookings/{id}:
     $ref: paths/influencer_consultation_bookings_{id}.yaml
   /influencer/consultation/bookings/{id}/confirm:
     $ref: paths/influencer_consultation_bookings_{id}_confirm.yaml
+  /influencer/consultation/bookings/{id}/decline:
+    $ref: paths/influencer_consultation_bookings_{id}_decline.yaml
   /influencer/consultation/bookings/{id}/complete:
     $ref: paths/influencer_consultation_bookings_{id}_complete.yaml
   /consultations/{id}/book:
@@ -635,6 +639,8 @@ paths:
     $ref: paths/cart_items_{id}.yaml
   /cart/merge:
     $ref: paths/cart_merge.yaml
+  /orders/guest-checkout:
+    $ref: paths/orders_guest_checkout.yaml
   /orders:
     $ref: paths/orders.yaml
   /orders/purchased:

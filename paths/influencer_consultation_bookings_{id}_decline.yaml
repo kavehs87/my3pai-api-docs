@@ -2,28 +2,17 @@ patch:
   tags:
     - Influencers
     - Consultations
-  summary: Confirm booking
-  description: Influencer confirms a pending booking
+  summary: Decline booking
+  description: Influencer declines a pending booking. Paid pending triggers 100% refund via cancellation service (reason influencer_declined); unpaid pending simply cancels (no Stripe refund).
   parameters:
     - name: id
       in: path
       required: true
       schema:
         type: integer
-  requestBody:
-    content:
-      application/json:
-        schema:
-          type: object
-          properties:
-            video_call_link:
-              type: string
-              format: uri
-              nullable: true
-              description: Optional video call link (Zoom, Google Meet, etc.)
   responses:
     '200':
-      description: Booking confirmed
+      description: Booking declined
       content:
         application/json:
           schema:
@@ -35,12 +24,6 @@ patch:
                 $ref: ../components/schemas/ConsultationBooking.yaml
               message:
                 type: string
-    '400':
-      description: Booking is not in pending status
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/ErrorResponse.yaml
     '401':
       description: Unauthenticated
       content:
@@ -48,13 +31,13 @@ patch:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
     '404':
-      description: Booking not found
+      description: Booking not found or not owned by influencer
       content:
         application/json:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
     '409':
-      description: Cannot confirm unpaid booking or wrong state
+      description: Booking is not in pending status
       content:
         application/json:
           schema:
