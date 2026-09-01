@@ -1,0 +1,31 @@
+type: object
+description: New-account free purchase — order completed, no Stripe session. No token.
+required:
+  - success
+  - data
+  - is_free
+  - needs_email_verification
+  - user_email
+properties:
+  success:
+    type: boolean
+    example: true
+  data:
+    type: object
+    required:
+      - order
+    properties:
+      order:
+        $ref: Order.yaml
+  is_free:
+    type: boolean
+    example: true
+  needs_email_verification:
+    type: boolean
+    example: true
+  user_email:
+    type: string
+    format: email
+  already_converted:
+    type: boolean
+    nullable: true

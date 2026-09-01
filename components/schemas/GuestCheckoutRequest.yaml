@@ -1,0 +1,133 @@
+type: object
+required:
+  - guest_session_id
+  - billing_email
+description: >
+  Request body for guest email-first checkout (creates/link account + order + Stripe session atomically).
+
+  **Paying vs Free:**
+
+  - Paid carts (total > $0): `billing_email` + full address required (`line1`, `city`, `postal_code`, `country`).
+  - Free carts (total = $0): only `billing_email` required; address optional.
+
+  **Account handling:**
+
+  - If `billing_email` matches an existing **verified** account, no order is created — client should route to sign-in + `POST /cart/merge` + `POST /orders`.
+  - If it matches an existing **unverified** account, a verification email is re-sent and no order is created.
+  - If no account exists, a new `user_id` is created (`verified:false`), verification email sent, guest cart merged → order → Stripe session (paid) or completed (free).
+
+  **Validation precedence (F-041):** The existing-account check (`409 {existing_account:true}`) shadows `create_account` field validation. If `billing_email` already exists, `first_name`/`last_name`/`password`/`password_confirmation` are **not required** even when `create_account=true` — the `409` branch is always reachable (e.g. guest leaves “Create an account” checked but password blank → `409`, not `422`). Likewise, an idempotent replay (`guest_session_id` already converted) bypasses those required rules.
+
+  **Idempotency:** Re-submitting the same `guest_session_id` does not create a second order (durable via `order.metadata.guest_session_id`).
+
+  **Billing formats:** Supports both flat (`billing_address_line1`…) and nested (`billing_address.line1`…) — same transform as `StoreOrderRequest`.
+properties:
+  guest_session_id:
+    type: string
+    description: Guest cart session ID (frontend `X-Session-ID` / `localStorage guest_session_id`, UUID)
+    example: "550e8400-e29b-41d4-a716-446655440000"
+  billing_email:
+    type: string
+    format: email
+    maxLength: 255
+    description: Customer billing email — used to resolve/create account (trimmed + lowercased)
+    example: "jane@example.com"
+  billing_name:
+    type: string
+    maxLength: 255
+    nullable: true
+    description: Customer billing name (optional; fallback to `first_name last_name`)
+    example: "Jane Doe"
+  billing_address_line1:
+    type: string
+    maxLength: 255
+    nullable: true
+    description: Street line1 — required for paid orders (flat structure)
+  billing_address_line2:
+    type: string
+    maxLength: 255
+    nullable: true
+    description: Street line2 (optional)
+  billing_city:
+    type: string
+    maxLength: 255
+    nullable: true
+    description: City — required for paid orders
+  billing_state:
+    type: string
+    maxLength: 255
+    nullable: true
+    description: State/province (optional)
+  billing_postal_code:
+    type: string
+    maxLength: 20
+    nullable: true
+    description: Postal code — required for paid orders
+  billing_country:
+    type: string
+    minLength: 2
+    maxLength: 2
+    nullable: true
+    description: Country ISO 3166-1 alpha-2 — required for paid orders (e.g., US)
+    example: "US"
+  billing_address:
+    type: object
+    nullable: true
+    description: Nested billing address (alternative to flat fields)
+    properties:
+      line1:
+        type: string
+        maxLength: 255
+      line2:
+        type: string
+        maxLength: 255
+        nullable: true
+      city:
+        type: string
+        maxLength: 255
+      state:
+        type: string
+        maxLength: 255
+        nullable: true
+      postal_code:
+        type: string
+        maxLength: 20
+      country:
+        type: string
+        minLength: 2
+        maxLength: 2
+  create_account:
+    type: boolean
+    default: true
+    description: >
+      Whether customer wants a password account. `true` (default) requires `first_name`, `last_name`, `password` (+ confirmation) per `StrongPassword`. `false` creates user with random password (claim via forgot-password).
+    example: true
+  first_name:
+    type: string
+    maxLength: 255
+    nullable: true
+    description: Required if `create_account=true` **and** `billing_email` does not already exist (regex `^[\p{L}\p{M}\s'-]+$`) — `409 {existing_account:true}` shadows this validation (F-041)
+    example: "Jane"
+  last_name:
+    type: string
+    maxLength: 255
+    nullable: true
+    description: Required if `create_account=true` and `billing_email` is new — shadowed by `409` when email already exists
+    example: "Doe"
+  password:
+    type: string
+    nullable: true
+    description: Required if `create_account=true` and `billing_email` is new — `StrongPassword` (8+ chars, upper/lower/number/special, not common) + confirmation; shadowed by `409` (F-041)
+    example: "Secret123!"
+  password_confirmation:
+    type: string
+    nullable: true
+    description: Required if `create_account=true` and `billing_email` is new — must match `password`; shadowed by `409`
+  notes:
+    type: string
+    maxLength: 1000
+    nullable: true
+  metadata:
+    type: object
+    nullable: true
+    description: Optional order metadata

@@ -1,0 +1,45 @@
+type: object
+description: New-account paid purchase — returns pending order + Stripe Checkout Session. No token.
+required:
+  - success
+  - data
+  - is_free
+  - needs_email_verification
+  - user_email
+properties:
+  success:
+    type: boolean
+    example: true
+  data:
+    type: object
+    required:
+      - order
+      - redirect_url
+      - checkout_session_id
+    properties:
+      order:
+        $ref: Order.yaml
+      redirect_url:
+        type: string
+        format: uri
+        description: Stripe Checkout Session URL to redirect the browser
+        example: "https://checkout.stripe.com/c/pay/cs_test_123"
+      checkout_session_id:
+        type: string
+        description: Stripe Checkout Session ID
+        example: "cs_test_123"
+  is_free:
+    type: boolean
+    example: false
+  needs_email_verification:
+    type: boolean
+    example: true
+    description: Account created unverified — client must prompt “check your email to access your purchase”
+  user_email:
+    type: string
+    format: email
+    example: "jane@example.com"
+  already_converted:
+    type: boolean
+    nullable: true
+    description: True on idempotent replay of same guest_session_id

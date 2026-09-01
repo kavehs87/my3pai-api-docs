@@ -1,0 +1,94 @@
+post:
+  tags:
+    - Public
+  summary: Store email helpfulness feedback
+  description: >
+    Records whether a received email was helpful (positive/negative). Public,
+    throttled 30/min. Used by the email footer links and can also be called
+    with a Sanctum bearer token to link the feedback to the user.
+  security: []
+  requestBody:
+    required: false
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [positive, negative]
+            email:
+              type: string
+              format: email
+            notification_id:
+              type: string
+  responses:
+    '201':
+      description: Feedback recorded
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  type:
+                    type: string
+    '422':
+      description: Validation failed
+get:
+  tags:
+    - Public
+  summary: One-click email feedback link (footer)
+  description: >
+    Plain GET link used by the "Was this email useful?" footer buttons.
+    Browsers receive an HTML thank-you page; clients requesting
+    application/json receive the JSON payload.
+  security: []
+  parameters:
+    - name: type
+      in: query
+      required: true
+      schema:
+        type: string
+        enum: [positive, negative]
+    - name: email
+      in: query
+      required: false
+      schema:
+        type: string
+        format: email
+    - name: notification_id
+      in: query
+      required: false
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Feedback recorded (HTML thank-you page for browsers)
+      content:
+        text/html:
+          schema:
+            type: string
+    '422':
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+              errors:
+                type: object

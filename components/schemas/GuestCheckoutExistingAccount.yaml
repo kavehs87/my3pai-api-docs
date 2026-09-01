@@ -1,0 +1,25 @@
+type: object
+description: >
+  Existing-account branch — no order created, no token, no password change.
+  `verified:true` → client routes to sign-in → `POST /cart/merge` → `POST /orders` (normal flow).
+  `verified:false` → verification email re-sent; client prompts “verify, then sign in”.
+
+  **Enumeration:** Returns distinct `existing_account:true` (intentional per §4.9; mirrors `POST /register` 422 reveal; uniform response would break UX).
+required:
+  - success
+  - existing_account
+  - verified
+properties:
+  success:
+    type: boolean
+    example: true
+  existing_account:
+    type: boolean
+    example: true
+  verified:
+    type: boolean
+    description: Whether the existing account’s email is verified
+    example: true
+  message:
+    type: string
+    example: "An account with this email already exists. Please sign in to complete your purchase."

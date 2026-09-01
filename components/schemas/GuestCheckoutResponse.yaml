@@ -1,0 +1,6 @@
+oneOf:
+  - $ref: GuestCheckoutSuccessPaid.yaml
+  - $ref: GuestCheckoutSuccessFree.yaml
+  - $ref: GuestCheckoutExistingAccount.yaml
+discriminator:
+  propertyName: existing_account

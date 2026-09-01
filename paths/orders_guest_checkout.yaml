@@ -1,0 +1,197 @@
+post:
+  tags:
+    - Billing
+  summary: Guest email-first checkout (auto-provision account)
+  description: >
+    **Public** — no `BearerAuth`, **rate-limited 30/min** (same strictness as `POST /register`; consider stricter for user-creating branch). Industry-standard Amazon/Shopify flow: guest completes purchase using billing email and an account is created/linked so all downstream `user_id`-keyed logic works unchanged.
+
+    **Principle — decouple paying from accessing:** Paying (create order + Stripe Checkout Session) needs no token/verified email (Stripe is trust anchor; finalization via `POST /webhooks/stripe` :659, unauthenticated, signature-verified). Accessing (`GET /orders/{id}/download`, `GET /purchased-products`, `GET /invoices/*`, `GET /me`) stays `verified` gated. **Never returns a `token`** — an attacker typing a victim’s email gets no token (anti-takeover invariant: only `POST /login` after verified + `POST /email/verify` issue tokens).
+
+    **Branching:**
+
+    - `existing verified` → `409 {existing_account:true, verified:true}` (no order, no token, no email)
+    - `existing unverified` → `409 {existing_account:true, verified:false}` + re-sent `VerifyEmail` (no order, no token)
+    - `no account` → atomically: create user (`verified:false`) via same side-effects as `POST /register` (username generation, `UserPreference` defaults, queued `VerifyEmail`; no `InfluencerSetting`/Stripe), merge guest cart (`POST /cart/merge` dedup/quantity logic, single-creator guard, delete guest cart), create order (`POST /orders` logic, `converted` guard), then paid → `StripePaymentService::createCheckoutSession` (`redirect_url` + `checkout_session_id`, single-creator + Stripe-active + `$0.50` min guards) or free → completed order + `Payment::free` + invoice + entitlements.
+
+    **Validation precedence (F-041):** Existing-account `409` shadows `create_account` validation. If `billing_email` already maps to a user, `first_name`/`last_name`/`password` are not required even when `create_account=true` — e.g. guest leaves “Create an account” checked but password blank → `409`, not `422`. Idempotent replay (`guest_session_id` already converted) likewise bypasses those required rules.
+
+    **Idempotency:** `guest_session_id` persisted in `order.metadata.guest_session_id`; retry with same `guest_session_id` returns existing order (`already_converted:true`) and — if paid pending without session — lazily creates the Checkout Session.
+
+    **Abuse surface:** Public creation of `users`+`orders`+emails; enumeration oracle `{existing_account:true}` is intentional (mirrors `POST /register` 422; acceptable per §4.9).
+
+    **Money:** Integer `*_cents` only via `PriceCalculatorService`; no new money arithmetic; cents passthrough to Stripe.
+
+    See `plans/guest-checkout-impact-report.md` for full impact/mitigation matrix (single-creator invariant, throttle precedents, seller Stripe, webhook finalization, username race, etc.).
+  security: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/GuestCheckoutRequest.yaml
+        examples:
+          paid_new_account:
+            summary: Paid — new account (with password)
+            value:
+              guest_session_id: "550e8400-e29b-41d4-a716-446655440000"
+              billing_email: "jane@example.com"
+              billing_name: "Jane Doe"
+              billing_address_line1: "123 Main St"
+              billing_city: "San Francisco"
+              billing_postal_code: "94105"
+              billing_country: "US"
+              create_account: true
+              first_name: "Jane"
+              last_name: "Doe"
+              password: "Secret123!"
+              password_confirmation: "Secret123!"
+          paid_create_account_false:
+            summary: Paid — no password (random, claim via forgot-password)
+            value:
+              guest_session_id: "550e8400-e29b-41d4-a716-446655440001"
+              billing_email: "guest@example.com"
+              billing_name: "Guest User"
+              billing_address_line1: "123 Main St"
+              billing_city: "SF"
+              billing_postal_code: "94105"
+              billing_country: "US"
+              create_account: false
+          free:
+            summary: Free-only cart (no Stripe)
+            value:
+              guest_session_id: "550e8400-e29b-41d4-a716-446655440002"
+              billing_email: "free@example.com"
+              create_account: true
+              first_name: "Free"
+              last_name: "User"
+              password: "Secret123!"
+              password_confirmation: "Secret123!"
+  responses:
+    '201':
+      description: New-account purchase created (paid or free) — no token
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: ../components/schemas/GuestCheckoutSuccessPaid.yaml
+              - $ref: ../components/schemas/GuestCheckoutSuccessFree.yaml
+          examples:
+            paid:
+              summary: Paid — new account
+              value:
+                success: true
+                data:
+                  order:
+                    id: 123
+                    order_number: "ORD-2026-000001"
+                    status: "pending"
+                    payment_status: "pending"
+                    total_amount_cents: 300
+                    currency: "USD"
+                  redirect_url: "https://checkout.stripe.com/c/pay/cs_test_123"
+                  checkout_session_id: "cs_test_123"
+                is_free: false
+                needs_email_verification: true
+                user_email: "jane@example.com"
+            free:
+              summary: Free — completed
+              value:
+                success: true
+                data:
+                  order:
+                    id: 124
+                    order_number: "ORD-2026-000002"
+                    status: "completed"
+                    payment_status: "paid"
+                    total_amount_cents: 0
+                    currency: "USD"
+                  is_free: true
+                  needs_email_verification: true
+                  user_email: "free@example.com"
+    '200':
+      description: Idempotent replay — existing order for this `guest_session_id`
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: ../components/schemas/GuestCheckoutSuccessPaid.yaml
+              - $ref: ../components/schemas/GuestCheckoutSuccessFree.yaml
+    '409':
+      description: Existing account — no order created (client should route to sign-in / verify)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/GuestCheckoutExistingAccount.yaml
+          examples:
+            verified:
+              summary: Existing verified → sign in
+              value:
+                success: true
+                existing_account: true
+                verified: true
+                message: "An account with this email already exists. Please sign in to complete your purchase."
+            unverified:
+              summary: Existing unverified → verification re-sent
+              value:
+                success: true
+                existing_account: true
+                verified: false
+                message: "An account with this email exists but is not verified. A verification email has been re-sent. Please verify your email, then sign in to check out."
+    '422':
+      description: >
+        Validation failed (missing `guest_session_id`/`billing_email`, bad password, `billing_address` required for paid, empty/missing guest cart, multi-creator cart, seller Stripe not ready, `$0.50` minimum, etc.)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+          examples:
+            validation:
+              value:
+                success: false
+                message: "Validation failed"
+                errors:
+                  billing_email: ["Billing email is required."]
+            cart_empty:
+              value:
+                success: false
+                error: "Guest cart not found or already converted. Please add items to your cart."
+            multi_creator:
+              value:
+                success: false
+                error: "Your cart already contains items from another creator. A cart can only hold items from one creator — remove the other items before adding this one."
+            stripe_not_ready:
+              value:
+                success: false
+                error: "Influencer (ID: 5) does not have a Stripe Connect account. Cannot process payment."
+    '403':
+      description: Banned account
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: "Your account has been suspended."
+    '429':
+      description: Rate limited (30/min per IP)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '500':
+      description: Server error — transaction rolled back, no half-created order/user
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: "Failed to create order. Please try again."

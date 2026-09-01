@@ -159,6 +159,12 @@ paths:
     $ref: paths/forgot_password.yaml
   /reset-password:
     $ref: paths/reset_password.yaml
+  /feedback/email:
+    $ref: paths/feedback_email.yaml
+  /unsubscribe:
+    $ref: paths/unsubscribe.yaml
+  /unsubscribe/preview:
+    $ref: paths/unsubscribe_preview.yaml
   /auth/google:
     $ref: paths/auth_google.yaml
   /auth/google/callback:

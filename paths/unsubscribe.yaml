@@ -1,0 +1,102 @@
+get:
+  tags:
+    - Public
+  summary: One-click unsubscribe (footer link)
+  description: >
+    Signed one-click unsubscribe link from the email footer. `token` is a
+    stateless HMAC (`base64(json{email}).hmac_sha256`). Idempotent – sets
+    notifications_marketing=false. Browsers receive an HTML confirmation
+    page; clients requesting application/json receive the JSON payload.
+  security: []
+  parameters:
+    - name: email
+      in: query
+      required: true
+      schema:
+        type: string
+        format: email
+    - name: token
+      in: query
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Unsubscribed (HTML confirmation page for browsers)
+      content:
+        text/html:
+          schema:
+            type: string
+    '422':
+      description: Missing or invalid email/token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+post:
+  tags:
+    - Public
+  summary: Unsubscribe (RFC 8058 List-Unsubscribe)
+  description: >
+    RFC 8058 one-click unsubscribe target (also accepts plain POST with the
+    signed token in body or query). Idempotent.
+  security: []
+  parameters:
+    - name: email
+      in: query
+      required: false
+      schema:
+        type: string
+        format: email
+    - name: token
+      in: query
+      required: false
+      schema:
+        type: string
+  requestBody:
+    required: false
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+              format: email
+            token:
+              type: string
+  responses:
+    '200':
+      description: Unsubscribed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+              email:
+                type: string
+              unsubscribed:
+                type: boolean
+    '422':
+      description: Missing or invalid email/token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string

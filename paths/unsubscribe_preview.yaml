@@ -1,0 +1,46 @@
+get:
+  tags:
+    - Public
+  summary: Verify unsubscribe token (no mutation)
+  description: >
+    Checks whether an unsubscribe `email`/`token` pair is valid without
+    changing any preferences. Useful for frontend confirmation screens.
+  security: []
+  parameters:
+    - name: email
+      in: query
+      required: true
+      schema:
+        type: string
+        format: email
+    - name: token
+      in: query
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Token check result
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              email:
+                type: string
+              valid:
+                type: boolean
+    '422':
+      description: Missing email or token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
