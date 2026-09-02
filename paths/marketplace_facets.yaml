@@ -1,0 +1,95 @@
+get:
+  tags:
+    - Public
+    - Marketplace
+  summary: Marketplace facets (filter pills)
+  description: >
+    Per-type counts (+ total) respecting active filters (`q`, `region`/`location`, `creator`, `type`). Single aggregate query per type; pre-computed, cached, CDN-cacheable.
+    Use for rendering filter pills (e.g., `Maps (12)` etc). Disabled feature-flag types return `0`. If `type` is filtered, `total` reflects filtered sum, but `facets` always contains all six keys.
+  security: []
+  parameters:
+    - name: type
+      in: query
+      style: form
+      explode: true
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+            - maps
+            - masterclasses
+            - consultations
+            - media
+            - blog
+            - podcasts
+      description: Optional type filter (same as /items). Facets are computed for these types when present.
+    - name: q
+      in: query
+      schema:
+        type: string
+        maxLength: 200
+      description: Same search as /items
+    - name: region
+      in: query
+      schema:
+        type: string
+        maxLength: 100
+    - name: location
+      in: query
+      schema:
+        type: string
+        maxLength: 100
+      description: Alias for region
+    - name: creator
+      in: query
+      schema:
+        type: string
+        maxLength: 50
+  responses:
+    '200':
+      description: Facet counts
+      headers:
+        Cache-Control:
+          schema:
+            type: string
+        ETag:
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/MarketplaceFacets.yaml
+              meta:
+                $ref: ../components/schemas/MarketplaceFacets.yaml
+            example:
+              success: true
+              data:
+                facets:
+                  maps: 12
+                  masterclasses: 8
+                  consultations: 5
+                  media: 20
+                  blog: 15
+                  podcasts: 7
+                total: 67
+              meta:
+                facets:
+                  maps: 12
+                  masterclasses: 8
+                  consultations: 5
+                  media: 20
+                  blog: 15
+                  podcasts: 7
+                total: 67
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

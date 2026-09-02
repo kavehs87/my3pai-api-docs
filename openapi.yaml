@@ -93,6 +93,13 @@ tags:
     description: Administrative endpoints (admin only)
   - name: AI
     description: AI-powered endpoints using OpenRouter
+  - name: Marketplace
+    description: >
+      Public cross-creator storefront (Explore/Creators marketplace). Aggregated,
+      filterable grid of sellable items (maps, masterclasses, consultations,
+      media, blog, podcasts) + creator cards + IG-mobile feed. All reads are
+      CDN-cacheable (Cache-Control + ETag), feature-flag aware, and
+      cursor-paginated.
   - name: Public
     description: Public endpoints that don't require authentication
   - name: Billing
@@ -289,6 +296,14 @@ paths:
     $ref: paths/influencers_{username}_masterclasses.yaml
   /influencers/{username}/masterclasses/{slug}:
     $ref: paths/influencers_{username}_masterclasses_{slug}.yaml
+  /marketplace/items:
+    $ref: paths/marketplace_items.yaml
+  /marketplace/facets:
+    $ref: paths/marketplace_facets.yaml
+  /marketplace/creators:
+    $ref: paths/marketplace_creators.yaml
+  /marketplace/feed:
+    $ref: paths/marketplace_feed.yaml
   /influencers/{username}/maps:
     $ref: paths/influencers_{username}_maps.yaml
   /influencers/{username}/consultation:

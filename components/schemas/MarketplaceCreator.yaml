@@ -1,0 +1,95 @@
+type: object
+properties:
+  id:
+    type: integer
+  username:
+    type: string
+    description: Handle used in /influencers/{username} and /m/{username}/{slug}
+  display_name:
+    type: string
+  name:
+    type: string
+    description: Alias for display_name
+  avatar:
+    type: string
+    format: uri
+    nullable: true
+  logo:
+    type: string
+    format: uri
+    nullable: true
+  verified:
+    type: boolean
+  location:
+    type: string
+    nullable: true
+  sub_location:
+    type: string
+    nullable: true
+  tagline:
+    type: string
+    nullable: true
+  bio:
+    type: string
+    nullable: true
+  handle:
+    type: string
+    description: Alias for username
+  per_type_counts:
+    type: object
+    description: Count of sellable items per type (one aggregate query per type)
+    properties:
+      maps:
+        type: integer
+        minimum: 0
+      masterclasses:
+        type: integer
+        minimum: 0
+      consultations:
+        type: integer
+        minimum: 0
+      media:
+        type: integer
+        minimum: 0
+      blog:
+        type: integer
+        minimum: 0
+      podcasts:
+        type: integer
+        minimum: 0
+  counts:
+    type: object
+    description: Alias for per_type_counts
+    properties:
+      maps:
+        type: integer
+      masterclasses:
+        type: integer
+      consultations:
+        type: integer
+      media:
+        type: integer
+      blog:
+        type: integer
+      podcasts:
+        type: integer
+  total_items:
+    type: integer
+    minimum: 0
+    description: Sum of per_type_counts
+  travelers_guided:
+    type: integer
+    minimum: 0
+    description: Distinct purchasers across all purchases (order_items + map/masterclass/media/content/consultation purchases) for this creator
+  created_at:
+    type: string
+    format: date-time
+    nullable: true
+  updated_at:
+    type: string
+    format: date-time
+    nullable: true
+required:
+  - id
+  - username
+  - display_name

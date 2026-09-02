@@ -1,0 +1,102 @@
+get:
+  tags:
+    - Public
+    - Marketplace
+  summary: List marketplace creators (cards)
+  description: >
+    Public, CDN-cacheable list of **creator cards** for the Explore/Creators marketplace page.
+    Only `VERIFIED` creators with `≥1` published sellable item of **any enabled type** are included — **NOT maps-only** (aggregates across maps/masterclasses/consultations/media/blog/podcasts, respecting feature flags).
+    Each card contains per-type item counts, total items, **travelers guided** (distinct purchasers across their purchases: map/masterclass/media/content/consultation + order_items), location, tagline, avatar/logo, and handle.
+    `rating` is **omitted** until a review system exists (no invented column).
+
+    Supports search (`q`), sorting, and opaque cursor pagination (same params as /items). One aggregate query per item type for counts; travelers guided via distinct purchasers query; eager-load only shown fields; cached with `Cache-Control` + `ETag`.
+  security: []
+  parameters:
+    - name: q
+      in: query
+      description: Search over creator username + display name + location + tagline
+      schema:
+        type: string
+        maxLength: 200
+    - name: sort
+      in: query
+      description: >
+        Sort key. `popularity` by total_items desc, `newest` by creator created_at desc, `price_*` falls back to popularity (no creator price), `rating` currently same as popularity (no review system).
+      schema:
+        type: string
+        enum:
+          - popularity
+          - newest
+          - price_asc
+          - price_desc
+          - rating
+        default: popularity
+    - name: cursor
+      in: query
+      description: Opaque cursor from previous `meta.next_cursor`
+      schema:
+        type: string
+        maxLength: 2000
+    - name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 48
+        default: 24
+  responses:
+    '200':
+      description: Paginated creator cards
+      headers:
+        Cache-Control:
+          schema:
+            type: string
+        ETag:
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/MarketplaceCreator.yaml
+              meta:
+                type: object
+                properties:
+                  next_cursor:
+                    type: string
+                    nullable: true
+                  has_more:
+                    type: boolean
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+            example:
+              success: true
+              data:
+                - id: 7
+                  username: yukari
+                  display_name: Yukari Tanaka
+                  avatar: https://cdn.my3p.ai/avatars/yukari.jpg?v=123
+                  location: Kyoto, Japan
+                  tagline: Hidden gems only I know
+                  per_type_counts: { maps: 3, masterclasses: 1, consultations: 1, media: 5, blog: 2, podcasts: 0 }
+                  total_items: 12
+                  travelers_guided: 127
+              meta:
+                next_cursor: eyJpZCI6NyxzIjoxMn0=
+                has_more: true
+                total: 42
+                limit: 24
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

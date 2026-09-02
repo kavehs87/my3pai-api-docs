@@ -1,0 +1,31 @@
+type: object
+properties:
+  facets:
+    type: object
+    properties:
+      maps:
+        type: integer
+        minimum: 0
+      masterclasses:
+        type: integer
+        minimum: 0
+      consultations:
+        type: integer
+        minimum: 0
+      media:
+        type: integer
+        minimum: 0
+      blog:
+        type: integer
+        minimum: 0
+      podcasts:
+        type: integer
+        minimum: 0
+    description: Per-type counts respecting active filters (q/region/creator). Disabled types return 0. Used for filter pills.
+  total:
+    type: integer
+    minimum: 0
+    description: Total items across filtered types (sum of facets for active type filter, or sum of all enabled if no filter)
+required:
+  - facets
+  - total

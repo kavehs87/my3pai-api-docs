@@ -1,0 +1,150 @@
+type: object
+properties:
+  id:
+    type: integer
+    description: Item identifier (table pk)
+  type:
+    type: string
+    enum:
+      - maps
+      - masterclasses
+      - consultations
+      - media
+      - blog
+      - podcasts
+    description: Sellable item type (morph map key)
+  title:
+    type: string
+    description: Item title
+  slug:
+    type: string
+    nullable: true
+    description: SEO slug (null for consultations/media which use id)
+  route:
+    type: string
+    nullable: true
+    description: Frontend route (SPA). Maps use /m/{username}/{slug}, others use /influencers/{username}/...
+    example: /m/alice/three-days-in-paris
+  region:
+    type: string
+    nullable: true
+    description: Primary destination/region (creator location fallback)
+  destination:
+    type: string
+    nullable: true
+    description: Alias for region
+  price:
+    type: object
+    properties:
+      price_cents:
+        type: integer
+        minimum: 0
+        description: Price in minor units (cents)
+      currency:
+        type: string
+        pattern: '^[A-Z]{3}$'
+        example: USD
+  price_cents:
+    type: integer
+    minimum: 0
+    description: Price in cents (top-level convenience, same as price.price_cents)
+  currency:
+    type: string
+    pattern: '^[A-Z]{3}$'
+    example: USD
+  price_formatted:
+    type: string
+    nullable: true
+    description: Display-only formatted price (MoneyHelper::centsToDisplay). Never use for math.
+    example: "12.50"
+  media:
+    type: object
+    nullable: true
+    properties:
+      cover:
+        type: string
+        format: uri
+        nullable: true
+      thumb:
+        type: string
+        format: uri
+        nullable: true
+      cover_raw:
+        type: string
+        nullable: true
+        description: Raw stored path before S3 URL resolution
+  cover:
+    type: string
+    format: uri
+    nullable: true
+  thumbnailUrl:
+    type: string
+    format: uri
+    nullable: true
+  creator:
+    type: object
+    properties:
+      id:
+        type: integer
+      username:
+        type: string
+      display_name:
+        type: string
+      name:
+        type: string
+      avatar:
+        type: string
+        format: uri
+        nullable: true
+      verified:
+        type: boolean
+      location:
+        type: string
+        nullable: true
+      tagline:
+        type: string
+        nullable: true
+  cta_label:
+    type: string
+    enum:
+      - View Map
+      - Enroll Now
+      - Book Now
+      - Download
+      - Read Now
+      - Listen Now
+      - View
+  cta:
+    type: string
+  popularity:
+    type: integer
+    nullable: true
+    description: Popularity score (views/plays/downloads) used for sort=popularity
+  rating:
+    type: number
+    format: float
+    nullable: true
+    description: Average rating (only masterclasses currently). Null until reviews exist
+  created_at:
+    type: string
+    format: date-time
+    nullable: true
+  updated_at:
+    type: string
+    format: date-time
+    nullable: true
+  social:
+    type: object
+    nullable: true
+    properties:
+      likes:
+        type: integer
+      views:
+        type: integer
+      comments:
+        type: integer
+required:
+  - id
+  - type
+  - title
+  - price

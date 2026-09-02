@@ -1,0 +1,110 @@
+get:
+  tags:
+    - Public
+    - Marketplace
+  summary: Marketplace IG-mobile feed (mixed)
+  description: >
+    IG-mobile **mixed feed**: ordered (popular/newest) item "posts" across **featured** creators (when present), otherwise same pool as `/marketplace/items`.
+    Each entry is a `MarketplaceItem` enriched with `creator` ref + `media` + `price` + light `social` metrics (`likes/views/comments`, currently placeholder).
+    This is the dedicated feed endpoint; a `view=feed` variant of `/items` would also be acceptable, but a separate resource is cleaner for CDN caching and for the mobile client's feed contract.
+    Same filters, sorting, and cursor pagination as `/items`. CDN-cacheable.
+  security: []
+  parameters:
+    - name: type
+      in: query
+      style: form
+      explode: true
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+            - maps
+            - masterclasses
+            - consultations
+            - media
+            - blog
+            - podcasts
+    - name: q
+      in: query
+      schema:
+        type: string
+        maxLength: 200
+    - name: region
+      in: query
+      schema:
+        type: string
+        maxLength: 100
+    - name: location
+      in: query
+      schema:
+        type: string
+        maxLength: 100
+    - name: sort
+      in: query
+      description: Feed defaults to `popularity`; supports same sorts as /items
+      schema:
+        type: string
+        enum:
+          - popularity
+          - newest
+          - price_asc
+          - price_desc
+          - rating
+        default: popularity
+    - name: creator
+      in: query
+      schema:
+        type: string
+        maxLength: 50
+    - name: cursor
+      in: query
+      schema:
+        type: string
+        maxLength: 2000
+    - name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 48
+        default: 24
+  responses:
+    '200':
+      description: Paginated feed items
+      headers:
+        Cache-Control:
+          schema:
+            type: string
+        ETag:
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/MarketplaceItem.yaml
+              meta:
+                type: object
+                properties:
+                  next_cursor:
+                    type: string
+                    nullable: true
+                  has_more:
+                    type: boolean
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

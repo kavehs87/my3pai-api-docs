@@ -1,0 +1,156 @@
+get:
+  tags:
+    - Public
+    - Marketplace
+  summary: List marketplace items (cross-creator storefront)
+  description: >
+    Public, CDN-cacheable, cross-creator grid of **sellable** items (maps, masterclasses, consultations, media, blog, podcasts).
+    Only `PUBLISHED`/`ACTIVE` + `for-sale`/`bookable` + `FEATURE-FLAG-ENABLED` items from `VERIFIED` creators are returned.
+    Supports filtering by item type, full-text search over title + creator name + region/destination + tags, optional geo facet, single-creator filter, sorting, and **opaque cursor pagination** (base64 of sort key + id). Stable ordering — no duplicates/gaps across pages.
+
+    Money is always integer `*_cents` with currency `USD` (no floats). Media uses S3 public URLs. Routes are SPA-ready (`/m/{username}/{slug}` for maps).
+
+    One aggregate query per item type; eager-load only shown columns (no N+1). Short-TTL Redis cache keyed by normalized query + `Cache-Control` + `ETag`; cache bumped on item create/update/publish/price change.
+  security: []
+  parameters:
+    - name: type
+      in: query
+      description: >
+        Item type filter. Repeatable (`?type=maps&type=blog`) or comma-separated (`?type=maps,blog`). When omitted, all feature-enabled types are returned.
+        Disabled types are always excluded.
+      style: form
+      explode: true
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+            - maps
+            - masterclasses
+            - consultations
+            - media
+            - blog
+            - podcasts
+    - name: q
+      in: query
+      description: Full-text search (LIKE with indexed columns) over item title + creator name + region/destination + tags
+      schema:
+        type: string
+        maxLength: 200
+    - name: region
+      in: query
+      description: Optional geo facet (matches creator location/sub_location; for maps also destination)
+      schema:
+        type: string
+        maxLength: 100
+    - name: location
+      in: query
+      description: Alias for `region`
+      schema:
+        type: string
+        maxLength: 100
+    - name: sort
+      in: query
+      description: Sort key. `popularity` uses views/plays/downloads, `newest` by created_at, `price_*` by price_cents, `rating` (masterclasses only) with nulls last.
+      schema:
+        type: string
+        enum:
+          - popularity
+          - newest
+          - price_asc
+          - price_desc
+          - rating
+        default: newest
+    - name: creator
+      in: query
+      description: Filter to a single creator by username
+      schema:
+        type: string
+        maxLength: 50
+    - name: cursor
+      in: query
+      description: Opaque cursor (base64 JSON of sort key + id + type) from previous page's `meta.next_cursor`
+      schema:
+        type: string
+        maxLength: 2000
+    - name: limit
+      in: query
+      description: Page size (1..48, default 24)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 48
+        default: 24
+  responses:
+    '200':
+      description: Paginated marketplace items
+      headers:
+        Cache-Control:
+          schema:
+            type: string
+          description: public, max-age=60, s-maxage=300
+        ETag:
+          schema:
+            type: string
+          description: md5 of response body for conditional GET
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/MarketplaceItem.yaml
+              meta:
+                type: object
+                properties:
+                  next_cursor:
+                    type: string
+                    nullable: true
+                    description: Opaque cursor for next page; null when has_more=false
+                  has_more:
+                    type: boolean
+                  total:
+                    type: integer
+                    description: Total items matching filters (before pagination)
+                  limit:
+                    type: integer
+            example:
+              success: true
+              data:
+                - id: 42
+                  type: maps
+                  title: Three Days in Kyoto
+                  slug: three-days-in-kyoto
+                  route: /m/yukari/three-days-in-kyoto
+                  price:
+                    price_cents: 2499
+                    currency: USD
+                  price_cents: 2499
+                  currency: USD
+                  creator:
+                    username: yukari
+                    display_name: Yukari Tanaka
+                    avatar: https://cdn.my3p.ai/avatars/yukari.jpg?v=123
+                    verified: true
+                  cta_label: View Map
+              meta:
+                next_cursor: eyJzIjoxNzI1...
+                has_more: true
+                total: 132
+                limit: 24
+    '422':
+      description: Validation error (invalid type/search/sort/limit)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '429':
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
