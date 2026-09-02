@@ -5,7 +5,8 @@ get:
   summary: List marketplace creators (cards)
   description: >
     Public, CDN-cacheable list of **creator cards** for the Explore/Creators marketplace page.
-    Only `VERIFIED` creators with `≥1` published sellable item of **any enabled type** are included — **NOT maps-only** (aggregates across maps/masterclasses/consultations/media/blog/podcasts, respecting feature flags).
+    Only `VERIFIED` creators with `≥1` published sellable **or free** item of **any enabled type** are included — **NOT maps-only** (aggregates across maps/masterclasses/consultations/media/blog/podcasts, respecting feature flags).
+    Free = no price (`price_cents` null or 0), which passes without the `is_for_sale`/`is_premium` flags.
     Each card contains per-type item counts, total items, **travelers guided** (distinct purchasers across their purchases: map/masterclass/media/content/consultation + order_items), location, tagline, avatar/logo, and handle.
     `rating` is **omitted** until a review system exists (no invented column).
 

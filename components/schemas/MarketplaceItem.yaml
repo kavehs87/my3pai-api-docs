@@ -33,6 +33,13 @@ properties:
     type: string
     nullable: true
     description: Alias for region
+  is_free:
+    type: boolean
+    description: >
+      True when the item is free (price_cents = 0). Free items pass through the
+      marketplace without the for-sale/premium flags: free maps (is_for_sale=false,
+      no price), free blog/podcast posts (is_premium=false, no price), and price-0
+      masterclasses/consultations/media.
   price:
     type: object
     properties:
@@ -147,4 +154,5 @@ required:
   - id
   - type
   - title
+  - is_free
   - price

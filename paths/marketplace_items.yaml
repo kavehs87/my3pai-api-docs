@@ -6,6 +6,8 @@ get:
   description: >
     Public, CDN-cacheable, cross-creator grid of **sellable** items (maps, masterclasses, consultations, media, blog, podcasts).
     Only `PUBLISHED`/`ACTIVE` + `for-sale`/`bookable` + `FEATURE-FLAG-ENABLED` items from `VERIFIED` creators are returned.
+    **Free items pass through too**: maps without `is_for_sale` and blog/podcast posts without `is_premium` are included when they have no price
+    (`price_cents` null or 0). Every item exposes an `is_free` boolean (true when `price_cents = 0`).
     Supports filtering by item type, full-text search over title + creator name + region/destination + tags, optional geo facet, single-creator filter, sorting, and **opaque cursor pagination** (base64 of sort key + id). Stable ordering — no duplicates/gaps across pages.
 
     Money is always integer `*_cents` with currency `USD` (no floats). Media uses S3 public URLs. Routes are SPA-ready (`/m/{username}/{slug}` for maps).
@@ -121,12 +123,13 @@ get:
             example:
               success: true
               data:
-                - id: 42
-                  type: maps
-                  title: Three Days in Kyoto
-                  slug: three-days-in-kyoto
-                  route: /m/yukari/three-days-in-kyoto
-                  price:
+                 - id: 42
+                   type: maps
+                   title: Three Days in Kyoto
+                   slug: three-days-in-kyoto
+                   route: /m/yukari/three-days-in-kyoto
+                   is_free: false
+                   price:
                     price_cents: 2499
                     currency: USD
                   price_cents: 2499
