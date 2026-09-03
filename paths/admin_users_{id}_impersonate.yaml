@@ -25,6 +25,9 @@ post:
                   token:
                     type: string
                     description: Sanctum API token for the impersonated user
+                  url:
+                    type: string
+                    description: Single-use browser URL that activates a session as the impersonated user (redirects to the frontend profile page)
                   expires_in_minutes:
                     type: integer
                     example: 60

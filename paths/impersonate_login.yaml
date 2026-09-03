@@ -1,0 +1,20 @@
+get:
+  tags:
+    - Authentication
+  summary: Activate an impersonation session
+  description: >
+    Validates a single-use impersonation token (created by POST
+    /admin/users/{id}/impersonate, named "impersonation:*") and starts a
+    browser session as the target user, then redirects to the frontend profile
+    page. Invalid, expired, banned-user, or admin-user tokens redirect to the
+    frontend login page without starting a session.
+  parameters:
+    - name: token
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Single-use Sanctum impersonation token
+  responses:
+    '302':
+      description: Redirects to the frontend /profile on success, or /auth on failure
