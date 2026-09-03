@@ -1,0 +1,64 @@
+post:
+  tags:
+    - Stats
+  summary: Bulk check which items the current user has liked
+  description: |
+    Authenticated membership check used to hydrate per-user "liked" state on
+    pages the CDN cache cannot personalize. Returns only the requested items
+    that the user currently likes, grouped by likeable_type — absent type keys
+    mean none of the requested ids of that type are liked. Max 100 items per
+    request; duplicate type/id pairs are rejected. Likeable types: `map`,
+    `blog_post`, `masterclass`, `podcast_episode`, `media_asset` (morph map).
+  operationId: likesCheck
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - items
+          properties:
+            items:
+              type: array
+              minItems: 1
+              maxItems: 100
+              items:
+                type: object
+                required:
+                  - likeable_type
+                  - likeable_id
+                properties:
+                  likeable_type:
+                    type: string
+                    enum: [map, blog_post, masterclass, podcast_episode, media_asset]
+                  likeable_id:
+                    type: integer
+                    format: int64
+  responses:
+    '200':
+      description: Liked membership for the requested items (unliked/unknown ids are omitted)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  liked:
+                    type: object
+                    description: likeable_type -> array of liked likeable_ids among the requested items. Types with no liked items are omitted.
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: integer
+                        format: int64
+    '401':
+      description: Unauthenticated
+    '403':
+      description: Email not verified / banned
+    '422':
+      description: Invalid items payload (size, duplicates, unknown type)

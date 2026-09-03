@@ -286,6 +286,8 @@ paths:
     $ref: paths/beacon.yaml
   /likes/toggle:
     $ref: paths/likes_toggle.yaml
+  /likes/check:
+    $ref: paths/likes_check.yaml
   /influencer/stats/summary:
     $ref: paths/influencer_stats_summary.yaml
   /influencer/stats/timeseries:
