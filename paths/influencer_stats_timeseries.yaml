@@ -1,0 +1,53 @@
+get:
+  tags:
+    - Stats
+  summary: Influencer stats timeseries
+  description: |
+    Daily buckets over `[from, to]` (day granularity only — hourly is a
+    non-goal). `groupBy=type` nests per-type `views`/`visitors`;
+    `groupBy=item` nests per-item rows. Money is `revenue_cents` int (creator
+    share). Visitors are HLL-approximate (≈).
+  operationId: influencerStatsTimeseries
+  parameters:
+    - name: from
+      in: query
+      required: true
+      schema:
+        type: string
+        format: date
+    - name: to
+      in: query
+      required: true
+      schema:
+        type: string
+        format: date
+    - name: granularity
+      in: query
+      schema:
+        type: string
+        enum: [day]
+    - name: groupBy
+      in: query
+      schema:
+        type: string
+        enum: [totals, type, item]
+  responses:
+    '200':
+      description: Timeseries
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/ItemStats.yaml
+    '401':
+      description: Unauthenticated
+    '403':
+      description: Not an influencer (or creator tools disabled)
+    '422':
+      description: Invalid range (from > to or > 400 days)

@@ -1,0 +1,43 @@
+get:
+  tags:
+    - Stats
+  summary: Influencer stats summary
+  description: |
+    Private stats for the authenticated influencer. Reads follow the uniform
+    rule: DB daily rows for `date < today` + computed-live for today.
+
+    `revenue_cents` is the creator's payout share (85%), never the platform
+    fee. `visitors`/`visitors_range` are HLL-approximate (≈, 0.81% error) and
+    are **upper bounds for guests** (daily-salted hashes); exact for
+    authenticated visitors. `conversion_rate` may exceed 1.0 (purchase with
+    no recorded beacon view) and is 0 when visitors = 0. `byType` keys are
+    the six purchasable types — `consultation` contributes sales/revenue
+    only (no beacon views), `media_asset` contributes
+    likes/downloads/sales/revenue (engagement is the purchase-gated
+    first-download, never a beacon).
+  operationId: influencerStatsSummary
+  parameters:
+    - name: period
+      in: query
+      required: true
+      schema:
+        type: string
+        enum: ['7d', '30d', '90d', all]
+  responses:
+    '200':
+      description: Summary
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/InfluencerStatsSummary.yaml
+    '401':
+      description: Unauthenticated
+    '403':
+      description: Not an influencer (or creator tools disabled)
+    '422':
+      description: Invalid period

@@ -1,0 +1,49 @@
+get:
+  tags:
+    - Stats
+  summary: Single item stats sparkline
+  description: |
+    Daily series for one item. `sales`/`revenue_cents` for all six purchasable
+    types; `views`/`visitors` only for the four beaconed types
+    (map, blog_post, masterclass, podcast_episode). Visitors per day are the
+    per-item HLL count (≈).
+  operationId: influencerStatsItem
+  parameters:
+    - name: type
+      in: path
+      required: true
+      schema:
+        type: string
+        enum: [map, blog_post, masterclass, podcast_episode, consultation, media_asset]
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+    - name: period
+      in: query
+      schema:
+        type: string
+        enum: ['7d', '30d', '90d', all]
+        default: 30d
+  responses:
+    '200':
+      description: Sparkline
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/ItemStats.yaml
+    '401':
+      description: Unauthenticated
+    '403':
+      description: Not an influencer (or creator tools disabled)
+    '422':
+      description: Invalid type or period

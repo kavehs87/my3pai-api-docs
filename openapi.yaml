@@ -184,6 +184,8 @@ paths:
     $ref: paths/auth_google_reverify.yaml
   /auth/google/reverify/callback:
     $ref: paths/auth_google_reverify_callback.yaml
+  /impersonate/login:
+    $ref: paths/impersonate_login.yaml
   /me:
     $ref: paths/me.yaml
   /notifications:
@@ -278,6 +280,18 @@ paths:
     $ref: paths/influencers.yaml
   /influencers/{username}:
     $ref: paths/influencers_{username}.yaml
+  /beacon:
+    $ref: paths/beacon.yaml
+  /likes/toggle:
+    $ref: paths/likes_toggle.yaml
+  /influencer/stats/summary:
+    $ref: paths/influencer_stats_summary.yaml
+  /influencer/stats/timeseries:
+    $ref: paths/influencer_stats_timeseries.yaml
+  /influencer/stats/items:
+    $ref: paths/influencer_stats_items.yaml
+  /influencer/stats/items/{type}/{id}:
+    $ref: paths/influencer_stats_items_{type}_{id}.yaml
   /u/{username}/{slug}:
     $ref: paths/u_{username}_{slug}.yaml
   /influencers/{username}/blog:

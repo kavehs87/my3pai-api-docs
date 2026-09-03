@@ -1,0 +1,50 @@
+type: object
+required:
+  - event_id
+  - event_name
+  - event_version
+  - context
+properties:
+  event_id:
+    type: string
+    format: uuid
+    description: Client-generated UUIDv7 (time-ordered). 48h exactly-once dedup.
+  event_name:
+    type: string
+    enum: [item_view, profile_view, item_play]
+  event_version:
+    type: integer
+    enum: [1]
+  occurred_at:
+    type: string
+    format: date-time
+    description: UTC ISO-8601. Defaults to server time. Clamped to ±15 min of server time → 422 outside.
+  actor:
+    type: object
+    description: Derived from the Sanctum bearer token when present — never trusted from the payload.
+    properties:
+      type:
+        type: string
+        enum: [user, guest]
+      user_id:
+        type: integer
+  context:
+    type: object
+    required: [content_type]
+    properties:
+      content_type:
+        type: string
+        enum: [map, blog_post, masterclass, podcast_episode, profile]
+        description: '`profile` only with event_name=profile_view.'
+      content_id:
+        type: integer
+        description: Required for item events unless `slug` is given.
+      slug:
+        type: string
+        description: Resolved only within the declared content_type's table (no cross-type confusion).
+      username:
+        type: string
+        description: Required for profile_view — resolves server-side to the influencer (404 on missing/non-public).
+      influencer_id:
+        type: integer
+        description: Accepted but never trusted — the server derives the owner from the content row.

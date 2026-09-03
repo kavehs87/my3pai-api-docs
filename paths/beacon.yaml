@@ -1,0 +1,49 @@
+post:
+  tags:
+    - Stats
+  summary: Traffic beacon ingest
+  description: |
+    Fire-and-forget ingest of `item_view` / `profile_view` / `item_play` events
+    (sent via `navigator.sendBeacon`). CSRF-exempted; abuse surface covered by
+    throttle (120/min), envelope validation, ±15 min `occurred_at` clamp,
+    bot filter, DNT/`Sec-GPC` respect, owner/admin exclusion and the
+    `feature_stats_beacon` kill switch. Beacons are excluded from both nginx
+    access logs.
+
+    Exactly-once semantics via 48h `event_id` dedup; visitor window dedup
+    (10 min guest / 30 min auth). Traffic metrics are window-deduped trend
+    metrics, not audit counters.
+  operationId: beacon
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/BeaconEnvelope.yaml
+  responses:
+    '204':
+      description: Accepted (or silently dropped — bot, DNT, owner/admin, kill switch off, duplicate event)
+    '404':
+      description: Content/profile not found or not published
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              error:
+                type: string
+    '422':
+      description: Validation failed (bad envelope, non-UUIDv7, clamp violation, missing User-Agent)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              error:
+                type: string
+              errors:
+                type: object

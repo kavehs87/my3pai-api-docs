@@ -1,0 +1,46 @@
+post:
+  tags:
+    - Stats
+  summary: Toggle a like on content
+  description: |
+    Authenticated consumer action (email-verified accounts only — spam gate).
+    1 like per user per item, idempotent toggle; DELETE is implicit in the
+    second call. Self-like is rejected with 422. Likeable types: `map`,
+    `blog_post`, `masterclass`, `podcast_episode`, `media_asset` (morph map).
+  operationId: likesToggle
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - likeable_type
+            - likeable_id
+          properties:
+            likeable_type:
+              type: string
+              enum: [map, blog_post, masterclass, podcast_episode, media_asset]
+            likeable_id:
+              type: integer
+              format: int64
+  responses:
+    '200':
+      description: Toggled
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/Like.yaml
+    '401':
+      description: Unauthenticated
+    '403':
+      description: Email not verified / banned
+    '404':
+      description: Content not found
+    '422':
+      description: Self-like or invalid type

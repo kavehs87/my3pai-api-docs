@@ -1,0 +1,8 @@
+type: object
+properties:
+  liked:
+    type: boolean
+    description: True when the toggle created the like, false when it removed it.
+  likes_count:
+    type: integer
+    description: Current like count of the item (maintained in the toggle transaction).

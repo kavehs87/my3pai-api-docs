@@ -1,0 +1,40 @@
+type: object
+properties:
+  date:
+    type: string
+    format: date
+  type:
+    type: string
+    description: Present in per-item entries (groupBy=item).
+  id:
+    type: integer
+    description: Present in per-item entries (groupBy=item).
+  title:
+    type: string
+  is_free:
+    type: boolean
+  views:
+    type: integer
+    description: Beaconed types only.
+  visitors:
+    type: integer
+    description: '≈ Beaconed types only.'
+  plays:
+    type: integer
+    description: Podcast only.
+  downloads:
+    type: integer
+    description: Media assets only.
+  likes:
+    type: integer
+  sales:
+    type: integer
+  revenue_cents:
+    type: integer
+    description: Creator share in cents (BIGINT — never a float).
+  conversion:
+    type: number
+    description: sales / visitors — 0 when visitors = 0; may exceed 1.0.
+  currency:
+    type: string
+    enum: [USD]

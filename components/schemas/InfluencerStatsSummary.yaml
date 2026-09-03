@@ -1,0 +1,95 @@
+type: object
+properties:
+  profile:
+    type: object
+    properties:
+      views:
+        type: integer
+        description: Profile view events in the period (window-deduped trend metric).
+      visitors:
+        type: integer
+        description: '≈ Period-unique profile visitors (HLL union; upper bound for guests).'
+  totals:
+    type: object
+    properties:
+      item_views:
+        type: integer
+        description: Window-deduped item view events across the four beaconed content types.
+      visitors:
+        type: integer
+        description: '≈ Union of daily unique visitors (same value as visitors_range).'
+      visitors_range:
+        type: integer
+        description: '≈ Exact over full history modulo HLL 0.81% error; upper bound for guests, exact for auth.'
+      plays:
+        type: integer
+        description: Podcast play events only.
+      downloads:
+        type: integer
+        description: Purchase-gated first downloads (exact business event).
+      likes:
+        type: integer
+        description: Exact — likes table.
+      sales:
+        type: integer
+        description: Exact — order items of completed+paid orders bucketed by orders.paid_at, all six purchasable types.
+      revenue_cents:
+        type: integer
+        description: Creator's payout share (85%) in cents — SUM(order_items.influencer_payout_amount_cents); never the platform fee.
+      currency:
+        type: string
+        enum: [USD]
+  byType:
+    type: object
+    description: Only surfaces with data appear. consultation → sales/revenue only; media_asset → likes/downloads/sales/revenue (never views).
+    additionalProperties:
+      type: object
+      properties:
+        views:
+          type: integer
+        visitors:
+          type: integer
+          description: '≈ (union merge for periods ≤30d)'
+        plays:
+          type: integer
+        downloads:
+          type: integer
+        likes:
+          type: integer
+        sales:
+          type: integer
+        revenue_cents:
+          type: integer
+        currency:
+          type: string
+  free_paid:
+    type: object
+    description: Free/paid split over all six purchasable types (free = marketplace free-passthrough convention).
+    properties:
+      free:
+        type: object
+        properties:
+          sales: { type: integer }
+          revenue_cents: { type: integer }
+      paid:
+        type: object
+        properties:
+          sales: { type: integer }
+          revenue_cents: { type: integer }
+  conversion:
+    type: object
+    properties:
+      overall:
+        type: number
+        description: sales / visitors — 0 when visitors = 0; may exceed 1.0 (purchase without recorded beacon view); approximate when the denominator is approximate.
+  period:
+    type: string
+  approximate:
+    type: object
+    properties:
+      visitors:
+        type: boolean
+      profile_visitors:
+        type: boolean
+      note:
+        type: string
