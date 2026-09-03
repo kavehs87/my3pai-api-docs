@@ -1,0 +1,245 @@
+get:
+  tags:
+    - Public
+    - Influencer
+  summary: Get composite overview for an influencer profile
+  description: |
+    Single first-paint read for the influencer public profile/home page. Returns the
+    profile plus the requested content sections in one response, replacing the
+    per-section round trips (blog, podcast, masterclasses, maps, media-assets,
+    social-posts, consultation). Sections disabled via the creator's tools
+    visibility toggles are omitted from the response; the individual list
+    endpoints remain the source for pagination beyond the overview.
+
+    Cacheable: responses carry `Cache-Control: public, max-age=300,
+    stale-while-revalidate=600` and an `ETag`; send `If-None-Match` to receive
+    `304 Not Modified`. The payload is cached server-side for 5 minutes and
+    flushed on any content write by the creator. Sections are capped at
+    `per_section` (max 10) items each; `meta.has_more` indicates more rows exist
+    (fetch them from the per-section list endpoints).
+  security: []
+  parameters:
+    - name: username
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: sections
+      in: query
+      required: false
+      schema:
+        type: string
+      description: |
+        Comma-separated section list. Defaults to all sections.
+        Valid names: maps, blog, podcast, masterclasses, media_assets,
+        social_posts, consultation. Unknown names are rejected with 422.
+      example: maps,blog,podcast,masterclasses,media_assets,social_posts
+    - name: per_section
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 10
+        default: 3
+      description: Maximum items returned per content section.
+  responses:
+    '200':
+      description: Composite overview (profile + requested sections)
+      headers:
+        Cache-Control:
+          schema:
+            type: string
+          example: public, max-age=300, stale-while-revalidate=600
+        ETag:
+          schema:
+            type: string
+          example: '"9a1f2c3d4e5f6a7b8c9d0e1f2a3b4c5d"'
+        Vary:
+          schema:
+            type: string
+          example: Accept-Language
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - success
+              - data
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                required:
+                  - profile
+                  - sections
+                  - cached_at
+                properties:
+                  profile:
+                    $ref: ../components/schemas/InfluencerProfile.yaml
+                  sections:
+                    type: object
+                    description: |
+                      One entry per requested AND enabled section. Sections
+                      disabled by the creator's visibility toggles are omitted.
+                    properties:
+                      maps:
+                        type: object
+                        properties:
+                          data:
+                            type: array
+                            items:
+                              $ref: ../components/schemas/MapResource.yaml
+                          meta:
+                            type: object
+                            properties:
+                              per_section:
+                                type: integer
+                              has_more:
+                                type: boolean
+                      blog:
+                        type: object
+                        properties:
+                          data:
+                            type: array
+                            items:
+                              $ref: ../components/schemas/BlogPostPublic.yaml
+                          meta:
+                            type: object
+                            properties:
+                              per_section:
+                                type: integer
+                              has_more:
+                                type: boolean
+                      podcast:
+                        type: object
+                        properties:
+                          data:
+                            type: object
+                            properties:
+                              podcastTitle:
+                                type: string
+                                nullable: true
+                              podcastDescription:
+                                type: string
+                                nullable: true
+                              applePodcastUrl:
+                                type: string
+                                nullable: true
+                              spotifyUrl:
+                                type: string
+                                nullable: true
+                              episodes:
+                                type: array
+                                items:
+                                  $ref: ../components/schemas/PodcastEpisodePublic.yaml
+                          meta:
+                            type: object
+                            properties:
+                              per_section:
+                                type: integer
+                              has_more:
+                                type: boolean
+                      masterclasses:
+                        type: object
+                        properties:
+                          data:
+                            type: array
+                            items:
+                              $ref: ../components/schemas/MasterclassPublic.yaml
+                          meta:
+                            type: object
+                            properties:
+                              per_section:
+                                type: integer
+                              has_more:
+                                type: boolean
+                      media_assets:
+                        type: object
+                        properties:
+                          data:
+                            type: array
+                            items:
+                              $ref: ../components/schemas/MediaAsset.yaml
+                          meta:
+                            type: object
+                            properties:
+                              per_section:
+                                type: integer
+                              has_more:
+                                type: boolean
+                      social_posts:
+                        type: object
+                        description: |
+                          Same split shape as GET /influencers/{username}/social-posts:
+                          per_section applies to the combined count.
+                        properties:
+                          data:
+                            type: object
+                            properties:
+                              youtube_videos:
+                                type: array
+                                items:
+                                  $ref: ../components/schemas/SocialPost.yaml
+                              short_form_content:
+                                type: array
+                                items:
+                                  $ref: ../components/schemas/SocialPost.yaml
+                          meta:
+                            type: object
+                            properties:
+                              per_section:
+                                type: integer
+                              has_more:
+                                type: boolean
+                      consultation:
+                        type: object
+                        description: Present only when sections includes consultation.
+                        properties:
+                          data:
+                            oneOf:
+                              - $ref: ../components/schemas/Consultation.yaml
+                              - type: 'null'
+                  cached_at:
+                    type: string
+                    format: date-time
+                    description: When this payload was built (server cache marker).
+              meta:
+                type: object
+                properties:
+                  username:
+                    type: string
+                  sections:
+                    type: array
+                    items:
+                      type: string
+                    description: Sections actually present in data.sections.
+                  per_section:
+                    type: integer
+                  cached_at:
+                    type: string
+                    format: date-time
+    '304':
+      description: Not modified (If-None-Match matched the current ETag)
+      headers:
+        ETag:
+          schema:
+            type: string
+        Cache-Control:
+          schema:
+            type: string
+          example: public, max-age=300, stale-while-revalidate=600
+    '404':
+      description: Influencer not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation failed (unknown section name, invalid per_section)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

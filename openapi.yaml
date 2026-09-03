@@ -280,6 +280,8 @@ paths:
     $ref: paths/influencers.yaml
   /influencers/{username}:
     $ref: paths/influencers_{username}.yaml
+  /influencers/{username}/overview:
+    $ref: paths/influencers_{username}_overview.yaml
   /beacon:
     $ref: paths/beacon.yaml
   /likes/toggle:
