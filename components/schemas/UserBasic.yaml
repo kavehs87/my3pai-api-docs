@@ -33,6 +33,17 @@ properties:
       - admin
   verified:
     type: boolean
+  theme:
+    type: string
+    nullable: true
+    enum:
+      - modern
+      - minimal
+      - basic
+      - dark-blue
+      - wanderluxe
+      - wanderluxe-v2
+    description: Public profile theme (mirrors profile_theme)
   preferences:
     $ref: ./UserPreferences.yaml
     nullable: true

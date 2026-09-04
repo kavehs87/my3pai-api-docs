@@ -45,6 +45,8 @@ properties:
       - minimal
       - basic
       - dark-blue
+      - wanderluxe
+      - wanderluxe-v2
     description: >-
       Profile theme for public influencer profile page (defaults to 'modern' if
       not set)
