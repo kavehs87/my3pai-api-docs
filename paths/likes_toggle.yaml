@@ -5,7 +5,9 @@ post:
   description: |
     Authenticated consumer action (email-verified accounts only — spam gate).
     1 like per user per item, idempotent toggle; DELETE is implicit in the
-    second call. Self-like is rejected with 422. Likeable types: `map`,
+    second call. Self-like is rejected with 422. Only visible content can be
+    liked (unpublished/draft items and inactive media assets 404).
+    Likeable types: `map`,
     `blog_post`, `masterclass`, `podcast_episode`, `media_asset` (morph map).
   operationId: likesToggle
   requestBody:

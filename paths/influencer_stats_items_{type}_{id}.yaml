@@ -3,7 +3,8 @@ get:
     - Stats
   summary: Single item stats sparkline
   description: |
-    Daily series for one item. `sales`/`revenue_cents` for all six purchasable
+    Daily series for one of the caller's own items (foreign or missing ids
+    return 404, indistinguishable). `sales`/`revenue_cents` for all six purchasable
     types; `views`/`visitors` only for the four beaconed types
     (map, blog_post, masterclass, podcast_episode). Visitors per day are the
     per-item HLL count (≈).
@@ -45,5 +46,7 @@ get:
       description: Unauthenticated
     '403':
       description: Not an influencer (or creator tools disabled)
+    '404':
+      description: Item not found (or not owned by the caller)
     '422':
       description: Invalid type or period
