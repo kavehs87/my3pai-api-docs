@@ -33,6 +33,12 @@ properties:
         maxLength:
           type: integer
           nullable: true
+        options:
+          type: array
+          nullable: true
+          items:
+            type: string
+          description: Allowed values for type:select slots
         placeholder:
           type: string
   palette:
