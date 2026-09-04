@@ -2,7 +2,22 @@ get:
   tags:
     - Billing
   summary: List purchased digital products
-  description: Retrieve the authenticated user's purchased digital assets with delivery metadata.
+  description: Retrieve the authenticated user's purchased digital assets with delivery metadata. Merged feed across all purchase types, newest first, paginated.
+  parameters:
+    - name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 50
+        default: 1
+    - name: per_page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 50
+        default: 20
   responses:
     '200':
       description: Purchased products list
@@ -26,6 +41,15 @@ get:
                         - $ref: ../components/schemas/PodcastEpisodePurchase.yaml
                         - $ref: ../components/schemas/MasterclassPurchase.yaml
                         - $ref: ../components/schemas/ConsultationBooking.yaml
+              meta:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                  per_page:
+                    type: integer
+                  has_more:
+                    type: boolean
     '401':
       description: Unauthenticated
       content:
