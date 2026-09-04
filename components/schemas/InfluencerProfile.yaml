@@ -47,6 +47,9 @@ properties:
     description: >-
       Profile theme for public influencer profile page (defaults to 'modern' if
       not set)
+  theme_settings:
+    type: object
+    description: Current theme's customization (public subset; other themes stay private)
   verified:
     type: boolean
   stats:

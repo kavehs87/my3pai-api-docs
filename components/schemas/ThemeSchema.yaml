@@ -1,0 +1,55 @@
+type: object
+description: Declarative customization schema for one profile theme (drives the dashboard form and write validation)
+properties:
+  theme:
+    type: string
+    example: wanderluxe-v2
+  version:
+    type: integer
+  sections:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        hideable:
+          type: boolean
+  slots:
+    type: array
+    items:
+      type: object
+      properties:
+        key:
+          type: string
+          example: hero.title
+        label:
+          type: string
+        type:
+          type: string
+          enum: [text, textarea, image, color, select]
+        maxLength:
+          type: integer
+          nullable: true
+        placeholder:
+          type: string
+  palette:
+    type: array
+    items:
+      type: string
+      example: '#c9a24b'
+  defaults:
+    type: object
+    properties:
+      accent:
+        type: string
+      order:
+        type: array
+        items:
+          type: string
+      hidden:
+        type: array
+        items:
+          type: string

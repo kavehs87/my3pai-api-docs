@@ -1,0 +1,31 @@
+get:
+  tags:
+    - Profile
+  summary: Get theme customization schema
+  description: |
+    Declarative schema for one profile theme (sections, editable slots,
+    accent palette, defaults). The dashboard settings form is generated from
+    this spec, and PUT /profile/theme-settings validates against it — the
+    single source of truth. Only themes with a schema are customizable.
+  operationId: themeSchema
+  parameters:
+    - name: theme
+      in: path
+      required: true
+      schema:
+        type: string
+        enum: [wanderluxe-v2]
+  responses:
+    '200':
+      description: Theme schema
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/ThemeSchema.yaml
+    '404':
+      description: Unknown theme

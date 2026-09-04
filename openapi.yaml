@@ -212,6 +212,10 @@ paths:
     $ref: paths/profile_change_password.yaml
   /profile/account:
     $ref: paths/profile_account.yaml
+  /profile/theme-settings:
+    $ref: paths/profile_theme_settings.yaml
+  /profile/theme-settings/image:
+    $ref: paths/profile_theme_settings_image.yaml
   /influencer/socials:
     $ref: paths/influencer_socials.yaml
   /influencer/socials/{id}:
@@ -282,6 +286,8 @@ paths:
     $ref: paths/influencers_{username}.yaml
   /influencers/{username}/overview:
     $ref: paths/influencers_{username}_overview.yaml
+  /themes/{theme}/schema:
+    $ref: paths/theme_schema.yaml
   /beacon:
     $ref: paths/beacon.yaml
   /likes/toggle:
