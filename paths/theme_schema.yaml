@@ -4,9 +4,10 @@ get:
   summary: Get theme customization schema
   description: |
     Declarative schema for one profile theme (sections, editable slots,
-    accent palette, defaults). The dashboard settings form is generated from
+    accent palette of suggested swatches, defaults). The dashboard settings form is generated from
     this spec, and PUT /profile/theme-settings validates against it — the
-    single source of truth. Only themes with a schema are customizable.
+    single source of truth. Accent accepts any valid #rgb or #rrggbb hex.
+    Only themes with a schema are customizable.
   operationId: themeSchema
   parameters:
     - name: theme

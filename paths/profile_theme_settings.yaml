@@ -5,8 +5,10 @@ put:
   description: |
     Validate settings against the theme schema and store the sanitized
     per-theme object (replaces that theme's settings; other themes kept).
-    Unknown keys, over-length text, off-palette accents, and off-allowlist
-    image hosts are 422 with per-field errors. Text renders escaped-only;
+    Unknown keys, over-length text, malformed accent hex, and off-allowlist
+    image hosts are 422 with per-field errors. Accent accepts any valid
+    #rgb or #rrggbb hex (stored normalized to lowercase 6-digit); the
+    schema palette lists suggested swatches only. Text renders escaped-only;
     images must be CDN-hosted (see the image endpoint). Payload cap ~30KB.
   operationId: updateThemeSettings
   security:

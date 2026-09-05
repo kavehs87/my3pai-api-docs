@@ -43,6 +43,7 @@ properties:
           type: string
   palette:
     type: array
+    description: Suggested accent swatches only; any valid #rgb or #rrggbb hex is accepted
     items:
       type: string
       example: '#c9a24b'
