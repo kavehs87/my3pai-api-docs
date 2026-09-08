@@ -632,6 +632,10 @@ paths:
     $ref: paths/admin_orders_export.yaml
   /admin/orders/{id}:
     $ref: paths/admin_orders_{id}.yaml
+  /admin/orders/{id}/retry-snapshots:
+    $ref: paths/admin_orders_{id}_retry_snapshots.yaml
+  /admin/purchases/{id}/retry-snapshot:
+    $ref: paths/admin_purchases_{id}_retry_snapshot.yaml
   /admin/invoices:
     $ref: paths/admin_invoices.yaml
   /admin/invoices/{id}:

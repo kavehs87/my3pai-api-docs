@@ -68,8 +68,13 @@ post:
               cart:
                 $ref: ../components/schemas/Cart.yaml
     '422':
-      description: Validation failed
+      description: >
+        Validation failed. Also returned (with a `message` body) when the cart
+        already holds an item whose underlying content was deleted — remove the
+        flagged item from the cart before adding more.
       content:
         application/json:
           schema:
             $ref: ../components/schemas/ValidationError.yaml
+          example:
+            message: A cart item (masterclass #12) is no longer available. Remove it before adding more items.

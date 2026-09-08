@@ -1,0 +1,96 @@
+post:
+  tags:
+    - Admin
+  summary: Retry snapshot for a purchase
+  description: >
+    Re-queues the immutable snapshot job for a single map or media-asset
+    purchase (admin only). The optional `type` body field (`map` |
+    `media_asset`) selects the purchase table; when omitted both tables are
+    probed (map first). A previously failed snapshot is reset to `processing`
+    before dispatch. If the snapshot is already ready, nothing is queued.
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: false
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - map
+                - media_asset
+              description: Purchase type (optional — both tables probed when omitted)
+  responses:
+    '200':
+      description: Snapshot retry queued
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+                example: Map snapshot retry queued.
+              data:
+                type: object
+                properties:
+                  purchase_id:
+                    type: integer
+                  type:
+                    type: string
+                    enum:
+                      - map
+                      - media_asset
+                  status:
+                    type: string
+                    example: processing
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Purchase not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '409':
+      description: Snapshot is already ready
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Snapshot is already ready for this map purchase.
+              data:
+                type: object
+                properties:
+                  purchase_id:
+                    type: integer
+                  snapshot_status:
+                    type: string
+                    example: ready

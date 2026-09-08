@@ -59,3 +59,15 @@ post:
         application/json:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: >
+        Merge refused. Returned when the guest cart holds an item whose
+        underlying content was deleted after it was carted (or when the
+        single-creator invariant would be violated). The guest cart is left
+        intact — remove the flagged item from the guest cart and retry.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ValidationError.yaml
+          example:
+            message: A cart item (map #12) is no longer available. Remove it before merging.

@@ -1,0 +1,61 @@
+post:
+  tags:
+    - Admin
+  summary: Retry all failed snapshots for an order
+  description: >
+    Bulk helper (admin only): re-queues snapshot jobs for every map and
+    media-asset item in the order that does not yet have a ready immutable
+    snapshot. Items with ready snapshots are skipped.
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Retries queued (or nothing to retry)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+                example: Queued 2 snapshot retries.
+              data:
+                type: object
+                properties:
+                  order_id:
+                    type: integer
+                  queued:
+                    type: integer
+                    example: 2
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Forbidden - not admin
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Order not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '500':
+      description: Failed to queue retries
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
