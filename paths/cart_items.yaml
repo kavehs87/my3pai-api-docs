@@ -71,10 +71,19 @@ post:
       description: >
         Validation failed. Also returned (with a `message` body) when the cart
         already holds an item whose underlying content was deleted — remove the
-        flagged item from the cart before adding more.
+        flagged item from the cart before adding more. Adding an item from a
+        second creator is rejected with error code
+        `MULTI_CREATOR_CART_NOT_SUPPORTED` — one creator per cart.
       content:
         application/json:
           schema:
             $ref: ../components/schemas/ValidationError.yaml
-          example:
-            message: A cart item (masterclass #12) is no longer available. Remove it before adding more items.
+          examples:
+            deleted_item:
+              value:
+                message: A cart item (masterclass #12) is no longer available. Remove it before adding more items.
+            multi_creator:
+              value:
+                success: false
+                error: Your cart already contains items from another creator. A cart can only hold items from one creator — remove the other items before adding this one.
+                code: MULTI_CREATOR_CART_NOT_SUPPORTED

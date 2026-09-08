@@ -7,3 +7,11 @@ properties:
     type: string
   error:
     type: string
+  code:
+    type: string
+    description: >
+      Optional machine-readable domain error code. Known values:
+      `MULTI_CREATOR_CART_NOT_SUPPORTED` (checkout spans more than one
+      creator — split the purchase per creator),
+      `CREATOR_PAYMENT_NOT_READY` (creator's Stripe account cannot receive
+      payouts yet).

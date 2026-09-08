@@ -111,11 +111,21 @@ post:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
     '422':
-      description: Validation failed
+      description: >
+        Validation failed. Domain errors carry a machine-readable `code`:
+        `MULTI_CREATOR_CART_NOT_SUPPORTED` (cart spans more than one creator —
+        split the purchase per creator) or `CREATOR_PAYMENT_NOT_READY` (the
+        creator's Stripe account cannot receive payouts yet).
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/ValidationError.yaml
+            allOf:
+              - $ref: ../components/schemas/ValidationError.yaml
+              - type: object
+                properties:
+                  code:
+                    type: string
+                    example: MULTI_CREATOR_CART_NOT_SUPPORTED
     '500':
       description: Server error
       content:
