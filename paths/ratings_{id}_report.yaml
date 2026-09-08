@@ -1,0 +1,60 @@
+post:
+  tags:
+    - Feedback
+  summary: Report a rating
+  description: |
+    One report per user per content (422 on duplicate). Authors and item
+    owners cannot report. At 5 distinct reporters the rating auto-hides
+    pending admin review.
+  operationId: reportRating
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - reason
+          properties:
+            reason:
+              type: string
+              enum: [spam, harassment, hate, sexual, pii, other]
+            details:
+              type: string
+              maxLength: 500
+              nullable: true
+            website:
+              type: string
+              description: Honeypot — must stay empty.
+  responses:
+    '200':
+      description: Reported
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  reported:
+                    type: boolean
+                  hidden:
+                    type: boolean
+    '401':
+      description: Unauthenticated
+    '403':
+      description: Not verified / banned
+    '404':
+      description: Rating not found
+    '422':
+      description: Duplicate, self/owner report, or validation failure

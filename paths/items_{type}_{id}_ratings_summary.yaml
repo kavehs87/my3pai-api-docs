@@ -1,0 +1,38 @@
+get:
+  tags:
+    - Feedback
+  summary: Rating summary for an item
+  description: |
+    Public, lightweight {avg, count, distribution}. The ONLY summary surface
+    (no ?summary flag on the list endpoint). Average is rating_sum /
+    ratings_count at 1 decimal; distribution is [c1..c5] (index + 1 = stars).
+  operationId: itemRatingSummary
+  parameters:
+    - name: type
+      in: path
+      required: true
+      schema:
+        type: string
+        enum: [map, blog_post, masterclass, podcast_episode, media_asset, consultation]
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+  responses:
+    '200':
+      description: Summary
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/RatingSummary.yaml
+    '404':
+      description: Content not found (missing, draft, or disabled)
+    '422':
+      description: Invalid type

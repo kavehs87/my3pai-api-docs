@@ -1,0 +1,33 @@
+post:
+  tags:
+    - Feedback
+  summary: Hide a comment (item owner)
+  description: |
+    Only the owner of the underlying item. Hidden comments leave the public
+    list and counters; the author is notified with a generic reason.
+  operationId: hideComment
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+  responses:
+    '200':
+      description: Hidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/Comment.yaml
+    '401':
+      description: Unauthenticated
+    '403':
+      description: Not the item owner / not verified / banned
+    '404':
+      description: Comment not found

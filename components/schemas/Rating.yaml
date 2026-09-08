@@ -1,0 +1,34 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  rating:
+    type: integer
+    minimum: 1
+    maximum: 5
+  title:
+    type: string
+    nullable: true
+  body:
+    type: string
+    nullable: true
+    description: Null for star-only ratings.
+  is_verified_purchase:
+    type: boolean
+    description: Server-derived badge (ever-paid semantics; never on free items).
+  edited:
+    type: boolean
+    description: True once the author has changed the rating after creation.
+  edited_at:
+    type: string
+    format: date-time
+    nullable: true
+  author:
+    $ref: FeedbackAuthor.yaml
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time

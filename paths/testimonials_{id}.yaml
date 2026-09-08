@@ -1,0 +1,68 @@
+patch:
+  tags:
+    - Feedback
+  summary: Edit your testimonial
+  description: Author only, while pending. Approved testimonials are finalized (422).
+  operationId: updateTestimonial
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - body
+          properties:
+            body:
+              type: string
+              minLength: 2
+              maxLength: 2000
+  responses:
+    '200':
+      description: Updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/Testimonial.yaml
+    '401':
+      description: Unauthenticated
+    '403':
+      description: Not the author / not verified / banned
+    '404':
+      description: Testimonial not found
+    '422':
+      description: Already approved (finalized) or validation failure
+delete:
+  tags:
+    - Feedback
+  summary: Delete a testimonial
+  description: Author or profile owner. Owner-removal of a visible testimonial notifies the author.
+  operationId: deleteTestimonial
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+  responses:
+    '200':
+      description: Deleted
+    '401':
+      description: Unauthenticated
+    '403':
+      description: Neither author nor owner / not verified / banned
+    '404':
+      description: Testimonial not found

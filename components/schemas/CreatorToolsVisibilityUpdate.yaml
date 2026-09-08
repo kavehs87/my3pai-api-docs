@@ -25,3 +25,13 @@ properties:
   social-links:
     type: boolean
     description: Whether Social Links section should be visible
+  feedback:
+    type: object
+    description: Per-type feedback section switches (partial updates allowed).
+    properties:
+      comments:
+        type: boolean
+      ratings:
+        type: boolean
+      testimonials:
+        type: boolean

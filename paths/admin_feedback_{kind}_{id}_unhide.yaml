@@ -1,0 +1,28 @@
+post:
+  tags:
+    - Feedback
+  summary: Unhide feedback content (admin)
+  description: Reverses hide; counters re-increment. Testimonials return to approved.
+  operationId: adminFeedbackUnhide
+  parameters:
+    - name: kind
+      in: path
+      required: true
+      schema:
+        type: string
+        enum: [comment, rating, testimonial]
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+  responses:
+    '200':
+      description: Unhidden
+    '401':
+      description: Unauthenticated
+    '403':
+      description: Not an admin
+    '404':
+      description: Content not found

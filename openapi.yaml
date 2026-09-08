@@ -294,6 +294,42 @@ paths:
     $ref: paths/likes_toggle.yaml
   /likes/check:
     $ref: paths/likes_check.yaml
+  /items/{type}/{id}/comments:
+    $ref: paths/items_{type}_{id}_comments.yaml
+  /items/{type}/{id}/ratings:
+    $ref: paths/items_{type}_{id}_ratings.yaml
+  /items/{type}/{id}/ratings/summary:
+    $ref: paths/items_{type}_{id}_ratings_summary.yaml
+  /comments/{id}:
+    $ref: paths/comments_{id}.yaml
+  /comments/{id}/hide:
+    $ref: paths/comments_{id}_hide.yaml
+  /comments/{id}/unhide:
+    $ref: paths/comments_{id}_unhide.yaml
+  /comments/{id}/report:
+    $ref: paths/comments_{id}_report.yaml
+  /ratings/{id}:
+    $ref: paths/ratings_{id}.yaml
+  /ratings/{id}/hide:
+    $ref: paths/ratings_{id}_hide.yaml
+  /ratings/{id}/unhide:
+    $ref: paths/ratings_{id}_unhide.yaml
+  /ratings/{id}/report:
+    $ref: paths/ratings_{id}_report.yaml
+  /influencers/{username}/testimonials:
+    $ref: paths/influencers_{username}_testimonials.yaml
+  /testimonials/{id}:
+    $ref: paths/testimonials_{id}.yaml
+  /testimonials/{id}/approve:
+    $ref: paths/testimonials_{id}_approve.yaml
+  /testimonials/{id}/reject:
+    $ref: paths/testimonials_{id}_reject.yaml
+  /testimonials/{id}/feature:
+    $ref: paths/testimonials_{id}_feature.yaml
+  /testimonials/{id}/report:
+    $ref: paths/testimonials_{id}_report.yaml
+  /influencer/testimonials/pending:
+    $ref: paths/influencer_testimonials_pending.yaml
   /influencer/stats/summary:
     $ref: paths/influencer_stats_summary.yaml
   /influencer/stats/timeseries:
@@ -528,6 +564,14 @@ paths:
     $ref: paths/admin_podcast_episodes_{id}_publish.yaml
   /admin/podcast-episodes/{id}/unpublish:
     $ref: paths/admin_podcast_episodes_{id}_unpublish.yaml
+  /admin/feedback/queue:
+    $ref: paths/admin_feedback_queue.yaml
+  /admin/feedback/{kind}/{id}/hide:
+    $ref: paths/admin_feedback_{kind}_{id}_hide.yaml
+  /admin/feedback/{kind}/{id}/unhide:
+    $ref: paths/admin_feedback_{kind}_{id}_unhide.yaml
+  /admin/feedback/{kind}/{id}:
+    $ref: paths/admin_feedback_{kind}_{id}.yaml
   /admin/blog-posts:
     $ref: paths/admin_blog_posts.yaml
   /admin/blog-posts/{id}:

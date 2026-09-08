@@ -43,3 +43,19 @@ properties:
       type: string
     description: Array of tool IDs in display order. If not provided, default order is used.
     example: ['masterclass', 'maps', 'blog', 'podcast', 'media-assets', 'consultation', 'social', 'social-links', 'creator']
+  feedback:
+    type: object
+    description: Per-type feedback section switches (default all true).
+    properties:
+      comments:
+        type: boolean
+        description: Whether the comments section is enabled on this creator's items.
+        example: true
+      ratings:
+        type: boolean
+        description: Whether ratings/reviews are enabled on this creator's items.
+        example: true
+      testimonials:
+        type: boolean
+        description: Whether testimonials can be submitted on this creator's profile.
+        example: true

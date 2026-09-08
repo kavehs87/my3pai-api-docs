@@ -1,0 +1,17 @@
+type: object
+properties:
+  avg:
+    type: number
+    format: float
+    nullable: true
+    description: 1-decimal average (rating_sum / ratings_count); null when unrated.
+  count:
+    type: integer
+    description: Number of visible ratings.
+  distribution:
+    type: array
+    description: Counts per star as [c1, c2, c3, c4, c5] (index + 1 = stars).
+    items:
+      type: integer
+    minItems: 5
+    maxItems: 5

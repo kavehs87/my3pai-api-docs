@@ -1,0 +1,77 @@
+patch:
+  tags:
+    - Feedback
+  summary: Edit your rating
+  description: |
+    Own ratings only, unlimited. Score changes adjust the counters by delta;
+    edits set the "Edited" flag and are silent (no new notification).
+  operationId: updateRating
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            rating:
+              type: integer
+              minimum: 1
+              maximum: 5
+            title:
+              type: string
+              maxLength: 120
+              nullable: true
+            body:
+              type: string
+              minLength: 10
+              maxLength: 2000
+              nullable: true
+  responses:
+    '200':
+      description: Updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/Rating.yaml
+    '401':
+      description: Unauthenticated
+    '403':
+      description: Not the author / not verified / banned
+    '404':
+      description: Rating not found
+    '422':
+      description: Validation failure
+delete:
+  tags:
+    - Feedback
+  summary: Delete your rating
+  description: Own ratings only (soft delete). Re-rating afterwards restores the same row.
+  operationId: deleteRating
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+  responses:
+    '200':
+      description: Deleted
+    '401':
+      description: Unauthenticated
+    '403':
+      description: Not the author / not verified / banned
+    '404':
+      description: Rating not found

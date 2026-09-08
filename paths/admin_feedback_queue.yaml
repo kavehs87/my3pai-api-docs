@@ -1,0 +1,37 @@
+get:
+  tags:
+    - Feedback
+  summary: Feedback moderation queue (admin)
+  description: |
+    Filter by ?type=comment|rating|testimonial and ?status=reported|hidden.
+    Without ?type, all three lists are returned keyed by plural kind.
+  operationId: adminFeedbackQueue
+  parameters:
+    - name: type
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: [comment, rating, testimonial]
+    - name: status
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: [reported, hidden]
+    - name: per_page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 15
+        maximum: 50
+  responses:
+    '200':
+      description: Queue
+    '401':
+      description: Unauthenticated
+    '403':
+      description: Not an admin
+    '422':
+      description: Invalid filter

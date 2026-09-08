@@ -15,7 +15,7 @@ get:
       required: true
       schema:
         type: string
-        enum: [wanderluxe-v2, dark-blue]
+        enum: [wanderluxe, wanderluxe-v2, dark-blue]
   responses:
     '200':
       description: Theme schema

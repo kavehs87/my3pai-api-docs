@@ -1,0 +1,31 @@
+post:
+  tags:
+    - Feedback
+  summary: Approve a testimonial (creator)
+  description: Profile owner only. Approving notifies the author.
+  operationId: approveTestimonial
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+  responses:
+    '200':
+      description: Approved
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/Testimonial.yaml
+    '401':
+      description: Unauthenticated
+    '403':
+      description: Not the profile owner / not verified / banned
+    '404':
+      description: Testimonial not found

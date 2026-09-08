@@ -131,7 +131,7 @@ properties:
     type: number
     format: float
     nullable: true
-    description: Average rating (only masterclasses currently). Null until reviews exist
+    description: Average rating across all item types (rating_sum / ratings_count). Null until reviews exist
   created_at:
     type: string
     format: date-time

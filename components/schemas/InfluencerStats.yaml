@@ -8,6 +8,9 @@ properties:
     nullable: true
   reviewsCount:
     type: integer
+  testimonialsCount:
+    type: integer
+    description: Approved testimonials on the creator profile
   locationsCount:
     type: integer
     description: Total POIs across all maps
