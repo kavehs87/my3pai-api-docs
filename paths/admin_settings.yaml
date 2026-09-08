@@ -58,6 +58,16 @@ put:
               type: integer
               minimum: 0
               maximum: 100
+            platform_fee_min_amount_cents:
+              type: integer
+              nullable: true
+              minimum: 0
+              description: Minimum platform fee in cents per order line item. null (or omitted) = no change; explicit null also clears the limit.
+            platform_fee_max_amount_cents:
+              type: integer
+              nullable: true
+              minimum: 1
+              description: Maximum platform fee in cents per order line item. null (or omitted) = no change; explicit null also clears the limit. 0 is rejected.
             minimum_payout_threshold_cents:
               type: integer
               minimum: 0
