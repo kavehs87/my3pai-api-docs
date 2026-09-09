@@ -76,6 +76,10 @@ put:
               type: integer
               minimum: 0
               maximum: 1000000
+            max_item_price_cents:
+              type: integer
+              minimum: 1
+              description: Maximum sellable item price in cents (AML cap). Not nullable — null (or omitted) = no change. 0 and negatives are rejected.
             auto_flag_keywords:
               type: string
               maxLength: 1000
