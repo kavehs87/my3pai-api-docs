@@ -159,10 +159,12 @@ post:
               value:
                 success: false
                 error: "Your cart already contains items from another creator. A cart can only hold items from one creator — remove the other items before adding this one."
+                code: MULTI_CREATOR_CART_NOT_SUPPORTED
             stripe_not_ready:
               value:
                 success: false
                 error: "Influencer (ID: 5) does not have a Stripe Connect account. Cannot process payment."
+                code: CREATOR_PAYMENT_NOT_READY
     '403':
       description: Banned account
       content:

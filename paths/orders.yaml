@@ -92,7 +92,12 @@ post:
                 description: True if order total is $0 (free order)
                 example: false
     '400':
-      description: Bad request (e.g., empty cart)
+      description: >
+        Bad request (e.g., empty cart). Domain errors carry a
+        machine-readable `code`: `MULTI_CREATOR_CART_NOT_SUPPORTED` (cart
+        spans more than one creator — split the purchase per creator) or
+        `CREATOR_PAYMENT_NOT_READY` (the creator's Stripe account cannot
+        receive payouts yet).
       content:
         application/json:
           schema:
@@ -104,6 +109,9 @@ post:
               error:
                 type: string
                 example: Cart is empty. Please add items to your cart before checkout.
+              code:
+                type: string
+                example: MULTI_CREATOR_CART_NOT_SUPPORTED
     '401':
       description: Unauthenticated
       content:
@@ -111,21 +119,11 @@ post:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
     '422':
-      description: >
-        Validation failed. Domain errors carry a machine-readable `code`:
-        `MULTI_CREATOR_CART_NOT_SUPPORTED` (cart spans more than one creator —
-        split the purchase per creator) or `CREATOR_PAYMENT_NOT_READY` (the
-        creator's Stripe account cannot receive payouts yet).
+      description: Validation failed
       content:
         application/json:
           schema:
-            allOf:
-              - $ref: ../components/schemas/ValidationError.yaml
-              - type: object
-                properties:
-                  code:
-                    type: string
-                    example: MULTI_CREATOR_CART_NOT_SUPPORTED
+            $ref: ../components/schemas/ValidationError.yaml
     '500':
       description: Server error
       content:

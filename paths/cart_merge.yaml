@@ -63,11 +63,19 @@ post:
       description: >
         Merge refused. Returned when the guest cart holds an item whose
         underlying content was deleted after it was carted (or when the
-        single-creator invariant would be violated). The guest cart is left
-        intact — remove the flagged item from the guest cart and retry.
+        single-creator invariant would be violated — merging carts from two
+        creators returns error code `MULTI_CREATOR_CART_NOT_SUPPORTED`).
+        The guest cart is left intact — remove the flagged item from the
+        guest cart and retry.
       content:
         application/json:
           schema:
             $ref: ../components/schemas/ValidationError.yaml
-          example:
-            message: A cart item (map #12) is no longer available. Remove it before merging.
+          examples:
+            deleted_item:
+              value:
+                message: A cart item (map #12) is no longer available. Remove it before merging.
+            multi_creator:
+              value:
+                message: Cannot merge carts from different creators — clear one cart first.
+                code: MULTI_CREATOR_CART_NOT_SUPPORTED
