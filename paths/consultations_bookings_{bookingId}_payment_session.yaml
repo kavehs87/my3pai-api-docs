@@ -120,11 +120,19 @@ post:
                 success: false
                 error: 'The associated order is no longer pending payment'
     '422':
-      description: Validation error (invalid URL format, etc.)
+      description: >
+        Validation error (invalid URL format, etc.). A restricted creator
+        Stripe account is refused with error code `CREATOR_PAYMENT_NOT_READY`.
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/ValidationError.yaml
+            allOf:
+              - $ref: ../components/schemas/ValidationError.yaml
+              - type: object
+                properties:
+                  code:
+                    type: string
+                    example: CREATOR_PAYMENT_NOT_READY
     '500':
       description: Server error - failed to create or refresh checkout session
       content:

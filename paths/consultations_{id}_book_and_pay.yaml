@@ -91,11 +91,20 @@ post:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
     '422':
-      description: Validation error
+      description: >
+        Validation error. A restricted creator Stripe account is refused
+        with error code `CREATOR_PAYMENT_NOT_READY` (the pending booking +
+        order are rolled back).
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/ValidationError.yaml
+            allOf:
+              - $ref: ../components/schemas/ValidationError.yaml
+              - type: object
+                properties:
+                  code:
+                    type: string
+                    example: CREATOR_PAYMENT_NOT_READY
     '500':
       description: Failed to create booking and process payment
       content:
