@@ -97,7 +97,10 @@ post:
         machine-readable `code`: `MULTI_CREATOR_CART_NOT_SUPPORTED` (cart
         spans more than one creator — split the purchase per creator),
         `ORDER_BELOW_MINIMUM` (cart subtotal is below the admin-configured
-        minimum order amount — add more items or remove the cart), or
+        minimum order amount — add more items or remove the cart),
+        `ALREADY_PURCHASED` (a paid cart line the buyer already owns —
+        fulfilment would create no new entitlement, so the line is refused
+        instead of charged again; free re-orders stay permissive), or
         `CREATOR_PAYMENT_NOT_READY` (the creator's Stripe account cannot
         receive payouts yet).
       content:
