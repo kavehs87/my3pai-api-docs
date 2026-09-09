@@ -754,6 +754,8 @@ paths:
     $ref: paths/payments_intent.yaml
   /payments/confirm:
     $ref: paths/payments_confirm.yaml
+  /payments/verify-session:
+    $ref: paths/payments_verify-session.yaml
   /invoices:
     $ref: paths/invoices.yaml
   /invoices/paid:

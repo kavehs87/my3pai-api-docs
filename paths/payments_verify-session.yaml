@@ -1,0 +1,113 @@
+post:
+  tags:
+    - Billing
+  summary: Verify checkout session
+  description: |
+    Success-page accelerator: retrieve a Checkout Session server-side and,
+    when it is paid, run the same idempotent finalization the webhook runs
+    (safe to race with the webhook — Payment-row idempotency plus the
+    payable-state guard). The frontend calls this once on success-page
+    landing before polling, collapsing confirmation to one round-trip.
+
+    **Ownership / probing:** the session's order must belong to the caller.
+    Unknown sessions and foreign orders return the same 404 — never a 500
+    or 403 — so responses cannot be used to probe order existence.
+
+    **Not paid yet:** no writes; returns the current order with `paid:
+    false` so the frontend keeps polling. The webhook remains authoritative.
+
+    **Paid but no PaymentIntent resolvable yet:** returns `paid: true`
+    with a null payment; the webhook finishes finalization when the PI
+    lands. A cancelled order returns 409 and is never fulfilled.
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - checkout_session_id
+          properties:
+            checkout_session_id:
+              type: string
+              description: Stripe Checkout Session ID
+              example: cs_test_a12ev7PmjsJYRuUiB8Cu7ol4EwluW7aNPC7XYtUe0PZI4NChAOykwTsNUi
+  responses:
+    '200':
+      description: Session verified (paid and finalized, or current state when unpaid)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  order:
+                    $ref: ../components/schemas/Order.yaml
+                  paid:
+                    type: boolean
+                    description: True when the session is paid (and finalized when a payment is present)
+                    example: true
+                  payment:
+                    $ref: ../components/schemas/Payment.yaml
+    '400':
+      description: Free order (verification not required) or validation error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: Payment verification is not required for free orders.
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: >-
+        Checkout session not found, has no associated order, or the order
+        does not belong to the authenticated user. All cases return the same
+        response on purpose — ownership is verified before any fulfilment
+        and responses must not be distinguishable.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: Checkout session not found or does not belong to you.
+    '409':
+      description: Order is no longer payable (e.g. cancelled while the buyer was at Stripe)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: Order is no longer payable.
+    '500':
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
