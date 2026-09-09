@@ -73,7 +73,11 @@ post:
         already holds an item whose underlying content was deleted — remove the
         flagged item from the cart before adding more. Adding an item from a
         second creator is rejected with error code
-        `MULTI_CREATOR_CART_NOT_SUPPORTED` — one creator per cart.
+        `MULTI_CREATOR_CART_NOT_SUPPORTED` — one creator per cart. Adding a
+        paid item whose creator cannot receive payouts (no connected Stripe
+        account, inactive account, or disabled charges/payouts capabilities —
+        verified live) is rejected with error code
+        `CREATOR_PAYMENT_NOT_READY`. Free items are not affected.
       content:
         application/json:
           schema:
@@ -86,3 +90,7 @@ post:
               value:
                 message: Your cart already contains items from another creator. A cart can only hold items from one creator — remove the other items before adding this one.
                 code: MULTI_CREATOR_CART_NOT_SUPPORTED
+            creator_not_ready:
+              value:
+                message: "Creator (ID: 4301) cannot receive payments right now: Stripe capabilities disabled: charges. Ask the creator to connect and verify their Stripe account, then retry."
+                code: CREATOR_PAYMENT_NOT_READY
