@@ -34,7 +34,10 @@ post:
               checkout_session_id:
                 type: string
     '400':
-      description: Cannot purchase (not published, not premium, no price, self-purchase, already purchased, influencer Stripe not ready)
+      description: >
+        Cannot purchase (not published, not premium, no price, self-purchase,
+        already purchased, influencer Stripe not ready). Readiness refusals
+        carry the machine-readable `code` `CREATOR_PAYMENT_NOT_READY`.
       content:
         application/json:
           schema:
