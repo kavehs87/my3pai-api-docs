@@ -21,8 +21,14 @@ post:
               type: string
               format: binary
               description: >-
-                Asset file (max 200MB). Supported formats zip, mp4, mov, jpg,
-                png
+                Asset file (max 200MB). Sniffed MIME decides: archives
+                (zip/rar/7z incl. libmagic aliases), video (mp4/mov/avi/mkv),
+                images (jpg/png/psd/raw), audio (mp3/wav/aiff incl. aliases),
+                templates (aep/prproj/fcp). Text-sniffed sidecars
+                (lrtemplate/xmp/cube/look) are accepted only with a matching
+                sidecar extension — scripts renamed to .txt are rejected.
+                WebP/HEIC deliverables are rejected (use the /image endpoint
+                for previews). Success is 200, not 201.
   responses:
     '200':
       description: File uploaded

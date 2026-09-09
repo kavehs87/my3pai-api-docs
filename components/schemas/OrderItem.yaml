@@ -33,6 +33,14 @@ properties:
       - USD
     example: USD
     description: Only USD is supported (single-currency).
+  creator_id:
+    type: integer
+    nullable: true
+    description: Seller user id (order_items.influencer_id snapshot).
+  creator_username:
+    type: string
+    nullable: true
+    description: Seller username for "sold by" surfaces. No creator PII is exposed.
   metadata:
     type: object
     nullable: true

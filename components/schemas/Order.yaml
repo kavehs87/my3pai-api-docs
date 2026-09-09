@@ -85,6 +85,49 @@ properties:
     type: array
     items:
       $ref: ./Payment.yaml
+  timeline:
+    type: object
+    description: Buyer-safe lifecycle timestamps (no fee internals).
+    properties:
+      created_at:
+        type: string
+        format: date-time
+        nullable: true
+      paid_at:
+        type: string
+        format: date-time
+        nullable: true
+      cancelled_at:
+        type: string
+        format: date-time
+        nullable: true
+  refunds:
+    type: array
+    description: Buyer-safe refund subset (status + amount; no stripe_refund_id or fee splits — those stay admin-only).
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+        amount_cents:
+          type: integer
+        amount_formatted:
+          type: string
+        currency:
+          type: string
+        status:
+          type: string
+        reason:
+          type: string
+          nullable: true
+        processed_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
   created_at:
     type: string
     format: date-time
