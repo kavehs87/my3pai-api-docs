@@ -78,6 +78,9 @@ post:
         account, inactive account, or disabled charges/payouts capabilities —
         verified live) is rejected with error code
         `CREATOR_PAYMENT_NOT_READY`. Free items are not affected.
+        Media assets without a downloadable file (`file_url` blank, free or
+        paid) are refused with message `This asset does not have a file
+        available` — checkout would otherwise complete with a dead link.
       content:
         application/json:
           schema:
