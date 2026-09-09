@@ -26,6 +26,10 @@ properties:
     type: integer
   free_order_threshold_cents:
     type: integer
+  min_order_amount_cents:
+    type: integer
+    nullable: true
+    description: Minimum paid order subtotal in cents. Orders below it are rejected at checkout with code ORDER_BELOW_MINIMUM. null = gate disabled. Seeded default 400 ($4.00).
   auto_flag_keywords:
     type: string
   max_upload_size_mb:

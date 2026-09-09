@@ -95,7 +95,9 @@ post:
       description: >
         Bad request (e.g., empty cart). Domain errors carry a
         machine-readable `code`: `MULTI_CREATOR_CART_NOT_SUPPORTED` (cart
-        spans more than one creator — split the purchase per creator) or
+        spans more than one creator — split the purchase per creator),
+        `ORDER_BELOW_MINIMUM` (cart subtotal is below the admin-configured
+        minimum order amount — add more items or remove the cart), or
         `CREATOR_PAYMENT_NOT_READY` (the creator's Stripe account cannot
         receive payouts yet).
       content:
