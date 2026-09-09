@@ -8,12 +8,17 @@ get:
       in: query
       schema:
         type: string
-        enum: [pending, completed, refunded, cancelled, partially_refunded]
+        enum: [pending, completed, refunded, cancelled, partially_refunded, failed]
     - name: payment_status
       in: query
       schema:
         type: string
-        enum: [paid, unpaid, refunded]
+        enum: [pending, paid, failed, refunded]
+    - name: stuck
+      in: query
+      description: When true, export only stuck orders (pending older than TTL, failed older than 24h, paid-but-unfulfilled).
+      schema:
+        type: boolean
     - name: date_from
       in: query
       schema:

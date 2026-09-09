@@ -74,3 +74,21 @@ post:
               code:
                 type: string
                 example: CREATOR_PAYMENT_NOT_READY
+    '409':
+      description: >
+        The consultation booking linked to this (failed, retryable) order was
+        cancelled and no longer holds a slot. Error code `BOOKING_CANCELLED` —
+        route the buyer to book a new time slot instead of retrying payment.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+              code:
+                type: string
+                example: BOOKING_CANCELLED
