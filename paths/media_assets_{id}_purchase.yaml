@@ -81,6 +81,26 @@ post:
         application/json:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
+    '409':
+      description: >
+        A previous purchase row for this asset is resumed but the asset no
+        longer has a file. Error code `FILE_UNAVAILABLE` — the resumable
+        intent was cancelled and the row archived, so no money moved. A
+        succeeded intent instead finalizes (captured money must ledger) and
+        pages support via the undeliverable-purchase alert.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+              code:
+                type: string
+                example: FILE_UNAVAILABLE
     '401':
       description: Unauthenticated
       content:
