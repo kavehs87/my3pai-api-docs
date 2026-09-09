@@ -63,6 +63,14 @@ properties:
       price_cents:
         type: integer
         nullable: true
+      creator_id:
+        type: integer
+        nullable: true
+        description: Owning creator's user id, for "sold by" surfaces.
+      creator_username:
+        type: string
+        nullable: true
+        description: Owning creator's public handle, for "sold by" surfaces.
       coverImage:
         type: string
         format: uri

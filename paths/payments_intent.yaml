@@ -57,3 +57,20 @@ post:
         application/json:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
+    '400':
+      description: >
+        Order not payable (wrong state) or creator cannot receive payouts.
+        Readiness failures carry error code `CREATOR_PAYMENT_NOT_READY`.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+              code:
+                type: string
+                example: CREATOR_PAYMENT_NOT_READY
