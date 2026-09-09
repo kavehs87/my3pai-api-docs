@@ -39,3 +39,18 @@ properties:
   updated_at:
     type: string
     format: date-time
+  live_charges_enabled:
+    type: boolean
+    nullable: true
+    description: Live charges_enabled from Stripe. Null when live lookup failed (see live_unavailable). May disagree with stripe_account_status — the drift is the signal.
+  live_payouts_enabled:
+    type: boolean
+    nullable: true
+    description: Live payouts_enabled from Stripe. Null when live lookup failed.
+  live_restriction_reason:
+    type: string
+    nullable: true
+    description: 'Past-due requirements or disabled_reason from Stripe, e.g. "past_due: individual.verification.document". Null when unrestricted or unavailable.'
+  live_unavailable:
+    type: boolean
+    description: True when the live Stripe lookup failed; local columns are still served. Never 500s the admin page.
