@@ -37,6 +37,11 @@ get:
           - asc
           - desc
         default: desc
+    - name: has_issues
+      in: query
+      description: Filter to accounts with 1+ stripe issues (non-active status, failed payouts, or reversed earnings)
+      schema:
+        type: boolean
   responses:
     '200':
       description: Paginated list of Stripe accounts
@@ -75,6 +80,8 @@ get:
                             type: string
                           order:
                             type: string
+                          has_issues:
+                            type: boolean
     '401':
       description: Unauthorized
       content:

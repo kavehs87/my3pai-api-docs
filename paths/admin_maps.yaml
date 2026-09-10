@@ -51,7 +51,10 @@ get:
         enum:
           - title
           - created_at
-          - updated_at
+          - status
+          - poi_count
+          - purchases
+          - revenue_cents
         default: created_at
     - name: order
       in: query

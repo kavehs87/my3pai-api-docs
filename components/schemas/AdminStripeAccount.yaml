@@ -29,6 +29,10 @@ properties:
     type: boolean
   is_stripe_account_active:
     type: boolean
+  stripe_issues_count:
+    type: integer
+    minimum: 0
+    description: Non-active status (1/0) + failed payouts + reversed earnings for this influencer; same sources as alerts.stripe_issues
   stripe_capabilities:
     type: object
     nullable: true

@@ -51,8 +51,10 @@ get:
         enum:
           - title
           - created_at
-          - updated_at
-          - plays_count
+          - status
+          - plays
+          - duration_seconds
+          - is_premium
         default: created_at
     - name: order
       in: query

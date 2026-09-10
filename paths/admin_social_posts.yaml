@@ -60,9 +60,8 @@ get:
         enum:
           - title
           - created_at
-          - updated_at
+          - status
           - platform
-          - order
         default: created_at
     - name: order
       in: query

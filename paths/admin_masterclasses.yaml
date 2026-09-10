@@ -60,8 +60,9 @@ get:
         enum:
           - title
           - created_at
-          - updated_at
-          - views_count
+          - status
+          - type
+          - students
           - rating
           - price_cents
         default: created_at

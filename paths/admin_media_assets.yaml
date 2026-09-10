@@ -58,10 +58,11 @@ get:
         enum:
           - title
           - created_at
-          - updated_at
-          - download_count
+          - status
           - type
+          - sales
           - price_cents
+          - file_size_bytes
         default: created_at
     - name: order
       in: query

@@ -51,8 +51,9 @@ get:
         enum:
           - title
           - created_at
-          - updated_at
-          - views_count
+          - status
+          - views
+          - is_premium
         default: created_at
     - name: order
       in: query
