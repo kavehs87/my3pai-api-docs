@@ -3,7 +3,10 @@ get:
     - Public
     - Blog
   summary: Get public blog posts for an influencer
-  description: Get paginated list of published blog posts for an influencer
+  description: |
+    Get paginated list of published blog posts for an influencer.
+    Ordered featured-first (pinned posts), then the creator's manual order
+    (sort_order; publishedAt desc where unset).
   security: []
   parameters:
     - name: username

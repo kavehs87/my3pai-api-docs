@@ -17,6 +17,10 @@ get:
     flushed on any content write by the creator. Sections are capped at
     `per_section` (max 10) items each; `meta.has_more` indicates more rows exist
     (fetch them from the per-section list endpoints).
+
+    `sections.blog.data` is ordered featured-first (pinned posts, manual order
+    inside the pinned block), then the remaining posts in the creator's manual
+    order (sort_order; publishedAt desc where unset).
   security: []
   parameters:
     - name: username

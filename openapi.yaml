@@ -254,6 +254,8 @@ paths:
     $ref: paths/influencer_blog_{id}.yaml
   /influencer/blog/{id}/cover:
     $ref: paths/influencer_blog_{id}_cover.yaml
+  /influencer/blog/{id}/feature:
+    $ref: paths/influencer_blog_{id}_feature.yaml
   /influencer/podcast:
     $ref: paths/influencer_podcast.yaml
   /influencer/podcast/settings:

@@ -16,6 +16,9 @@ properties:
     nullable: true
   isPremium:
     type: boolean
+  isFeatured:
+    type: boolean
+    description: Pinned to the creator's public profile home (max 4 per creator)
   publishedAt:
     type: string
     format: date-time
