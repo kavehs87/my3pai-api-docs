@@ -36,6 +36,21 @@ get:
           - reversed
           - pending
       description: Filter by status (comma-separated for multiple)
+    - name: sort
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: [amount_cents, fee_percentage, status, collected_at, created_at]
+        default: collected_at
+      description: Primary sort key (collected_at is the deterministic tie-breaker)
+    - name: order
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: [asc, desc]
+        default: desc
     - name: per_page
       in: query
       required: false

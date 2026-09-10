@@ -24,6 +24,19 @@ get:
       description: When true, return only stuck orders (pending older than TTL, failed older than 24h, paid-but-unfulfilled).
       schema:
         type: boolean
+    - name: sort
+      in: query
+      description: Primary sort key (created_at is the deterministic tie-breaker). Defaults to created_at.
+      schema:
+        type: string
+        enum: [order_number, total_cents, status, payment_status, created_at]
+        default: created_at
+    - name: order
+      in: query
+      schema:
+        type: string
+        enum: [asc, desc]
+        default: desc
     - name: user_id
       in: query
       schema:

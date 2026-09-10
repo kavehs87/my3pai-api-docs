@@ -19,6 +19,18 @@ get:
       description: When true, export only stuck orders (pending older than TTL, failed older than 24h, paid-but-unfulfilled).
       schema:
         type: boolean
+    - name: sort
+      in: query
+      schema:
+        type: string
+        enum: [order_number, total_cents, status, payment_status, created_at]
+        default: created_at
+    - name: order
+      in: query
+      schema:
+        type: string
+        enum: [asc, desc]
+        default: desc
     - name: date_from
       in: query
       schema:
