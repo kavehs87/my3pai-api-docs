@@ -2,7 +2,7 @@ post:
   tags:
     - Admin
   summary: Send invoice reminder
-  description: Send an invoice reminder email to the customer (admin only)
+  description: Send an invoice reminder email. Defaults to the invoice owner; to_email overrides the recipient (account holders get full notifications, other addresses get mail-only delivery). cc and message are honored. Refuses paid invoices (admin only)
   parameters:
     - name: id
       in: path
@@ -39,6 +39,13 @@ post:
                 type: boolean
               message:
                 type: string
+              data:
+                type: object
+                properties:
+                  delivered_to:
+                    type: string
+                    format: email
+                    description: Address the reminder was actually delivered to
     '400':
       description: Cannot send reminder for paid invoice
       content:
