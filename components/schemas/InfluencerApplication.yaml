@@ -54,6 +54,11 @@ properties:
     type: string
     format: date-time
     nullable: true
+  approved_at:
+    type: string
+    format: date-time
+    nullable: true
+    description: Approval timestamp - equals reviewed_at when status=approved, null for every other status.
   created_at:
     type: string
     format: date-time

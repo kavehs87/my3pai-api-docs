@@ -37,6 +37,10 @@ properties:
     type: boolean
     description: Whether Social Links section is visible on public profile
     example: true
+  contact:
+    type: boolean
+    description: Whether the Contact Messages tab is visible on the creator's own dashboard. Dashboard-only - no public profile section is affected.
+    example: true
   order:
     type: array
     items:

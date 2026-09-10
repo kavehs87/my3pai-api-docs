@@ -25,6 +25,9 @@ properties:
   social-links:
     type: boolean
     description: Whether Social Links section should be visible
+  contact:
+    type: boolean
+    description: Whether the Contact Messages dashboard tab should be visible (dashboard-only)
   feedback:
     type: object
     description: Per-type feedback section switches (partial updates allowed).

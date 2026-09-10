@@ -4,8 +4,9 @@ get:
   summary: Get creator tools visibility settings
   description: >-
     Returns visibility settings for each creator tool (Blog, Podcast, Training,
-    Consultations, Digital Assets, Creator Profile, Social Posts, Social Links)
-    on the public profile page
+    Consultations, Digital Assets, Creator Profile, Social Posts, Social Links,
+    Contact) on the public profile page and the creator dashboard. Requires an
+    approved influencer (403 otherwise).
   security:
     - BearerAuth: []
   responses:
@@ -26,13 +27,20 @@ get:
         application/json:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Not an approved influencer (application pending/rejected/withdrawn or creator tools disabled)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
 put:
   tags:
     - Influencers
   summary: Update creator tools visibility settings
   description: >-
     Update visibility settings for creator tools. Partial updates are allowed -
-    only send the fields being changed.
+    only send the fields being changed (nested `feedback` keys merge, they do
+    not replace). Requires an approved influencer (403 otherwise).
   security:
     - BearerAuth: []
   requestBody:
@@ -55,6 +63,12 @@ put:
                 $ref: ../components/schemas/CreatorToolsVisibility.yaml
     '401':
       description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '403':
+      description: Not an approved influencer (application pending/rejected/withdrawn or creator tools disabled)
       content:
         application/json:
           schema:
