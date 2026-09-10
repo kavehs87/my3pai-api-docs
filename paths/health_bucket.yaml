@@ -1,9 +1,8 @@
 get:
   tags:
-    - Public
-  summary: Health check — storage bucket
-  description: Returns the health status of the storage bucket connection
-  security: []
+    - Admin
+  summary: Health check — storage bucket (admin only)
+  description: Returns the health status of the storage bucket connection. Requires admin auth — each call performs an S3 write+read+delete and must never be public.
   responses:
     '200':
       description: Storage bucket is reachable
