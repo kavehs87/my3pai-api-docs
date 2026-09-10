@@ -1,0 +1,46 @@
+get:
+  tags:
+    - Unified Places
+  summary: Excludable category vocabulary
+  description: |
+    Canonical slug list for `GET /places/nearby` `excluded_categories[]`.
+    Each entry gives the top-level unified category slug, the frontend place
+    type it maps to, and the leaf (legacy Google place-type) names that roll
+    up into it. Local static data — no upstream call — so the SPA can fetch
+    it at boot instead of hardcoding slugs.
+
+    Exclusion matches the entity's top-level `unified_category` only, not
+    subcategory. Unknown slugs in a request are ignored, never 503.
+
+    **Rate limit:** 120 requests/minute
+  responses:
+    '200':
+      description: Excludable category vocabulary
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  categories:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        slug:
+                          type: string
+                          example: nightlife
+                        frontend_place_type:
+                          type: string
+                          example: nightlife
+                        covers:
+                          type: array
+                          description: Leaf (legacy Google place-type) names rolling up into this slug
+                          items:
+                            type: string
+                          example: ['bar', 'pub', 'night_club', 'cocktail_bar']

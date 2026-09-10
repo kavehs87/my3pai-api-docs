@@ -530,6 +530,8 @@ paths:
     $ref: paths/places_nearby.yaml
   /places/categories:
     $ref: paths/places_categories.yaml
+  /places/excludable-categories:
+    $ref: paths/places_excludable_categories.yaml
   /places/map:
     $ref: paths/places_map.yaml
   /places/nearby-services:
@@ -726,6 +728,8 @@ paths:
     $ref: paths/ai_quota.yaml
   /cart:
     $ref: paths/cart.yaml
+  /cart/count:
+    $ref: paths/cart_count.yaml
   /cart/items:
     $ref: paths/cart_items.yaml
   /cart/items/{id}:

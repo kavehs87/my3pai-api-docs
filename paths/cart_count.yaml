@@ -1,0 +1,50 @@
+get:
+  tags:
+    - Billing
+  summary: Cart badge counter
+  description: >
+    Lightweight badge counter with the same cart resolution as `GET /cart`
+    (authenticated user or `X-Session-ID` guest, creating an empty cart when
+    none exists) but without item payloads: only `cart_items` rows are read,
+    no polymorphic item/user eager loads. Typical body is well under 1 KB.
+
+
+    `count` is the summed quantity across lines; `items` is the distinct
+    line count; `total_cents` matches `GET /cart` `total_cents` exactly.
+  security: []
+  parameters:
+    - name: X-Session-ID
+      in: header
+      required: false
+      description: >-
+        Session ID for guest cart access. Required for guests, optional for
+        authenticated users.
+      schema:
+        type: string
+        example: 550e8400-e29b-41d4-a716-446655440000
+  responses:
+    '200':
+      description: Cart counts
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    description: Total quantity across all cart lines
+                    example: 3
+                  items:
+                    type: integer
+                    description: Number of distinct cart lines
+                    example: 2
+                  total_cents:
+                    type: integer
+                    description: Cart total in integer cents (matches GET /cart)
+                    example: 2499

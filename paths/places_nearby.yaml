@@ -55,8 +55,12 @@ get:
           type: string
           maxLength: 200
       description: >
-        Category slugs to exclude from results.
-        Server fetches extra results to compensate for filtering.
+        Top-level unified category slugs to exclude from results. Slugs are
+        trimmed and lowercased server-side; unknown slugs are ignored, never
+        an error. Matches the entity's top-level `unified_category` only
+        (not subcategory). See `GET /places/excludable-categories` for the
+        canonical slug list. Server fetches extra results to compensate for
+        filtering, and `limit` applies after exclusion.
       style: form
       explode: true
     - name: limit

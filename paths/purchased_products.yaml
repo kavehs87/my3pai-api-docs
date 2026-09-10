@@ -2,8 +2,14 @@ get:
   tags:
     - Billing
   summary: List purchased digital products
-  description: Retrieve the authenticated user's purchased digital assets with delivery metadata. Merged feed across all purchase types, newest first, paginated.
+  description: Retrieve the authenticated user's purchased digital assets with delivery metadata. Merged feed across all purchase types, newest first, paginated. Pass `map_id` for the cheap single-map lookup used by the public-map snapshot gate (queries only map purchases, same shape).
   parameters:
+    - name: map_id
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+      description: Narrow to purchases of one map (snapshot ownership check). Omit for the full merged feed.
     - name: page
       in: query
       schema:
