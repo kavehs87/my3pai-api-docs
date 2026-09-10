@@ -2,7 +2,7 @@ get:
   tags:
     - Admin
   summary: Download invoice PDF
-  description: Download the PDF file for an invoice (admin only)
+  description: 302-redirect to a 15-minute signed URL for this environment's snapshot bucket (admin only). Never bounces at the raw stored URL. 409 PDF_BUCKET_MISMATCH when the stored URL points at another environment's bucket (regenerate first); 404 when the object is missing.
   parameters:
     - name: id
       in: path

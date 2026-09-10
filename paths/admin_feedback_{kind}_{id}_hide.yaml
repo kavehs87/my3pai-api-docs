@@ -2,7 +2,7 @@ post:
   tags:
     - Feedback
   summary: Hide feedback content (admin)
-  description: Kind is comment|rating|testimonial. Counters adjust; the author is notified with a generic reason.
+  description: Kind is comment|rating|testimonial. Counters adjust; the author is notified with a generic reason. Soft-deleted rows resolve (same set the queue lists); hide/unhide on deleted content returns 422 CONTENT_DELETED, delete removes it permanently.
   operationId: adminFeedbackHide
   parameters:
     - name: kind

@@ -8,7 +8,7 @@ get:
       in: query
       schema:
         type: string
-        enum: [paid, unpaid, overdue, cancelled]
+        enum: [paid, unpaid, overdue, cancelled, refunded]
     - name: perspective
       in: query
       schema:

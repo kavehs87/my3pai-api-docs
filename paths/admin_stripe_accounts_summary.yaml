@@ -1,0 +1,27 @@
+get:
+  tags:
+    - Admin
+  summary: Stripe accounts status summary
+  description: Account-wide status breakdown for KPI cards (single local GROUP BY, no Stripe calls). Use instead of deriving counts from one list page.
+  responses:
+    '200':
+      description: Status summary
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    description: Total users with a stripe_account_id
+                  by_status:
+                    type: object
+                    additionalProperties:
+                      type: integer
+                    example: {active: 12, restricted: 2, pending: 3}

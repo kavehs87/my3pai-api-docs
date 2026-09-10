@@ -29,6 +29,11 @@ properties:
     type: boolean
   is_stripe_account_active:
     type: boolean
+  stripe_capabilities:
+    type: object
+    nullable: true
+    additionalProperties: true
+    description: Locally cached capabilities (possibly stale); live status stays on the detail endpoint
   created_at:
     type: string
     format: date-time

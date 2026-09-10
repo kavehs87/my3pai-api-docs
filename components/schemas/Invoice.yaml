@@ -21,6 +21,7 @@ properties:
       - paid
       - overdue
       - cancelled
+      - refunded
   perspective:
     type: string
     enum:

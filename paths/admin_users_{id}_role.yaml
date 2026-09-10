@@ -2,7 +2,7 @@ post:
   tags:
     - Admin
   summary: Change user role
-  description: Change a user's role (admin only). Cannot remove the last admin.
+  description: Change a user's role (admin only). Cannot remove the last admin. Promoting to influencer provisions influencer_settings and an auto-approved application row for audit. Demoting away from influencer deletes the influencer_settings row (the user leaves the influencers list; custom toggles are not retained).
   parameters:
     - name: id
       in: path

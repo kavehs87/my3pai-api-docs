@@ -23,7 +23,8 @@ get:
       in: query
       schema:
         type: string
-        enum: [stripe, bank_transfer, other]
+        enum: [card, free, stripe, paypal]
+      description: Filters the payment_method column (param name kept as method for backward compatibility)
     - name: user_id
       in: query
       schema:

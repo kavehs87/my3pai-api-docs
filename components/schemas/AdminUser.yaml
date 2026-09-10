@@ -59,6 +59,9 @@ properties:
     type: string
     format: date-time
     nullable: true
+  is_banned:
+    type: boolean
+    description: True when banned_at is set and banned_until is null or in the future
   banned_reason:
     type: string
     nullable: true

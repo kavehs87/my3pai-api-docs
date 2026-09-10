@@ -696,6 +696,8 @@ paths:
     $ref: paths/admin_consultations_bookings_{id}.yaml
   /admin/stripe/accounts:
     $ref: paths/admin_stripe_accounts.yaml
+  /admin/stripe/accounts/summary:
+    $ref: paths/admin_stripe_accounts_summary.yaml
   /admin/stripe/accounts/{id}:
     $ref: paths/admin_stripe_accounts_{id}.yaml
   /admin/settings:

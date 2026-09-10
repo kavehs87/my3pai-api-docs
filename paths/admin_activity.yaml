@@ -31,6 +31,13 @@ get:
       schema:
         type: string
       description: Filter by entity type (e.g. user, order, map, blog_post)
+    - name: search
+      in: query
+      required: false
+      schema:
+        type: string
+        maxLength: 255
+      description: Case-insensitive substring match against description, type and subject_type
     - name: date_from
       in: query
       required: false

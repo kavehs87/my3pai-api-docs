@@ -19,3 +19,21 @@ properties:
         purchased_at:
           type: string
           format: date-time
+  pois:
+    type: array
+    description: POIs on this map (id, name, status, coordinates)
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        status:
+          type: string
+        latitude:
+          type: number
+          nullable: true
+        longitude:
+          type: number
+          nullable: true

@@ -26,6 +26,7 @@ properties:
     nullable: true
   order_count:
     type: integer
+    description: Sibling payout rows sharing this order_id (original + refund-reversals + per-influencer splits); 0 when order-less. Detail orders[] lists the distinct linked orders.
   paid_at:
     type: string
     format: date-time

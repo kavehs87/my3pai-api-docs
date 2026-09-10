@@ -2,7 +2,7 @@ post:
   tags:
     - Admin
   summary: Merge duplicate accounts
-  description: Merge a source user's content into a target user. Source user is deleted after merge (admin only).
+  description: Merge a source user's content into a target user. Source user is deleted after merge (admin only). Preferences auto-merge with a target-wins rule (target keeps its settings; source row deleted, or reassigned when the target has none). influencer_settings and consultations still require manual reconciliation when both sides have rows.
   parameters:
     - name: id
       in: path

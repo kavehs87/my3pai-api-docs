@@ -4,9 +4,13 @@ properties:
     type: integer
   order_id:
     type: integer
+    nullable: true
+    description: Null for standalone (order-less) payments
   order_number:
     type: string
-  customer:
+    nullable: true
+    description: Null when the linked order is missing (orphan payment)
+  user:
     type: object
     nullable: true
     properties:
@@ -19,6 +23,7 @@ properties:
   influencer:
     type: object
     nullable: true
+    description: Null for orphan payments (derived from the order's items)
     properties:
       id:
         type: integer
@@ -32,9 +37,10 @@ properties:
     type: integer
   influencer_payout_cents:
     type: integer
-  method:
+  payment_method:
     type: string
-    enum: [stripe, bank_transfer, other]
+    enum: [card, free, stripe, paypal]
+    description: Gateway method recorded at charge time (card = Stripe card, free = zero-amount)
   status:
     type: string
     enum: [succeeded, failed, refunded, pending]

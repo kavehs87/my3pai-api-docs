@@ -2,7 +2,7 @@ post:
   tags:
     - Feedback
   summary: Unhide feedback content (admin)
-  description: Reverses hide; counters re-increment. Testimonials return to approved.
+  description: Reverses hide; counters re-increment. Testimonials return to approved. Soft-deleted rows resolve (same set the queue lists); unhide on deleted content returns 422 CONTENT_DELETED.
   operationId: adminFeedbackUnhide
   parameters:
     - name: kind
