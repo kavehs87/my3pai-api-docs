@@ -44,7 +44,7 @@ get:
               data:
                 $ref: ../components/schemas/ConsultationAvailability.yaml
     '404':
-      description: Consultation not found or not active
+      description: Consultation not found, not active, or hidden from the public profile
       content:
         application/json:
           schema:

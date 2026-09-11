@@ -72,7 +72,7 @@ post:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
     '404':
-      description: Consultation not found
+      description: Consultation not found, not active, or hidden from the public profile
       content:
         application/json:
           schema:

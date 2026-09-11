@@ -78,7 +78,7 @@ post:
                     type: string
                     format: date-time
     '404':
-      description: Influencer not found
+      description: Influencer not found, or the creator has disabled the public contact section
       content:
         application/json:
           schema:
