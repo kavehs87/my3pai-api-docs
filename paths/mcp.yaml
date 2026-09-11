@@ -47,13 +47,17 @@ post:
        premium posts require `price_cents > 0` plus an active author Stripe
        account), `blog_post_update` (partial edit by `id`; optional `data` may
        include any of title, preview, content, is_premium, price_cents,
-       currency; title changes regenerate the slug, content is sanitized as
-       blog HTML, premium updates enforce the same price/Stripe rules, and
-       `is_premium=false` clears price; use `blog_post_publish` /
-       `blog_post_unpublish` and `blog_post_set_cover` for publication state
-       and cover changes) and `blog_post_set_cover` (`source_url` or
-       `source_path`, exactly one; JPEG/PNG/WebP, 10 MB max, previous cover
-       file deleted).
+        currency; title changes regenerate the slug, content is sanitized as
+        blog HTML, premium updates enforce the same price/Stripe rules, and
+        `is_premium=false` clears price; use `blog_post_publish` /
+        `blog_post_unpublish` and `blog_post_set_cover` for publication state
+        and cover changes) and `blog_post_set_cover` (`source_url` or
+        `source_path`, exactly one; JPEG/PNG/WebP, 10 MB max, previous cover
+        file deleted). Pinning: `blog_post_feature` pins a PUBLISHED post to
+        the author's public profile home (featured posts sort first there;
+        at most 4 per author, fifth feature errors) and
+        `blog_post_unfeature` unpins it (always allowed); `blog_post_list` /
+        `blog_post_show` expose `is_featured`.
 
 
       Map & POI tools: `map_create` (creates a map record for a chosen creator:

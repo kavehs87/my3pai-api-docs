@@ -2,7 +2,7 @@ post:
   tags:
     - AI
   summary: Influencer MCP (Streamable HTTP)
-  description: Influencer MCP endpoint (map/poi only, own content). Requires Sanctum + mcp-influencer ability + verified/banned/influencer + throttle 120/min. See InfluencerMcpServer.
+  description: Influencer MCP endpoint (map/poi/blog-pin only, own content). Blog pinning tools: `blog_list` (own posts, featured-first, with featured_count/featured_max meta), `blog_feature` (pin one PUBLISHED post to the top of the public profile home; max 4, drafts error) and `blog_unfeature` (always allowed). Requires Sanctum + mcp-influencer ability + verified/banned/influencer + throttle 120/min. See InfluencerMcpServer.
   security:
     - BearerAuth: []
   requestBody:
