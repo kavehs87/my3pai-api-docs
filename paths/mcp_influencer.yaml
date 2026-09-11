@@ -3,16 +3,27 @@ post:
     - AI
   summary: Influencer MCP (Streamable HTTP)
   description: |
-    Influencer MCP endpoint (map/poi/blog only, own content). Blog tools:
-    `blog_list` (own posts, featured-first, with featured_count/featured_max
-    meta), `blog_create` (draft by default, content sanitized as blog HTML,
-    same validation as POST /influencer/blog), `blog_update` (partial update,
-    title change regenerates the slug, same validation as PUT
-    /influencer/blog/{id}), `blog_delete` (confirm guard, removes the cover
-    file) and the pinning pair `blog_feature` / `blog_unfeature` (pin one
-    PUBLISHED post to the top of the public profile home; max 4, drafts error,
-    unpin always allowed). Requires Sanctum + mcp-influencer ability +
-    verified/banned/influencer + throttle 120/min. See InfluencerMcpServer.
+    Influencer MCP endpoint (map/poi/blog/consultation only, own content).
+    Blog tools: `blog_list` (own posts, featured-first, with
+    featured_count/featured_max meta), `blog_create` (draft by default,
+    content sanitized as blog HTML, same validation as POST /influencer/blog),
+    `blog_update` (partial update, title change regenerates the slug, same
+    validation as PUT /influencer/blog/{id}), `blog_delete` (confirm guard,
+    removes the cover file) and the pinning pair `blog_feature` /
+    `blog_unfeature` (pin one PUBLISHED post to the top of the public profile
+    home; max 4, drafts error, unpin always allowed). Consultation tools:
+    `consultation_settings_get` / `consultation_settings_update` (partial
+    upsert of the creator's own consultation settings; the full set is
+    required on first creation, same field validation as PUT
+    /influencer/consultation), `consultation_visibility_set` (public profile
+    visibility only), and the booking lifecycle on the creator's own
+    consultation `consultation_bookings_list` / `consultation_booking_get` /
+    `consultation_bookings_stats` / `consultation_booking_confirm` /
+    `consultation_booking_decline` / `consultation_booking_complete` (same
+    state rules as the REST /influencer/consultation/bookings endpoints;
+    declining a paid booking refunds the customer). Requires Sanctum +
+    mcp-influencer ability + verified/banned/influencer + throttle 120/min.
+    See InfluencerMcpServer.
   security:
     - BearerAuth: []
   requestBody:
