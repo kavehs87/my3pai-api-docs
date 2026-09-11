@@ -3,7 +3,7 @@ post:
     - AI
   summary: Influencer MCP (Streamable HTTP)
   description: |
-    Influencer MCP endpoint (map/poi/blog/consultation/contact/feedback/sales only, own content).
+    Influencer MCP endpoint (map/poi/blog/consultation/contact/feedback/sales/profile only, own content).
     Blog tools: `blog_list` (own posts, featured-first, with
     featured_count/featured_max meta), `blog_create` (draft by default,
     content sanitized as blog HTML, same validation as POST /influencer/blog),
@@ -58,7 +58,21 @@ post:
     `sales_stripe_status` (own Connect account, syncs local status) and
     `sales_stripe_dashboard` (own Express login link). Cancelling orders,
     refunds, payouts and Stripe onboarding/disconnect stay dashboard or
-    admin-only. Requires Sanctum +
+    admin-only. Profile tools design the creator's OWN public profile only
+    (username immutable): `profile_get` / `profile_update` (partial, same
+    rules as REST) / `profile_set_media` + `profile_clear_media` (avatar,
+    cover, logo — same files as the dashboard produces). Theme design
+    (colors, fonts, texts, images, section order/visibility; no custom
+    CSS/HTML/JS can ever persist): `theme_schema_get` (always read first),
+    `theme_settings_get`, `theme_settings_update` (MERGE semantics — only
+    provided keys change, null deletes, lists replace; same validation as
+    the dashboard), `theme_image_upload` (CDN hosting for image slots, 20
+    per creator) / `theme_images_list` / `theme_image_delete` (confirm,
+    own-prefix scoped). Identity collections (socials, languages, skills,
+    certifications, external_links): `identity_list` / `identity_create` /
+    `identity_update` / `identity_delete` (confirm) / `identity_reorder` —
+    all scoped to the creator, same validation as REST. Password changes,
+    account deletion and preferences stay dashboard-only. Requires Sanctum +
     mcp-influencer ability + verified/banned/influencer + throttle 120/min.
     See InfluencerMcpServer.
   security:
