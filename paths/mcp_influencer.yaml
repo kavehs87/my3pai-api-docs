@@ -3,7 +3,7 @@ post:
     - AI
   summary: Influencer MCP (Streamable HTTP)
   description: |
-    Influencer MCP endpoint (map/poi/blog/consultation/contact/feedback only, own content).
+    Influencer MCP endpoint (map/poi/blog/consultation/contact/feedback/sales only, own content).
     Blog tools: `blog_list` (own posts, featured-first, with
     featured_count/featured_max meta), `blog_create` (draft by default,
     content sanitized as blog HTML, same validation as POST /influencer/blog),
@@ -45,7 +45,20 @@ post:
     `feedback_visibility_set` (show or hide a whole section — comments,
     ratings or testimonials; hidden sections list empty and block new
     submissions, same as the REST creator-tools-visibility feedback flags).
-    Foreign items/ids return not found. Requires Sanctum +
+    Foreign items/ids return not found. Sales tools are read-only views of
+    the creator's OWN money records only (integer *_cents): `sales_orders_list`
+    / `sales_order_show` (orders sold; buyer name+email for fulfillment, no
+    billing address) / `sales_order_download` (receipt PDF link, 15 min) /
+    `sales_summary` (gross/fees/payout per currency over completed+paid
+    sales), `sales_invoices_list` / `sales_invoice_show` /
+    `sales_invoice_download` / `sales_invoice_send` (resends the receipt to
+    the buyer only), `sales_payouts_list` / `sales_payout_show` (with the
+    platform-fee ledger rows), `sales_earnings_summary` (paid/pending/fees
+    net of reversals — same service as the REST earnings dashboard),
+    `sales_stripe_status` (own Connect account, syncs local status) and
+    `sales_stripe_dashboard` (own Express login link). Cancelling orders,
+    refunds, payouts and Stripe onboarding/disconnect stay dashboard or
+    admin-only. Requires Sanctum +
     mcp-influencer ability + verified/banned/influencer + throttle 120/min.
     See InfluencerMcpServer.
   security:
