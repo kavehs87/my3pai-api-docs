@@ -3,7 +3,7 @@ post:
     - AI
   summary: Influencer MCP (Streamable HTTP)
   description: |
-    Influencer MCP endpoint (map/poi/blog/consultation/contact/feedback/sales/profile/stats only, own content).
+    Influencer MCP endpoint (map/poi/blog/consultation/contact/feedback/sales/profile/stats/podcast only, own content).
     Blog tools: `blog_list` (own posts, featured-first, with
     featured_count/featured_max meta), `blog_create` (draft by default,
     content sanitized as blog HTML, same validation as POST /influencer/blog),
@@ -78,6 +78,15 @@ post:
     up to 400 days, grouped by totals/type/item), `stats_items` (own items
     ranked by views/visitors/likes/conversion/revenue/sales) and
     `stats_item` (per-item sparkline; foreign items return not found).
+    Podcast tools manage the creator's OWN show and episodes only:
+    `podcast_list` (show settings + episodes incl. drafts),
+    `podcast_create` (title required; premium+published needs audio),
+    `podcast_update` (partial, slug regenerates on rename),
+    `podcast_delete` (confirm, removes files), `podcast_reorder`,
+    `podcast_settings_update` (show title/description/store urls),
+    `podcast_upload_audio` (50MB server-side fetch cap) and
+    `podcast_upload_cover` (cover/detail_cover). Descriptions are sanitized
+    as blog HTML; money is price_cents with the platform cap.
     Password changes,
     account deletion and preferences stay dashboard-only. Requires Sanctum +
     mcp-influencer ability + verified/banned/influencer + throttle 120/min.
