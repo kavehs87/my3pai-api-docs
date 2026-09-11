@@ -39,7 +39,7 @@ properties:
     example: true
   contact:
     type: boolean
-    description: Whether the Contact Messages tab is visible on the creator's own dashboard. Dashboard-only - no public profile section is affected.
+    description: Whether the contact section is visible on the public profile (gated in all three themes) and whether the Contact Messages tab shows on the creator's dashboard. While false the public contact form and contact-info endpoints return 404.
     example: true
   order:
     type: array

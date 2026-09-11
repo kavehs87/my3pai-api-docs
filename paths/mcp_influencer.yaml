@@ -3,7 +3,7 @@ post:
     - AI
   summary: Influencer MCP (Streamable HTTP)
   description: |
-    Influencer MCP endpoint (map/poi/blog/consultation only, own content).
+    Influencer MCP endpoint (map/poi/blog/consultation/contact only, own content).
     Blog tools: `blog_list` (own posts, featured-first, with
     featured_count/featured_max meta), `blog_create` (draft by default,
     content sanitized as blog HTML, same validation as POST /influencer/blog),
@@ -21,7 +21,14 @@ post:
     `consultation_bookings_stats` / `consultation_booking_confirm` /
     `consultation_booking_decline` / `consultation_booking_complete` (same
     state rules as the REST /influencer/consultation/bookings endpoints;
-    declining a paid booking refunds the customer). Requires Sanctum +
+    declining a paid booking refunds the customer). Contact tools:
+    `contact_messages_list` / `contact_message_get` (viewing marks it read,
+    like the REST endpoint) / `contact_message_set_read` /
+    `contact_message_delete` (confirm guard) / `contact_messages_stats` /
+    `contact_settings_get` / `contact_settings_update` (partial update of the
+    public contact details, null clears, contact_message sanitized) /
+    `contact_visibility_set` (show or hide the public contact section; the
+    public form and contact-info return 404 while hidden). Requires Sanctum +
     mcp-influencer ability + verified/banned/influencer + throttle 120/min.
     See InfluencerMcpServer.
   security:
