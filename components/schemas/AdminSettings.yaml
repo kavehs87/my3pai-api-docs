@@ -57,6 +57,3 @@ properties:
     type: boolean
   session_timeout_minutes:
     type: integer
-  rate_limit_overrides:
-    type: object
-    additionalProperties: true

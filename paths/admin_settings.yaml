@@ -112,9 +112,6 @@ put:
               type: integer
               minimum: 5
               maximum: 1440
-            rate_limit_overrides:
-              type: object
-              additionalProperties: true
   responses:
     '200':
       description: Settings updated
