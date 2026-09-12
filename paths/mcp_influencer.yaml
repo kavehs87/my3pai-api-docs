@@ -3,7 +3,7 @@ post:
     - AI
   summary: Influencer MCP (Streamable HTTP)
   description: |
-    Influencer MCP endpoint (map/poi/blog/consultation/contact/feedback/sales/profile/stats/podcast/masterclass only, own content).
+    Influencer MCP endpoint (map/poi/blog/consultation/contact/feedback/sales/profile/stats/podcast/masterclass/media only, own content).
     Blog tools: `blog_list` (own posts, featured-first, with
     featured_count/featured_max meta), `blog_create` (draft by default,
     content sanitized as blog HTML, same validation as POST /influencer/blog),
@@ -95,6 +95,13 @@ post:
     `masterclass_delete` (confirm; rows WITH purchases soft-deleted so
     buyer access survives, purchase-free rows hard-deleted with cover),
     `masterclass_reorder` and `masterclass_upload_cover`.
+    Media-asset tools manage the creator's OWN store rows only:
+    `media_list` (type/status filters), `media_create` (draft-first —
+    listing for sale needs a file), `media_update` (FULL object required,
+    like REST), `media_delete` (confirm; BLOCKED for rows with purchases),
+    `media_upload_file` (archives/video/RAW/audio/presets, 100MB cap),
+    `media_upload_image` (preview) and `media_remove` (file/image;
+    removing the deliverable from a for-sale row auto-demotes it).
     Password changes,
     account deletion and preferences stay dashboard-only. Requires Sanctum +
     mcp-influencer ability + verified/banned/influencer + throttle 120/min.
