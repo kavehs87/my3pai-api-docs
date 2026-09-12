@@ -58,8 +58,9 @@ post:
     `sales_stripe_status` (own Connect account, syncs local status) and
     `sales_stripe_dashboard` (own Express login link). Cancelling orders,
     refunds, payouts and Stripe onboarding/disconnect stay dashboard or
-    admin-only. Profile tools design the creator's OWN public profile only
-    (username immutable): `profile_get` / `profile_update` (partial, same
+    admin-only.     Profile tools design the creator's OWN public profile only
+    (username immutable): `profile_get` / `profile_public_url` (shareable
+    /influencer link) / `profile_update` (partial, same
     rules as REST) / `profile_set_media` + `profile_clear_media` (avatar,
     cover, logo — same files as the dashboard produces). Theme design
     (colors, fonts, texts, images, section order/visibility; no custom
