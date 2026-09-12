@@ -1,0 +1,55 @@
+post:
+  tags:
+    - Influencers
+  summary: Resolve social URL via oEmbed (prefill)
+  description: |
+    Read-only paste-to-prefill lookup for the creator's own social-post
+    modal. Regex-detects the platform from the URL host/path (YouTube
+    watch/youtu.be, YouTube Shorts, TikTok) and calls the platform's
+    oEmbed endpoint — the user-supplied URL is never fetched (no SSRF
+    surface). Returns prefill data; the client only fills empty fields.
+    Same Sanctum influencer auth as the social-posts index; no
+    creator-tools middleware (no state change).
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - url
+          properties:
+            url:
+              type: string
+              format: uri
+              example: https://www.youtube.com/watch?v=abc123
+              description: https URL of the YouTube or TikTok post
+  responses:
+    '200':
+      description: Resolved prefill data
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              platform: { type: string, enum: [youtube, tiktok], example: youtube }
+              type: { type: string, enum: [youtube, short-form], example: youtube, description: '"youtube" for watch/youtu.be URLs, "short-form" for /shorts and TikTok' }
+              platform_label: { type: string, example: YouTube }
+              title: { type: string, nullable: true }
+              author_name: { type: string, nullable: true }
+              author_url: { type: string, nullable: true }
+              thumbnail: { type: string, nullable: true, description: TikTok sometimes omits thumbnails — title-only prefill, not a failure }
+              source_url: { type: string, description Echo of the input URL }
+    '401': { description: Unauthorized, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '403': { description: Forbidden, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }
+    '422':
+      description: invalid_url (bad/non-https URL) | unsupported_platform (no outbound call made) | fetch_failed (oEmbed non-200/timeout)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error: { type: string, enum: [invalid_url, unsupported_platform, fetch_failed] }
+    '429': { description: Throttled 120/min, content: { application/json: { schema: { $ref: ../components/schemas/ErrorResponse.yaml } } } }

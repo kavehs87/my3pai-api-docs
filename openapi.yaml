@@ -224,6 +224,8 @@ paths:
     $ref: paths/influencer_socials_reorder.yaml
   /influencer/social-posts:
     $ref: paths/influencer_social_posts.yaml
+  /influencer/social-posts/resolve:
+    $ref: paths/influencer_social_posts_resolve.yaml
   /influencer/social-posts/{id}:
     $ref: paths/influencer_social_posts_{id}.yaml
   /influencer/social-posts/reorder:
