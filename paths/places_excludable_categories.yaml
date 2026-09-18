@@ -12,6 +12,11 @@ get:
     Exclusion matches the entity's top-level `unified_category` only, not
     subcategory. Unknown slugs in a request are ignored, never 503.
 
+    Only slugs that exist in the Unified Place taxonomy can match current
+    entity data; the legacy entries (`attractions`, `transport`, `services`,
+    `adventure`, `nightlife`) are kept for older SPA builds and are
+    effective no-ops.
+
     **Rate limit:** 120 requests/minute
   responses:
     '200':

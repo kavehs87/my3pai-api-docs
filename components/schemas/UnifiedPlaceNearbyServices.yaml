@@ -1,12 +1,17 @@
 type: object
 description: >
-  Nearby services response combining nearest public transport and
-  nearby service establishments (post offices, pharmacies, etc.).
+  Nearby services response combining the nearest public transport and a
+  short list of practical services (parking, clinics, events). There is no
+  "services" category in the Unified Place taxonomy, so the services list is
+  selected locally from service-like subcategories and may be an empty array
+  when nothing service-like is within the radius.
 properties:
   nearest_public_transport:
     type: object
     nullable: true
-    description: Nearest bus/train station
+    description: >
+      Nearest public transport stop (station, airport or ferry; other
+      transportation entities such as parking are used only as a fallback)
     properties:
       name:
         type: string
@@ -16,13 +21,16 @@ properties:
         type: integer
       type:
         type: string
-        description: Transport subcategory (e.g., `bus_station`, `train_station`)
+        description: Transport subcategory slug (e.g., `station`, `airport`, `ferry`)
       formatted:
         type: string
         description: Human-readable string (e.g., `5 min walk to Bus Station`)
   nearby_services:
     type: array
-    description: Up to 5 nearby services, sorted by distance
+    description: >
+      Up to 5 nearby practical services, sorted by distance. Only
+      service-like subcategories are returned; empty when none exist in
+      radius.
     items:
       type: object
       properties:
@@ -30,9 +38,9 @@ properties:
           type: string
         type:
           type: string
-          description: Service subcategory (e.g., `post_office`, `pharmacy`)
+          description: Service subcategory slug (e.g., `parking`, `clinic`, `event`)
         distance_km:
           type: number
         formatted:
           type: string
-          description: Human-readable string (e.g., `Post Office 3 min walk`)
+          description: Human-readable string (e.g., `Parking Garage 3 min walk`)

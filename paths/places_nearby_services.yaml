@@ -3,9 +3,15 @@ get:
     - Unified Places
   summary: Nearby services and transport
   description: |
-    Find the nearest public transport stop and nearby service establishments
-    (post offices, pharmacies, ATMs, etc.) around a coordinate point.
+    Find the nearest public transport stop and nearby practical services
+    (parking, clinics, events) around a coordinate point.
     Replaces Google Places NearbySearch for transport/services use case.
+
+    Transport is queried with the real `transportation` Unified Place
+    taxonomy slug (unknown slugs are silently ignored by the Unified Place
+    service). There is no `services` category in the taxonomy, so
+    `nearby_services` is selected locally from service-like subcategories
+    and may be an empty array.
 
     Response is cached in Redis for 5 minutes per coordinate/radius combination.
 
