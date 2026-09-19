@@ -83,7 +83,7 @@ The heart of My3PAI — a sophisticated geographic content system:
 - **Batch Operations** — Bulk visibility toggling and management
 - **Advanced Filtering** — Multi-dimensional filters: activity, terrain, audience, accessibility, amenities, tags, countries, difficulty, cost type
 - **Media Management** — Images, audio guides, PDF attachments with reordering
-- **Unsplash Integration** — Fetch stock images directly during POI creation
+- **Media** — POIs support uploaded photos, audio and PDF attachments with AI-assisted descriptions
 
 ### 👤 Creator Ecosystem
 
@@ -144,7 +144,7 @@ A complete e-commerce infrastructure:
 | **Authentication** | `POST /register`, `POST /login`, `POST /logout`, `POST /forgot-password`, `POST /reset-password` | Full auth lifecycle |
 | **Profile** | `GET/PUT /profile`, avatar/cover upload, preferences, account management, password change | User self-service |
 | **Maps** | CRUD, thumbnail, URL parsing, purchase access | Map lifecycle |
-| **POIs** | CRUD with drafts, media, audio, PDF, batch operations, Unsplash integration, filter metadata | Rich geographic content |
+| **POIs** | CRUD with drafts, media, audio, PDF, batch operations, filter metadata | Rich geographic content |
 | **Influencers** | Public profiles, blog, podcast, masterclasses, consultations, maps, media assets, social posts | Public creator discovery |
 | **Creator Tools** | Socials, posts, languages, skills, certifications, external links, blog, podcast, masterclasses, consultations, media assets, payouts, earnings | Creator dashboard |
 | **Consultations** | Booking, availability, time slots, calendar, cancellation policies, payment sessions | Scheduling engine |

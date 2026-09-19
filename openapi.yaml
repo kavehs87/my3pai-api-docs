@@ -150,8 +150,6 @@ paths:
     $ref: paths/health_unified_place.yaml
   /pois/filters/metadata:
     $ref: paths/pois_filters_metadata.yaml
-  /pois/fetch-unsplash-images:
-    $ref: paths/pois_fetch_unsplash_images.yaml
   /storage/proxy:
     $ref: paths/storage_proxy.yaml
   /register:
