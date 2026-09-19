@@ -37,6 +37,32 @@ get:
         maximum: 20
         default: 5
       description: Maximum number of predictions to return
+    - name: lat
+      in: query
+      schema:
+        type: number
+        minimum: -90
+        maximum: 90
+      description: |
+        Soft location-bias latitude (map center). Must be sent together with `lon`
+        (422 otherwise). Named entities still win globally (e.g. "Eiffel Tower").
+    - name: lon
+      in: query
+      schema:
+        type: number
+        minimum: -180
+        maximum: 180
+      description: Soft location-bias longitude. Must be sent together with `lat` (422 otherwise).
+    - name: bias_radius_km
+      in: query
+      schema:
+        type: number
+        exclusiveMinimum: 0
+        maximum: 500
+      description: |
+        "Search this area" tier radius in km. When present, results inside the
+        radius rank first and global results fill below. Accepted (ignored) when
+        `lat`/`lon` are absent, matching the upstream service.
   responses:
     '200':
       description: Autocomplete predictions
