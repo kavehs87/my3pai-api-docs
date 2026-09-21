@@ -5,7 +5,9 @@ get:
   description: |
     Fetch full details for a single place by its composite identifier.
     Replaces Google Places FetchFields. Returns rich data including media,
-    classifications, accessibility, opening hours, and pricing.
+    classifications, accessibility, opening hours, pricing, and the
+    source-specific `attributes` payload (e.g., the `moviescenemap`
+    filmography panel with top titles, IMDb IDs, and official sites).
 
     **Rate limit:** 300 requests/minute
   parameters:
@@ -16,7 +18,7 @@ get:
         type: string
         pattern: '^[a-zA-Z_][a-zA-Z0-9_]*$'
       description: >
-        Data source identifier (e.g., `osm`, `rexby`, `swiss_dmo`)
+        Data source identifier (e.g., `osm`, `rexby`, `swiss_dmo`, `moviescenemap`)
     - name: source_id
       in: path
       required: true

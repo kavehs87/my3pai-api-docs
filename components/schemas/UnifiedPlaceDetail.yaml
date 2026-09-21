@@ -70,7 +70,7 @@ properties:
     description: Whether the place is free to visit
   source:
     type: string
-    description: Data source identifier (e.g., `osm`, `rexby`, `swiss_dmo`)
+    description: Data source identifier (e.g., `osm`, `rexby`, `swiss_dmo`, `moviescenemap`)
   source_id:
     type: string
     description: Source-specific identifier
@@ -182,3 +182,17 @@ properties:
           type: string
           nullable: true
           description: Human-readable classification title
+  attributes:
+    type: object
+    nullable: true
+    additionalProperties: true
+    description: >
+      Source-specific attributes payload passed through verbatim from the
+      upstream service. The schema differs per source and is intentionally
+      not normalized by the bridge. For `moviescenemap` entities this holds
+      the filmography panel data: `moviescenemap_top_titles` (title, year,
+      `imdb_id`, `official_site`, `en_desc` work descriptions),
+      `moviescenemap_series`, `moviescenemap_title_count`, and related keys.
+      Null when the upstream entity carries no attributes. Exposed on detail
+      only — list endpoints (`/places/map`, `/places/nearby`,
+      `/places/autocomplete`) omit it to keep payloads lean.
