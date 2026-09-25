@@ -1,0 +1,28 @@
+type: object
+description: >
+  Persistent creator-tour state (replaces frontend localStorage flags).
+  Null status means never initialized — the frontend reads null as
+  not_started, and a null congrats_seen_at as unseen. Existing approved
+  influencers are backfilled to not_started/null so they get the congrats
+  and tour once. Writable via PUT /api/profile (tour_status must be one of
+  the enum values, timestamps must be dates, all nullable).
+properties:
+  status:
+    type: string
+    nullable: true
+    enum:
+      - not_started
+      - in_progress
+      - skipped
+      - completed
+    description: Tour lifecycle state (null = never initialized, read as not_started)
+  congrats_seen_at:
+    type: string
+    format: date-time
+    nullable: true
+    description: When the approval congrats was dismissed (ISO 8601)
+  completed_at:
+    type: string
+    format: date-time
+    nullable: true
+    description: When the tour was completed (ISO 8601)

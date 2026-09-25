@@ -56,6 +56,9 @@ properties:
     type: boolean
   hasGoogleAccount:
     type: boolean
+  tour:
+    $ref: ./CreatorTour.yaml
+    description: Persistent creator-tour state (null status reads as not_started)
   influencer_application:
     $ref: ./InfluencerApplication.yaml
     nullable: true

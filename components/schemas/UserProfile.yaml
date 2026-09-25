@@ -66,6 +66,9 @@ properties:
   hasGoogleAccount:
     type: boolean
     description: Indicates if the user is registered via Google OAuth
+  tour:
+    $ref: ./CreatorTour.yaml
+    description: Persistent creator-tour state (null status reads as not_started)
   preferences:
     allOf:
       - $ref: ./UserPreferences.yaml

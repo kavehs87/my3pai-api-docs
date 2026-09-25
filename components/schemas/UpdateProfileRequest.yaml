@@ -57,3 +57,22 @@ properties:
       - wanderluxe
       - wanderluxe-v2
     description: Profile theme for public influencer profile page
+  tour_status:
+    type: string
+    nullable: true
+    enum:
+      - not_started
+      - in_progress
+      - skipped
+      - completed
+    description: Creator-tour lifecycle state (partial update, explicit null clears)
+  tour_congrats_seen_at:
+    type: string
+    format: date-time
+    nullable: true
+    description: When the approval congrats was dismissed (partial update, explicit null clears)
+  tour_completed_at:
+    type: string
+    format: date-time
+    nullable: true
+    description: When the tour was completed (partial update, explicit null clears)
