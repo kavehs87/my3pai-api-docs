@@ -3,8 +3,9 @@ get:
     - AI
   summary: List supported AI models
   description: >
-    Returns the currently configured AI model (via OpenRouter) and a list of
-    model options supported by the application. Use this endpoint to discover
+    Returns the currently configured AI provider (selected via AI_PROVIDER:
+    `openrouter` or `ionos`) and model, plus the list of model options
+    supported by the active provider. Use this endpoint to discover
     which models are available for use with the chat endpoint.
 
     This endpoint is public and does not require authentication.
@@ -28,6 +29,7 @@ get:
                     properties:
                       provider:
                         type: string
+                        enum: [openrouter, ionos]
                         example: openrouter
                       model:
                         type: string
@@ -35,6 +37,24 @@ get:
                       base_url:
                         type: string
                         example: https://openrouter.ai/api/v1
+                      openrouter_provider:
+                        type: string
+                        description: OpenRouter provider routing (openrouter only; absent on ionos).
+                      openrouter_provider_order:
+                        type: array
+                        items:
+                          type: string
+                        description: Normalized provider order (openrouter only; absent on ionos).
+                      openrouter_provider_config:
+                        type: object
+                        description: Provider routing payload sent to OpenRouter (openrouter only; absent on ionos).
+                      reasoning:
+                        type: object
+                        description: Global reasoning config (openrouter only; absent on ionos).
+                      reasoning_effort:
+                        type: string
+                        enum: [low, medium, high]
+                        description: Global reasoning effort (ionos only; absent on openrouter).
                   supported:
                     type: array
                     items:
@@ -45,7 +65,7 @@ get:
                         description:
                           type: string
     '500':
-      description: Server error or OpenRouter API error
+      description: Server error or AI provider API error
       content:
         application/json:
           schema:
