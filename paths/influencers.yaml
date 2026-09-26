@@ -11,6 +11,9 @@ get:
     and at least one published map. Ordered by published maps count.
     When `include_maps` is specified, each influencer object may include a `maps`
     array of published maps (up to `include_maps`) used by the Travel Plans grid.
+    Each item carries `cover_image`, `location`, `tagline`, `verified`,
+    `followers_count`, `following_count`, and `is_following` (the latter is
+    true/false for authenticated viewers, null for guests).
   security: []
   parameters:
     - name: limit

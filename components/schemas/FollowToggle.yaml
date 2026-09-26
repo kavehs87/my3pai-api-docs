@@ -1,0 +1,8 @@
+type: object
+properties:
+  following:
+    type: boolean
+    description: True when the toggle created the follow, false when it removed it.
+  followers_count:
+    type: integer
+    description: Current follower count of the creator (read fresh in the toggle transaction).

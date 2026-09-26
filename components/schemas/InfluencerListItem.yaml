@@ -12,6 +12,29 @@ properties:
     type: string
     format: uri
     nullable: true
+  cover_image:
+    type: string
+    format: uri
+    nullable: true
+    description: Profile cover image for full-bleed cards. May be null — fall back to latest map thumbnail, then avatar, then a themed gradient.
+  location:
+    type: string
+    nullable: true
+  tagline:
+    type: string
+    nullable: true
+  verified:
+    type: boolean
+  followers_count:
+    type: integer
+    description: Number of users following this creator (0 when the follows table is empty).
+  following_count:
+    type: integer
+    description: Number of creators this creator follows.
+  is_following:
+    type: boolean
+    nullable: true
+    description: Whether the current viewer follows this creator. Null for guests (unknown, never false).
   stats:
     type: array
     items:

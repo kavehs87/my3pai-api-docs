@@ -288,6 +288,8 @@ paths:
     $ref: paths/influencers_{username}.yaml
   /influencers/{username}/overview:
     $ref: paths/influencers_{username}_overview.yaml
+  /influencers/{username}/follow:
+    $ref: paths/influencers_{username}_follow.yaml
   /themes/{theme}/schema:
     $ref: paths/theme_schema.yaml
   /beacon:

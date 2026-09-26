@@ -52,6 +52,16 @@ properties:
     description: Current theme's customization (public subset; other themes stay private)
   verified:
     type: boolean
+  followers_count:
+    type: integer
+    description: Number of users following this creator (0 when the follows table is empty).
+  following_count:
+    type: integer
+    description: Number of creators this creator follows.
+  is_following:
+    type: boolean
+    nullable: true
+    description: Whether the current viewer follows this creator. Null for guests. Injected outside the overview cache so per-viewer state never leaks across viewers.
   stats:
     $ref: ./InfluencerStats.yaml
   socials:
