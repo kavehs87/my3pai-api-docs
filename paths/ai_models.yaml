@@ -4,8 +4,10 @@ get:
   summary: List supported AI models
   description: >
     Returns the currently configured AI provider (selected via AI_PROVIDER:
-    `openrouter` or `ionos`) and model, plus the list of model options
-    supported by the active provider. Use this endpoint to discover
+    `openrouter`, `ionos`, or `opencode-go`) and model, plus the list of
+    model options supported by the active provider. Non-OpenRouter
+    providers retry once against OpenRouter on transport/5xx/429
+    failures (see `configured.fallback`). Use this endpoint to discover
     which models are available for use with the chat endpoint.
 
     This endpoint is public and does not require authentication.
@@ -29,8 +31,12 @@ get:
                     properties:
                       provider:
                         type: string
-                        enum: [openrouter, ionos]
+                        enum: [openrouter, ionos, opencode-go]
                         example: openrouter
+                      fallback:
+                        type: string
+                        enum: [openrouter]
+                        description: Present when the active provider retries against OpenRouter on transport/5xx/429 failures (ionos, opencode-go only).
                       model:
                         type: string
                         example: openrouter/free
