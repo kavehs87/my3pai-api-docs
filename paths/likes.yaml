@@ -1,0 +1,62 @@
+get:
+  tags:
+    - Stats
+  summary: List the current user's liked items
+  description: |
+    Authenticated, personal, **never CDN-cached** (`Cache-Control: private,
+    no-store`). The current user's likes, newest-first, with opaque cursor
+    pagination (base64 JSON of liked timestamp + row id). Items use the exact
+    `MarketplaceItem` shape of `GET /marketplace/items` (same union selects,
+    same visibility rules). Rows whose target is deleted or unpublished are
+    silently dropped from `data` (a stale like never 404s); `meta.total`
+    counts liked rows.
+  operationId: likesList
+  parameters:
+    - name: cursor
+      in: query
+      description: Opaque cursor from previous page's `meta.next_cursor`
+      schema:
+        type: string
+        maxLength: 2000
+    - name: limit
+      in: query
+      description: Page size (1..50, default 20)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 50
+        default: 20
+  responses:
+    '200':
+      description: Paginated liked items
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/MarketplaceItem.yaml
+              meta:
+                type: object
+                properties:
+                  next_cursor:
+                    type: string
+                    nullable: true
+                    description: Opaque cursor for next page; null when has_more=false
+                  has_more:
+                    type: boolean
+                  total:
+                    type: integer
+                    description: Liked rows (including stale ones dropped from data)
+                  limit:
+                    type: integer
+    '401':
+      description: Unauthenticated
+    '403':
+      description: Email not verified / banned
+    '422':
+      description: Invalid cursor or limit

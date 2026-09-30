@@ -1,15 +1,16 @@
 post:
   tags:
     - Stats
-  summary: Bulk check which items the current user has liked
+  summary: Bulk check which items the current user has saved
   description: |
-    Authenticated membership check used to hydrate per-user "liked" state on
+    Authenticated membership check used to hydrate per-user "saved" state on
     pages the CDN cache cannot personalize. Returns only the requested items
-    that the user currently likes, grouped by likeable_type — absent type keys
-    mean none of the requested ids of that type are liked. Max 100 items per
-    request; duplicate type/id pairs are rejected. Likeable types: `map`,
-    `blog_post`, `masterclass`, `podcast_episode`, `media_asset`, `consultation` (morph map).
-  operationId: likesCheck
+    that the user currently saves, grouped by bookmarkable_type — absent type
+    keys mean none of the requested ids of that type are saved. Max 100 items
+    per request; duplicate type/id pairs are rejected. Bookmarkable types:
+    `map`, `blog_post`, `masterclass`, `podcast_episode`, `media_asset`,
+    `consultation` (morph map).
+  operationId: bookmarksCheck
   requestBody:
     required: true
     content:
@@ -26,18 +27,18 @@ post:
               items:
                 type: object
                 required:
-                  - likeable_type
-                  - likeable_id
+                  - bookmarkable_type
+                  - bookmarkable_id
                 properties:
-                  likeable_type:
+                  bookmarkable_type:
                     type: string
                     enum: [map, blog_post, masterclass, podcast_episode, media_asset, consultation]
-                  likeable_id:
+                  bookmarkable_id:
                     type: integer
                     format: int64
   responses:
     '200':
-      description: Liked membership for the requested items (unliked/unknown ids are omitted)
+      description: Saved membership for the requested items (unsaved/unknown ids are omitted)
       content:
         application/json:
           schema:
@@ -48,9 +49,9 @@ post:
               data:
                 type: object
                 properties:
-                  liked:
+                  saved:
                     type: object
-                    description: likeable_type -> array of liked likeable_ids among the requested items. Types with no liked items are omitted.
+                    description: bookmarkable_type -> array of saved bookmarkable_ids among the requested items. Types with no saved items are omitted.
                     additionalProperties:
                       type: array
                       items:

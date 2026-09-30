@@ -1,0 +1,5 @@
+type: object
+properties:
+  saved:
+    type: boolean
+    description: True when the toggle created the bookmark, false when it removed it.

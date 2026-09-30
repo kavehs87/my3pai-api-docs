@@ -186,6 +186,10 @@ paths:
     $ref: paths/impersonate_login.yaml
   /me:
     $ref: paths/me.yaml
+  /me/following:
+    $ref: paths/me_following.yaml
+  /me/followers:
+    $ref: paths/me_followers.yaml
   /notifications:
     $ref: paths/notifications.yaml
   /notifications/unread-count:
@@ -290,6 +294,8 @@ paths:
     $ref: paths/influencers_{username}_overview.yaml
   /influencers/{username}/follow:
     $ref: paths/influencers_{username}_follow.yaml
+  /influencers/follow/check:
+    $ref: paths/influencers_follow_check.yaml
   /themes/{theme}/schema:
     $ref: paths/theme_schema.yaml
   /beacon:
@@ -298,6 +304,14 @@ paths:
     $ref: paths/likes_toggle.yaml
   /likes/check:
     $ref: paths/likes_check.yaml
+  /likes:
+    $ref: paths/likes.yaml
+  /bookmarks/toggle:
+    $ref: paths/bookmarks_toggle.yaml
+  /bookmarks/check:
+    $ref: paths/bookmarks_check.yaml
+  /bookmarks:
+    $ref: paths/bookmarks.yaml
   /items/{type}/{id}/comments:
     $ref: paths/items_{type}_{id}_comments.yaml
   /items/{type}/{id}/ratings:
