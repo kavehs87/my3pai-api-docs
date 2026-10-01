@@ -8,7 +8,8 @@ get:
     Only `PUBLISHED`/`ACTIVE` + `for-sale`/`bookable` + `FEATURE-FLAG-ENABLED` items from `VERIFIED` creators are returned.
     **Free items pass through too**: maps without `is_for_sale` and blog/podcast posts without `is_premium` are included when they have no price
     (`price_cents` null or 0). Every item exposes an `is_free` boolean (true when `price_cents = 0`).
-    Supports filtering by item type, full-text search over title + creator name + region/destination + tags, optional geo facet, single-creator filter, sorting, and **opaque cursor pagination** (base64 of sort key + id). Stable ordering — no duplicates/gaps across pages.
+    Supports filtering by item type, full-text search over title + creator fields + descriptions/content + tags, optional geo facet, single-creator filter, sorting, and **opaque cursor pagination** (base64 of sort key + id). Stable ordering — no duplicates/gaps across pages.
+    Each item carries `tags: string[]` (direct product tags; maps additionally inherit their POIs' tags).
 
     Money is always integer `*_cents` with currency `USD` (no floats). Media uses S3 public URLs. Routes are SPA-ready (`/m/{username}/{slug}` for maps).
 
@@ -35,13 +36,13 @@ get:
             - podcasts
     - name: q
       in: query
-      description: Full-text search (LIKE with indexed columns) over item title + creator name + region/destination + tags
+      description: Full-text search (LIKE with indexed columns) over item title + creator name + descriptions/content + tags (direct product tags, plus POI tags for maps)
       schema:
         type: string
         maxLength: 200
     - name: region
       in: query
-      description: Optional geo facet (matches creator location/sub_location; for maps also destination)
+      description: Optional geo facet (matches creator location/sub_location; for maps also title and POI addresses as the destination proxy — there is no dedicated destination column)
       schema:
         type: string
         maxLength: 100

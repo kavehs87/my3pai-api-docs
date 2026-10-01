@@ -88,6 +88,11 @@ properties:
     type: string
     format: uri
     nullable: true
+  tags:
+    type: array
+    description: Sorted unique tag keys (direct product tags; maps additionally inherit their POIs' tags). Empty list when untagged.
+    items:
+      type: string
   creator:
     type: object
     properties:

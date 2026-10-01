@@ -318,6 +318,8 @@ paths:
     $ref: paths/items_{type}_{id}_ratings.yaml
   /items/{type}/{id}/ratings/summary:
     $ref: paths/items_{type}_{id}_ratings_summary.yaml
+  /items/{type}/{id}/tags:
+    $ref: paths/items_{type}_{id}_tags.yaml
   /comments/{id}:
     $ref: paths/comments_{id}.yaml
   /comments/{id}/hide:
