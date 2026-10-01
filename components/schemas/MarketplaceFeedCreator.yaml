@@ -1,0 +1,64 @@
+type: object
+description: >
+  One creator-grouped feed entry for the PWA swipe pager: the creator card,
+  a featured flag, the spotlight video (newest active Video media asset, or
+  null when the creator has none), and the creator's top-N marketplace items
+  (popularity-ranked, same shape as /marketplace/items entries).
+properties:
+  creator:
+    $ref: MarketplaceCreator.yaml
+  featured:
+    type: boolean
+    description: True when the creator is admin-featured (influencer_settings.is_featured). Feed orders featured-first, then popular.
+  spotlight_video:
+    type: object
+    nullable: true
+    description: >
+      Newest active Video media asset, or null. Public-safe metadata only —
+      the raw file_url never leaves the server. playback_url is set only for
+      free assets with a stored file (streams via GET
+      /media-assets/{id}/stream with HTTP Range support); paid assets carry
+      requires_purchase: true and playback_url: null.
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+        nullable: true
+      type:
+        type: string
+        enum:
+          - Video
+      cover:
+        type: string
+        format: uri
+        nullable: true
+        description: Public preview cover image
+      price_cents:
+        type: integer
+        minimum: 0
+        description: Price in minor units (cents)
+      currency:
+        type: string
+        pattern: '^[A-Z]{3}$'
+        example: USD
+      requires_purchase:
+        type: boolean
+      playback_url:
+        type: string
+        format: uri
+        nullable: true
+        description: Range-capable stream URL (free assets only), else null
+      created_at:
+        type: string
+        format: date-time
+        nullable: true
+  items:
+    type: array
+    description: Top-N marketplace items for this creator (popularity-ranked, honors type/q/region filters)
+    items:
+      $ref: MarketplaceItem.yaml
+required:
+  - creator
+  - featured
+  - items

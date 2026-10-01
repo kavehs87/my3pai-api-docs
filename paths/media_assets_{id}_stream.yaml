@@ -1,0 +1,66 @@
+get:
+  tags:
+    - Public
+    - Media
+  summary: Stream a free Video media asset (Range-capable)
+  description: >
+    Public preview streaming for FREE Video media assets (used as
+    `spotlight_video.playback_url` by the creator-grouped feed). Streams the
+    stored file with HTTP Range support (native `<video>` seeking): S3-hosted
+    files 302-redirect to a short-lived signed URL (Range served by S3),
+    local files stream with `Accept-Ranges: bytes` (206 Partial Content).
+
+    Paywall-preserving: paid assets return 402 with `requiresPurchase`
+    (use the purchase-gated `/media-assets/download` flow instead); inactive
+    assets, non-video assets, and videos without a stored file return 404.
+    The raw `file_url` is never exposed for paid content.
+  security: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  responses:
+    '302':
+      description: Redirect to a short-lived signed S3 URL (S3-hosted files)
+      headers:
+        Location:
+          schema:
+            type: string
+            format: uri
+    '200':
+      description: Video bytes with Accept-Ranges (local files); honors Range as 206
+      headers:
+        Accept-Ranges:
+          schema:
+            type: string
+            example: bytes
+        Content-Range:
+          schema:
+            type: string
+      content:
+        video/mp4:
+          schema:
+            type: string
+            format: binary
+    '402':
+      description: Premium video — purchase required
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              error:
+                type: string
+              requiresPurchase:
+                type: boolean
+    '404':
+      description: Video not found (unknown id, inactive, non-video, or file not ready)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

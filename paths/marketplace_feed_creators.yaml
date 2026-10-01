@@ -2,18 +2,26 @@ get:
   tags:
     - Public
     - Marketplace
-  summary: Marketplace IG-mobile feed (mixed)
+  summary: Creator-grouped feed (PWA swipe pager)
   description: >
-    IG-mobile **mixed feed**: ordered (popular/newest) item "posts" across **featured** creators (when present), otherwise same pool as `/marketplace/items`.
-    Each entry is a `MarketplaceItem` enriched with `creator` ref + `media` + `price` + real `social` metrics (`likes` from likes_count, `views` mirroring popularity, `comments` from feedback counters).
-    This is the dedicated feed endpoint; a `view=feed` variant of `/items` would also be acceptable, but a separate resource is cleaner for CDN caching and for the mobile client's feed contract.
-    Same filters, sorting, and cursor pagination as `/items`. CDN-cacheable.
+    Creator-grouped feed for the PWA swipe pager: cursor-paginated creators,
+    each entry carrying the creator card, a featured flag, the spotlight
+    video (newest active Video media asset or null), and the creator's top-N
+    marketplace items across all six types (popularity-ranked, same item
+    shape and visibility rules as `/marketplace/items`).
+
+    Fixed order: featured-first, then popular (sellable-item count). Same
+    `q`/`region` filters as `/items` (applied to both creator selection and
+    per-creator items); `type` scopes the per-creator items only. No
+    personalization (following-first, trending, seen-state are phase 2).
+    CDN-cacheable like `/feed`.
   security: []
   parameters:
     - name: type
       in: query
       style: form
       explode: true
+      description: Scopes per-creator items only (creators still eligible via any enabled type)
       schema:
         type: array
         items:
@@ -37,26 +45,10 @@ get:
         maxLength: 100
     - name: location
       in: query
+      description: Alias for region
       schema:
         type: string
         maxLength: 100
-    - name: sort
-      in: query
-      description: Feed defaults to `popularity`; supports same sorts as /items
-      schema:
-        type: string
-        enum:
-          - popularity
-          - newest
-          - price_asc
-          - price_desc
-          - rating
-        default: popularity
-    - name: creator
-      in: query
-      schema:
-        type: string
-        maxLength: 50
     - name: cursor
       in: query
       schema:
@@ -64,14 +56,23 @@ get:
         maxLength: 2000
     - name: limit
       in: query
+      description: Creators per page
       schema:
         type: integer
         minimum: 1
         maximum: 48
         default: 24
+    - name: items_limit
+      in: query
+      description: Top-N items per creator (pager rail budget)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 12
+        default: 6
   responses:
     '200':
-      description: Paginated feed items
+      description: Paginated creator-grouped feed
       headers:
         Cache-Control:
           schema:
@@ -89,7 +90,7 @@ get:
               data:
                 type: array
                 items:
-                  $ref: ../components/schemas/MarketplaceItem.yaml
+                  $ref: ../components/schemas/MarketplaceFeedCreator.yaml
               meta:
                 type: object
                 properties:
@@ -100,6 +101,7 @@ get:
                     type: boolean
                   total:
                     type: integer
+                    description: Total matching creators (before pagination)
                   limit:
                     type: integer
     '422':

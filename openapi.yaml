@@ -384,6 +384,8 @@ paths:
     $ref: paths/marketplace_creators.yaml
   /marketplace/feed:
     $ref: paths/marketplace_feed.yaml
+  /marketplace/feed/creators:
+    $ref: paths/marketplace_feed_creators.yaml
   /influencers/{username}/maps:
     $ref: paths/influencers_{username}_maps.yaml
   /influencers/{username}/consultation:
@@ -444,6 +446,8 @@ paths:
     $ref: paths/influencer_media_assets_{id}_image.yaml
   /media-assets/{id}/purchase:
     $ref: paths/media_assets_{id}_purchase.yaml
+  /media-assets/{id}/stream:
+    $ref: paths/media_assets_{id}_stream.yaml
   /media-assets/my-purchases:
     $ref: paths/media_assets_my_purchases.yaml
   /user/blog-purchases:

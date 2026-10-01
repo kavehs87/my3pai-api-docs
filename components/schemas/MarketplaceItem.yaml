@@ -131,7 +131,7 @@ properties:
   popularity:
     type: integer
     nullable: true
-    description: Popularity score (views/plays/downloads) used for sort=popularity
+    description: Popularity score used for sort=popularity — views_count (maps/blog/masterclasses), plays_count (podcasts), download_count (media); consultations carry no view counter so theirs is 0
   rating:
     type: number
     format: float
@@ -148,11 +148,14 @@ properties:
   social:
     type: object
     nullable: true
+    description: Real social proof — likes from likes_count (all six types), views mirror popularity, comments from feedback counters
     properties:
       likes:
         type: integer
+        description: Real like count (likes_count column), never a placeholder
       views:
         type: integer
+        description: View/play/download count (mirrors popularity)
       comments:
         type: integer
 required:
