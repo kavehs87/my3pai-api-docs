@@ -1,9 +1,12 @@
 type: object
 description: >
   One creator-grouped feed entry for the PWA swipe pager: the creator card,
-  a featured flag, the spotlight video (newest active Video media asset, or
-  null when the creator has none), and the creator's top-N marketplace items
-  (popularity-ranked, same shape as /marketplace/items entries).
+  a featured flag, the spotlight video (the creator's READY profile intro
+  video, or null when they have none), and the creator's top-N marketplace
+  items (popularity-ranked, same shape as /marketplace/items entries).
+  Marketplace Video assets are deliberately NOT used as spotlight: they are
+  sellable goods, not creator representation, and remain ordinary purchasable
+  items in `items`.
 properties:
   creator:
     $ref: MarketplaceCreator.yaml

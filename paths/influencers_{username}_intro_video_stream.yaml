@@ -41,7 +41,13 @@ get:
             type: string
             format: binary
     '404':
-      description: No ready intro video (unknown/unverified creator, processing, or file not ready)
+      description: >
+        No ready intro video (unknown/unverified creator, processing, or file
+        not ready), or the stored URL points outside our own storage. The
+        endpoint only ever redirects to a host we control (the S3 endpoint,
+        a bucket subdomain of it, or the public CDN domain), so a third-party
+        URL stored on the row is refused rather than redirected to; the feed
+        falls back to the item cover.
       content:
         application/json:
           schema:
