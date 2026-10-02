@@ -436,6 +436,8 @@ paths:
     $ref: paths/influencers_{username}_media_assets_{id}.yaml
   /influencers/{username}/social-posts:
     $ref: paths/influencers_{username}_social_posts.yaml
+  /influencers/{username}/intro-video/stream:
+    $ref: paths/influencers_{username}_intro_video_stream.yaml
   /influencer/media-assets:
     $ref: paths/influencer_media_assets.yaml
   /influencer/media-assets/{id}:

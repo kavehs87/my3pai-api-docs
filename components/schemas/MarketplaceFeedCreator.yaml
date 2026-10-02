@@ -14,14 +14,17 @@ properties:
     type: object
     nullable: true
     description: >
-      Newest active Video media asset, or null. Public-safe metadata only —
-      the raw file_url never leaves the server. playback_url is set only for
-      free assets with a stored file (streams via GET
-      /media-assets/{id}/stream with HTTP Range support); paid assets carry
-      requires_purchase: true and playback_url: null.
+      The creator's READY profile intro video, or null. Public-safe metadata
+      only — the private source file never leaves the server. Intro videos
+      are free public content so requires_purchase is always false and
+      playback_url is set whenever a ready video exists (streams via GET
+      /influencers/{username}/intro-video/stream with HTTP Range support).
+      Marketplace Video assets (sellable goods) are deliberately NOT used
+      here — they remain ordinary purchasable items in `items`.
     properties:
       id:
         type: integer
+        description: Creator id (intro videos have no asset id)
       title:
         type: string
         nullable: true
@@ -33,22 +36,23 @@ properties:
         type: string
         format: uri
         nullable: true
-        description: Public preview cover image
+        description: Public intro thumbnail
       price_cents:
         type: integer
         minimum: 0
-        description: Price in minor units (cents)
+        description: Always 0 — intro videos are free
       currency:
         type: string
         pattern: '^[A-Z]{3}$'
         example: USD
       requires_purchase:
         type: boolean
+        description: Always false for intro videos
       playback_url:
         type: string
         format: uri
         nullable: true
-        description: Range-capable stream URL (free assets only), else null
+        description: Range-capable intro stream URL, else null
       created_at:
         type: string
         format: date-time

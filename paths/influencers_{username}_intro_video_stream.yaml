@@ -1,0 +1,48 @@
+get:
+  tags:
+    - Public
+    - Influencers
+  summary: Stream a creator's intro video (Range-capable)
+  description: >
+    Public playback for a creator's READY profile intro video (used as
+    `spotlight_video.playback_url` by the creator-grouped feed). Intro videos
+    are free public content — no purchase gate. S3-hosted files 302-redirect
+    to a short-lived signed URL (Range served by S3); local files stream with
+    `Accept-Ranges: bytes` (206 Partial Content). Creators without a ready
+    intro video (processing, missing, or unverified) return 404.
+  security: []
+  parameters:
+    - name: username
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '302':
+      description: Redirect to a short-lived signed S3 URL (S3-hosted files)
+      headers:
+        Location:
+          schema:
+            type: string
+            format: uri
+    '200':
+      description: Video bytes with Accept-Ranges (local files); honors Range as 206
+      headers:
+        Accept-Ranges:
+          schema:
+            type: string
+            example: bytes
+        Content-Range:
+          schema:
+            type: string
+      content:
+        video/mp4:
+          schema:
+            type: string
+            format: binary
+    '404':
+      description: No ready intro video (unknown/unverified creator, processing, or file not ready)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
