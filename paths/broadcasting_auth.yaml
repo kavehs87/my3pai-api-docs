@@ -3,26 +3,20 @@ post:
     - WebSocket
   summary: Authorize private channel subscription
   description: >
-    **STATUS (verified live): routed but not yet functional.** This path is
-    registered (`Broadcast::routes()` on the `web` group) and reachable, but
-    it answers **403 for every private-channel request** — an owner's own
-    subscription, a valid Bearer token included — because the route carries
-    no auth middleware, so no user is ever resolved and
-    `PusherBroadcaster::auth()` rejects before the channel callbacks run.
-    Private-channel subscriptions (push/DM delivery) are therefore blocked
-    until the route is moved onto the `api` group with `auth:sanctum`; merely
-    calling `withBroadcasting()` changes nothing, since that only re-registers
-    the same `web`-group route. Do not build a client against the current
-    behaviour — Bearer tokens cannot work here today.
+    Called automatically by Laravel Echo (pusher-js) when the client attempts
+    to subscribe to a private channel. The request sends `socket_id` +
+    `channel_name` (`application/x-www-form-urlencoded`); the server
+    authenticates the requester — Bearer token or stateful session cookie —
+    and returns the Pusher channel authorization (`auth` signature).
 
-    Intended contract (once fixed): called automatically by Laravel Echo when
-    the client attempts to subscribe to a private channel. The request sends
-    `socket_id` + `channel_name` (`application/x-www-form-urlencoded`); the
-    server authenticates the requester and returns the channel authorization.
-    Only two private channels exist: `private-App.Models.User.{id}` (your own
-    notifications and video-processing events) and `private-map.{mapId}`
-    (owner-only live map drafts). Subscribing to anyone else's channel 403s,
-    as does any unmatched channel pattern.
+    The route runs on the `api` group with `auth:sanctum` (registered via an
+    explicit `withBroadcasting()` call, not the `web`-group default, which
+    resolved no user and 403'd everything). Only two private channels exist:
+    `private-App.Models.User.{id}` (your own notifications and
+    video-processing events) and `private-map.{mapId}` (owner-only live map
+    drafts). Subscribing to anyone else's channel 403s, as does any unmatched
+    channel pattern; unauthenticated requests get 401. Guests can never be
+    authorized — the callbacks fail closed on a null user.
   operationId: broadcastingAuth
   security:
     - BearerAuth: []
@@ -48,7 +42,7 @@ post:
               description: Base64-encoded JSON from Reverb server.
   responses:
     "200":
-      description: Channel authorized successfully (the intended behaviour once the route is fixed).
+      description: Channel authorized successfully.
       content:
         application/json:
           schema:
@@ -58,8 +52,11 @@ post:
                 type: string
               channel:
                 type: string
+    "401":
+      description: Unauthenticated (no Bearer token or session).
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
     "403":
-      description: >
-        User not authorized for this channel — **or any channel today.**
-        Until the auth fix lands, this is returned for every private-channel
-        request, including valid ones.
+      description: Authenticated but not authorized for this channel (someone else's channel, or an unmatched pattern).
