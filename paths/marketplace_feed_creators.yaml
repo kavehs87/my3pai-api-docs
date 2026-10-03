@@ -6,7 +6,7 @@ get:
   description: >
     Creator-grouped feed for the PWA swipe pager: cursor-paginated creators,
     each entry carrying the creator card, a featured flag, the spotlight
-    video (newest active Video media asset or null), and the creator's top-N
+    video (the creator's READY profile intro video, or null), and the creator's top-N
     marketplace items across all six types (popularity-ranked, same item
     shape and visibility rules as `/marketplace/items`).
 

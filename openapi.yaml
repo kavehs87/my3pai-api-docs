@@ -121,6 +121,12 @@ tags:
       (live map drafts, owner-only). Connect with `REVERB_APP_KEY`, `REVERB_APP_ID`, and
       `REVERB_APP_SECRET` from `.env`. Authentication is handled via `POST /broadcasting/auth`.
 
+      **Known gap (verified): the auth endpoint is registered but answers 403
+      for every private-channel request** — it runs on the `web` middleware
+      group with no auth middleware, so no user is ever resolved. Private
+      channels (push/DM delivery) are blocked until the route moves onto the
+      `api` group with `auth:sanctum`. See `paths/broadcasting_auth.yaml`.
+
       **Broadcast events:**
 
       - `Illuminate\Notifications\Events\BroadcastNotificationCreated` — in-app notifications
