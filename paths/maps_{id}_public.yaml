@@ -1,0 +1,110 @@
+get:
+  tags:
+    - Public
+  summary: Get public map page by id
+  description: >
+    The id-addressed twin of `/u/{username}/{slug}`, for deep links that carry
+    only an id (a PWA `/map/{id}` route, or a link pasted out of WhatsApp or
+    email). Without it a cold deep link needs three sequential requests —
+    resolve the id to a card, take its slug, then load the page.
+
+    **Same payload, same visibility, same paywall, same view counting.** Both
+    routes resolve a map and hand off to the same server-side builder, so they
+    cannot drift: `user` (creator byline), `map`, and `pois` are byte-identical
+    to what `/u/{username}/{slug}` returns for the same map.
+
+    ### What this endpoint is not
+
+    It is **not** a relaxation of `GET /maps/{map}`. That route is the creator
+    editor view: it is auth-gated, carries no rate limit, returns a 403 for a
+    purchaser whose map was unpublished (losing the delisted-purchase access
+    below), counts no views, and would turn a draft's existence into a
+    distinguishable 403. It must stay auth-gated.
+
+    ### Visibility
+
+    A **published** map is public. An **unpublished** map is visible only to a
+    user who has purchased it — buyers keep access to a map the creator has
+    delisted (but never deleted: deleting a map that has purchases is blocked,
+    and a soft-deleted map is 404 for everyone here).
+
+    An unpublished map the viewer has *not* purchased returns **404 with a body
+    byte-identical to a missing id** — never 403. A distinguishable status would
+    be an existence oracle for drafts.
+
+    ### Freemium / Paywall Model
+
+    Identical to `/u/{username}/{slug}`:
+
+    - **Free maps**: all POIs fully visible.
+    - **Paid maps (no access)**: featured POIs (up to 2) visible as a preview;
+      the rest locked to ID + name + coordinates.
+    - **Paid maps (with access)**: all POIs visible. Purchasers are served from
+      their immutable snapshot.
+
+    ### View counting
+
+    Counts one view per viewer per 10 minutes. The by-id and by-slug routes
+    **share** that cooldown, so using both never double-counts a view.
+
+    ### Authentication & Sessions
+
+    Public. Access is widened by an `Authorization: Bearer` header or an
+    `X-Session-ID` header for guest purchase/access checks.
+  security:
+    - BearerAuth: []
+    - {}
+  parameters:
+    - name: X-Session-ID
+      in: header
+      required: false
+      description: Session ID for guest users to check access to paid content.
+      schema:
+        type: string
+    - name: id
+      in: path
+      required: true
+      description: The map's primary key.
+      schema:
+        type: integer
+        minimum: 1
+  responses:
+    '200':
+      description: Map page data — identical to `/u/{username}/{slug}` for the same map.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  user:
+                    allOf:
+                      - $ref: ../components/schemas/PublicUser.yaml
+                    description: The map's creator — the byline and creator link.
+                  map:
+                    $ref: ../components/schemas/MapResource.yaml
+                  pois:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/PoiResource.yaml
+    '404':
+      description: >
+        No such map, a soft-deleted map, or a map that is unpublished and not
+        purchased by the viewer. All three return the same body on purpose.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+          example:
+            success: false
+            message: Map not found
+    '429':
+      description: Rate limit exceeded (1000/min, same as the by-slug route)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

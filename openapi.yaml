@@ -360,6 +360,8 @@ paths:
     $ref: paths/influencer_stats_items_{type}_{id}.yaml
   /u/{username}/{slug}:
     $ref: paths/u_{username}_{slug}.yaml
+  /maps/{id}/public:
+    $ref: paths/maps_{id}_public.yaml
   /influencers/{username}/blog:
     $ref: paths/influencers_{username}_blog.yaml
   /influencers/{username}/blog/{slug}:
