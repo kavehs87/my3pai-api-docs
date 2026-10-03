@@ -1,0 +1,153 @@
+get:
+  tags:
+    - Public
+    - Marketplace
+  summary: Read one marketplace item by type and id (deep links)
+  description: >
+    Public, CDN-cacheable single-item read behind the deep-link surface (PWA
+    `/map/{id}`, links pasted into WhatsApp/email). Without it a client can
+    only scan the first page of `/marketplace/items`, so a shared link to an
+    older item silently redirects to `/explore` even though the product
+    exists.
+
+    The `data` payload is **byte-identical** to the same item's entry in
+    `GET /marketplace/items` — same service path and same resource, so a
+    client can reuse its collection mapper unchanged. `meta` carries the same
+    keys as the collection envelope (with single-item values) so one mapper
+    reads both.
+
+    **Type-scoped by necessity.** The six product tables have independent
+    autoincrement ids, so `maps.id=137` and `blog_posts.id=137` are different
+    products; a bare id cannot identify a row, and `type` is required rather
+    than inferred so a link can never render — or let a buyer purchase — the
+    wrong product. Note the `type` vocabulary here is the marketplace one
+    (plural: `maps`, `media`, `blog`), which is deliberately distinct from the
+    singular morph aliases (`map`, `media_asset`, `blog_post`) accepted by
+    `/items/{type}/{id}/ratings`.
+
+    **Visibility is identical to the collection, never weaker.** The row is
+    resolved through the same builders, so it requires: the type's feature
+    flag on, `is_published`/`is_active`, not soft-deleted, the paid-item
+    sale/premium flag where applicable, and a creator who is `verified`, has a
+    `username`, is not `anonymized_at`, and is not banned. An item failing any
+    of these returns **404, never 403** — the same envelope as an unknown id,
+    so drafts, deleted rows, and anonymized creators' content cannot be probed
+    by id.
+
+    Money is always integer `*_cents` with currency `USD` (no floats). The
+    payload is viewer-independent (no per-user fields), which is what makes the
+    public `Cache-Control` safe; `ETag`/`If-None-Match` revalidation returns
+    `304`. Worst-case staleness is 60s Redis + 300s CDN, the same as
+    `/marketplace/items`.
+  security: []
+  parameters:
+    - name: type
+      in: path
+      required: true
+      description: >
+        Marketplace item type. Must match the type the id belongs to —
+        the same six values accepted by `/marketplace/items`.
+      schema:
+        type: string
+        enum:
+          - maps
+          - masterclasses
+          - consultations
+          - media
+          - blog
+          - podcasts
+    - name: id
+      in: path
+      required: true
+      description: Primary key of the item within its own type's table.
+      schema:
+        type: integer
+        minimum: 1
+  responses:
+    '200':
+      description: The item. Byte-identical to its `/marketplace/items` row.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                $ref: ../components/schemas/MarketplaceItem.yaml
+              meta:
+                type: object
+                description: >
+                  Present so a client that reads `meta.has_more` on the
+                  collection envelope can read this response with the same
+                  mapper. Single-item values throughout.
+                properties:
+                  next_cursor:
+                    type: string
+                    nullable: true
+                    description: Always null — a single item has no next page
+                  has_more:
+                    type: boolean
+                    example: false
+                  total:
+                    type: integer
+                    example: 1
+                  limit:
+                    type: integer
+                    example: 1
+            example:
+              success: true
+              data:
+                id: 42
+                type: maps
+                title: Three Days in Kyoto
+                slug: three-days-in-kyoto
+                route: /m/yukari/three-days-in-kyoto
+                is_free: false
+                price:
+                  price_cents: 2499
+                  currency: USD
+                price_cents: 2499
+                currency: USD
+                tags:
+                  - temples
+                creator:
+                  id: 7
+                  username: yukari
+                  display_name: Yukari Tanaka
+                  avatar: https://cdn.my3p.ai/avatars/yukari.jpg?v=123
+                  verified: true
+                cta_label: View Map
+              meta:
+                next_cursor: null
+                has_more: false
+                total: 1
+                limit: 1
+    '304':
+      description: Not modified — the client's `ETag` still matches.
+    '404':
+      description: >
+        Unknown id, **or** the item exists but fails the collection's
+        visibility rules (unpublished, feature-flag-disabled, soft-deleted,
+        paid-but-not-for-sale, or an unverified/anonymized/banned creator).
+        Both cases are byte-identical on purpose: a 403 would be an existence
+        oracle for unpublished content.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+          example:
+            success: false
+            error: Not found
+    '422':
+      description: Validation error (unknown `type`, or `id` below 1)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '429':
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

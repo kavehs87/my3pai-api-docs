@@ -378,6 +378,8 @@ paths:
     $ref: paths/influencers_{username}_masterclasses_{slug}.yaml
   /marketplace/items:
     $ref: paths/marketplace_items.yaml
+  /marketplace/items/{type}/{id}:
+    $ref: paths/marketplace_items_{type}_{id}.yaml
   /marketplace/facets:
     $ref: paths/marketplace_facets.yaml
   /marketplace/creators:
