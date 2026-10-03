@@ -5,8 +5,11 @@ get:
   description: >
     Authenticated consumer/creator threads, most-recently-active first.
     Threads the requester archived (hide) are excluded; hidden threads stay
-    directly fetchable and new activity un-hides. Cursor pagination is opaque
-    base64 like marketplace reads.
+    directly fetchable and new activity un-hides. Messages the requester
+    cleared (DELETE threads/{id}/messages) stay excluded per side — the
+    last_message preview, unread counts and message pages show only visible
+    history, even after later inbound messages un-hide the thread. Cursor
+    pagination is opaque base64 like marketplace reads.
   security:
     - BearerAuth: []
   parameters:

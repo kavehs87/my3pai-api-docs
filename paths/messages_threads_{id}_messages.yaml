@@ -93,3 +93,60 @@ post:
         application/json:
           schema:
             $ref: ../components/schemas/ErrorResponse.yaml
+delete:
+  tags:
+    - Messages
+  summary: Clear my visible history in a thread (sticky, per-side)
+  description: >
+    Per-side clear of the requester's visible history. Sticky filter, never a
+    delete: cleared messages are excluded from the requester's message pages,
+    last_message and unread count — even after a later inbound message
+    un-hides the thread. The other side's history is untouched and no
+    notification is sent. Idempotent: a repeat clear with no new messages
+    returns cleared 0. Cursors stay opaque; cleared messages simply never
+    appear in any page. Same 30/min write throttle as the other message
+    writes.
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  responses:
+    '200':
+      description: History cleared for the requester.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  cleared:
+                    type: integer
+                    minimum: 0
+                    description: Messages newly excluded for the requester.
+    '401':
+      description: Unauthenticated.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Unknown id or not a participant — identical body either way.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '429':
+      description: Rate limit exceeded (30/min)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

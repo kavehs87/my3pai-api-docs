@@ -5,7 +5,9 @@ get:
   description: >
     One thread plus its messages, chronological. Participant-only: unknown
     ids and other users' threads return the same 404, never a 403, so thread
-    ids are not an existence oracle.
+    ids are not an existence oracle. Messages the requester cleared via
+    DELETE threads/{id}/messages never appear (pages, total, last_message
+    and unread counts are viewer-filtered); the other side is unaffected.
   security:
     - BearerAuth: []
   parameters:
