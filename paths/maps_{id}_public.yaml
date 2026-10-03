@@ -47,20 +47,23 @@ get:
     Counts one view per viewer per 10 minutes. The by-id and by-slug routes
     **share** that cooldown, so using both never double-counts a view.
 
-    ### Authentication & Sessions
+    ### Authentication
 
-    Public. Access is widened by an `Authorization: Bearer` header or an
-    `X-Session-ID` header for guest purchase/access checks.
+    Public — no credentials required to read a published map.
+
+    Access to **paid** content widens only for an authenticated user who has
+    purchased the map (or is its creator); those viewers are served from their
+    immutable snapshot. A guest with no `Authorization` header gets
+    `userHasAccess: false` and the standard locked-POI payload — correct, since
+    a guest can own nothing.
+
+    Note: `X-Session-ID` is **not** an access signal here. It is only read by
+    the guest-cart endpoints. (The `/u/{username}/{slug}` spec still lists it
+    for this purpose; that claim is inaccurate and pending its own fix.)
   security:
     - BearerAuth: []
     - {}
   parameters:
-    - name: X-Session-ID
-      in: header
-      required: false
-      description: Session ID for guest users to check access to paid content.
-      schema:
-        type: string
     - name: id
       in: path
       required: true
