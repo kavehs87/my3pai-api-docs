@@ -113,6 +113,13 @@ tags:
     description: Webhook endpoints for external service callbacks
   - name: Notifications
     description: In-app notification management (bell notifications)
+  - name: Messages
+    description: >
+      Phase 1 DM threads: authenticated bidirectional conversations between a
+      consumer and a creator, optionally anchored to content. Participant-only
+      visibility (unknown/other-user threads 404, never 403), idempotent
+      creates and sends, per-thread read state plus a global unread badge.
+      Assumes polling; push waits on the broadcasting runtime fix.
   - name: WebSocket
     description: >
       Real-time WebSocket connections via Laravel Reverb. Clients connect using
@@ -206,6 +213,18 @@ paths:
     $ref: paths/notifications_{id}.yaml
   /notifications/{id}/read:
     $ref: paths/notifications_{id}_read.yaml
+  /messages/threads:
+    $ref: paths/messages_threads.yaml
+  /messages/threads/{id}:
+    $ref: paths/messages_threads_{id}.yaml
+  /messages/threads/{id}/messages:
+    $ref: paths/messages_threads_{id}_messages.yaml
+  /messages/threads/{id}/read:
+    $ref: paths/messages_threads_{id}_read.yaml
+  /messages/threads/{id}/hide:
+    $ref: paths/messages_threads_{id}_hide.yaml
+  /messages/unread-count:
+    $ref: paths/messages_unread_count.yaml
   /logout:
     $ref: paths/logout.yaml
   /profile:

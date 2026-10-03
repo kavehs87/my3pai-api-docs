@@ -1,0 +1,39 @@
+get:
+  tags:
+    - Messages
+  summary: Unread DM badge count
+  description: >
+    Total unread messages for the requester across visible (non-archived)
+    threads. The badge source for polling clients (Phase 1 assumes polling;
+    push waits on the broadcasting runtime fix).
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Badge count.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  unread_count:
+                    type: integer
+                    minimum: 0
+                    example: 3
+    '401':
+      description: Unauthenticated.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '429':
+      description: Rate limit exceeded (60/min)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

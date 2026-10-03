@@ -1,0 +1,88 @@
+get:
+  tags:
+    - Messages
+  summary: Read one DM thread with messages
+  description: >
+    One thread plus its messages, chronological. Participant-only: unknown
+    ids and other users' threads return the same 404, never a 403, so thread
+    ids are not an existence oracle.
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+    - name: cursor
+      in: query
+      description: Opaque cursor (message id) — pages forward chronologically.
+      schema:
+        type: string
+        maxLength: 2000
+    - name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+  responses:
+    '200':
+      description: Thread with messages.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  thread:
+                    $ref: ../components/schemas/MessageThread.yaml
+                  messages:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/ThreadMessage.yaml
+              meta:
+                type: object
+                properties:
+                  next_cursor:
+                    type: string
+                    nullable: true
+                  has_more:
+                    type: boolean
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+    '401':
+      description: Unauthenticated.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Unknown id or not a participant — identical body either way.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+          example:
+            success: false
+            error: Not found
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '429':
+      description: Rate limit exceeded (60/min)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

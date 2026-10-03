@@ -1,0 +1,52 @@
+post:
+  tags:
+    - Messages
+  summary: Mark a thread read
+  description: >
+    Marks the other participant's messages read for the requester. Own
+    messages are never unread, so they are untouched by construction.
+    Returns the thread's remaining unread count (0 by construction barring a
+    message that landed concurrently).
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  responses:
+    '200':
+      description: Read state updated.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  unread_count:
+                    type: integer
+                    minimum: 0
+    '401':
+      description: Unauthenticated.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Unknown id or not a participant — identical body either way.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '429':
+      description: Rate limit exceeded (30/min)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

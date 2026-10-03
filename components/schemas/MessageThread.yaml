@@ -1,0 +1,74 @@
+type: object
+description: >
+  One Phase 1 DM thread: a consumer and a creator, optionally anchored to
+  content. Carries both participants so the same payload serves the consumer
+  inbox and the creator's contact-messages panel. `unread_count` is
+  viewer-relative; `from` on messages is "me" for own messages, otherwise the
+  sender's role ("creator" or "consumer").
+properties:
+  id:
+    type: integer
+  creator:
+    type: object
+    description: The creator side of the thread.
+    properties:
+      username:
+        type: string
+      display_name:
+        type: string
+      avatar:
+        type: string
+        nullable: true
+      verified:
+        type: boolean
+  consumer:
+    type: object
+    description: The consumer side of the thread.
+    properties:
+      username:
+        type: string
+      display_name:
+        type: string
+      avatar:
+        type: string
+        nullable: true
+  context:
+    type: object
+    nullable: true
+    description: Content anchor, e.g. {"type":"map","id":45,"title":"…"} — metadata only, never a foreign key.
+    properties:
+      type:
+        type: string
+        enum:
+          - map
+          - masterclass
+          - consultation
+          - media_asset
+          - blog_post
+          - podcast_episode
+      id:
+        type: integer
+        nullable: true
+      title:
+        type: string
+        nullable: true
+  last_message:
+    $ref: ThreadMessage.yaml
+    nullable: true
+    description: Most recent message, or null on a thread with no messages yet.
+  unread_count:
+    type: integer
+    minimum: 0
+    description: Messages from the other participant with no read_at, for the requester.
+  updated_at:
+    type: string
+    format: date-time
+  last_message_at:
+    type: string
+    format: date-time
+    nullable: true
+required:
+  - id
+  - creator
+  - consumer
+  - unread_count

@@ -1,0 +1,33 @@
+type: object
+description: >
+  One message inside a thread. `from` is viewer-relative: "me" for the
+  requester's own messages, otherwise the sender's role. Clients should
+  branch on `from === "me"` for own bubbles and treat any other value as
+  "them" — never enumerate the enum.
+properties:
+  id:
+    type: integer
+  from:
+    type: string
+    enum:
+      - me
+      - creator
+      - consumer
+  sender_id:
+    type: integer
+  body:
+    type: string
+    minLength: 2
+    maxLength: 5000
+  created_at:
+    type: string
+    format: date-time
+  read_at:
+    type: string
+    format: date-time
+    nullable: true
+required:
+  - id
+  - from
+  - sender_id
+  - body

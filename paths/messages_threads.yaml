@@ -1,0 +1,163 @@
+get:
+  tags:
+    - Messages
+  summary: List my DM threads
+  description: >
+    Authenticated consumer/creator threads, most-recently-active first.
+    Threads the requester archived (hide) are excluded; hidden threads stay
+    directly fetchable and new activity un-hides. Cursor pagination is opaque
+    base64 like marketplace reads.
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: cursor
+      in: query
+      description: Opaque cursor from previous `meta.next_cursor`
+      schema:
+        type: string
+        maxLength: 2000
+    - name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 50
+        default: 15
+  responses:
+    '200':
+      description: Thread list with per-thread unread counts for the requester.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/MessageThread.yaml
+              meta:
+                type: object
+                properties:
+                  next_cursor:
+                    type: string
+                    nullable: true
+                  has_more:
+                    type: boolean
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+    '401':
+      description: Unauthenticated — guests never get a thread.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '429':
+      description: Rate limit exceeded (60/min)
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+post:
+  tags:
+    - Messages
+  summary: Start a DM thread (idempotent)
+  description: >
+    Start (or re-resolve) a thread with a creator. The client generates
+    `idempotency_key` per send action: repeating a key returns the original
+    thread with 200, never a duplicate. A key already bound to a different
+    creator is 422, never a crossed thread. Only the consumer side creates
+    threads; creators reply inside them. Daily thread cap 429s when exceeded.
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - creator_username
+            - idempotency_key
+          properties:
+            creator_username:
+              type: string
+              maxLength: 100
+            context_type:
+              type: string
+              enum:
+                - map
+                - masterclass
+                - consultation
+                - media_asset
+                - blog_post
+                - podcast_episode
+            context_id:
+              type: integer
+              minimum: 1
+            idempotency_key:
+              type: string
+              maxLength: 64
+              description: Client-generated unique key per send action (UUID recommended).
+  responses:
+    '201':
+      description: Thread created.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  thread:
+                    $ref: ../components/schemas/MessageThread.yaml
+    '200':
+      description: Idempotent repeat — the original thread, no duplicate created.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  thread:
+                    $ref: ../components/schemas/MessageThread.yaml
+    '401':
+      description: Unauthenticated.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '404':
+      description: Unknown creator_username.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '422':
+      description: Validation error (self-thread, bad context, or key reuse across conversations).
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
+    '429':
+      description: Daily thread cap exceeded, or 30/min write throttle.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
