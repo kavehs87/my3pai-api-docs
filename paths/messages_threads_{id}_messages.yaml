@@ -9,7 +9,9 @@ post:
     message with 200, never a duplicate (safe under retries and double-tap).
     A key already used for another message is 422. New activity un-hides an
     archived thread for both sides, and the recipient gets a bell
-    notification (database; email/push off in Phase 1). Daily message cap
+    notification (database) plus a realtime `BroadcastNotificationCreated`
+    event on their private user channel (email/sms/push off in Phase 1;
+    push delivery proper waits on client subscription). Daily message cap
     429s when exceeded.
   security:
     - BearerAuth: []
