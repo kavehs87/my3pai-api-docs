@@ -36,6 +36,8 @@ post:
               description: >-
                 Optional custom return URL for successful payment completion.
                 If not provided, defaults to frontend success URL.
+                Website or PWA origin only (exact match); anything else is
+                422 — never a silent fallback, never an open redirect.
             cancel_url:
               type: string
               format: url
@@ -43,6 +45,8 @@ post:
               description: >-
                 Optional custom cancel URL if customer abandons payment.
                 If not provided, defaults to frontend cancel URL.
+                Website or PWA origin only (exact match); anything else is
+                422 — never a silent fallback, never an open redirect.
   responses:
     '200':
       description: Checkout session retrieved or created successfully

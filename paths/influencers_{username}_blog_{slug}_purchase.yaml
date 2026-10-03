@@ -2,7 +2,10 @@ post:
   tags:
     - Blog
   summary: Purchase blog post
-  description: Customer purchases a premium blog post via Stripe Checkout Session
+  description: >
+    Customer purchases a premium blog post via Stripe Checkout Session.
+    Optional `return_url` / `cancel_url` body fields replace the default
+    website success/cancel URLs (website or PWA origin only, else 422).
   parameters:
     - name: username
       in: path
@@ -14,6 +17,23 @@ post:
       required: true
       schema:
         type: string
+  requestBody:
+    required: false
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            return_url:
+              type: string
+              format: uri
+              maxLength: 2000
+              description: Optional Stripe success_url override (website or PWA origin only; else 422).
+            cancel_url:
+              type: string
+              format: uri
+              maxLength: 2000
+              description: Optional Stripe cancel_url override (website or PWA origin only; else 422).
   responses:
     '201':
       description: Checkout session created
