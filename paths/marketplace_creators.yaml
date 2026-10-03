@@ -22,7 +22,9 @@ get:
     - name: sort
       in: query
       description: >
-        Sort key. `popularity` by total_items desc, `newest` by creator created_at desc, `price_*` falls back to popularity (no creator price), `rating` currently same as popularity (no review system).
+        Sort key. `popularity` by total_items desc, `newest` by creator created_at desc, `price_*` falls back to popularity (no creator price).
+        `rating` is accepted but creators have no rating system: every row ties on a null score and the order falls back to stable id-descending
+        (not a rating rank — may read as newest-last). Pagination is unaffected either way: the keyset cursor resolves on the tie+id fallback.
       schema:
         type: string
         enum:
