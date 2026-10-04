@@ -21,6 +21,11 @@ properties:
       - pending
       - paid
       - refunded
+  price_cents_charged:
+    type: integer
+    minimum: 0
+    nullable: true
+    description: Snapshot of what the buyer actually paid (integer cents), set once at booking creation and never mutated by later price edits. Null only for rows predating the snapshot column — fall back to consultation.price_cents.
   videoCallLink:
     type: string
     format: uri
