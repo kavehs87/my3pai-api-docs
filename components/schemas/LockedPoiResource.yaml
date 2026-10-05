@@ -1,5 +1,5 @@
 type: object
-description: Redacted POI data for locked/paywalled content
+description: Redacted POI teaser pin for locked/paywalled content — coordinates plus parent map buy context only (POI/MAP scope)
 properties:
   id:
     type: integer
@@ -10,17 +10,39 @@ properties:
   basic:
     type: object
     properties:
-      name:
-        type: string
-        description: The title of the POI
       latitude:
         type: number
         format: float
       longitude:
         type: number
         format: float
+    required:
+      - latitude
+      - longitude
+  map:
+    type: object
+    description: Parent map buy context for the unlock CTA (titles/prices are public via marketplace cards)
+    properties:
+      id:
+        type: integer
+      slug:
+        type: string
+        nullable: true
+      title:
+        type: string
+      price_cents:
+        type: integer
+        nullable: true
+        description: Integer minor units (cents), never a float
+      currency:
+        type: string
+        example: USD
+    required:
+      - id
+      - currency
 required:
   - id
   - isLocked
   - basic
+  - map
 

@@ -17,9 +17,9 @@ get:
     - **Free maps**: All POIs are fully visible.
 
     - **Paid maps (without access)**: Featured POIs (up to 2 per map) are fully visible
-    as a preview, while all remaining POIs are "locked" (returning only ID, name, and
-    coordinates). If no POIs are marked as featured, ALL POIs are locked until featured
-    POIs are set.
+    as a preview, while all remaining POIs are locked teaser pins (coordinates plus
+    parent map buy context only — no name, no details). If no POIs are marked as
+    featured, ALL POIs are locked until featured POIs are set.
 
     - **Paid maps (with access)**: All POIs are fully visible if the user has
     purchased the map or is the creator.
