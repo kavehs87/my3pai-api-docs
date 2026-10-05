@@ -11,6 +11,27 @@ properties:
   isLocked:
     type: boolean
     description: Whether the POI content is locked (always false in this resource)
+  map:
+    type: object
+    description: Parent map the POI belongs to (public marketplace identity; mirrors LockedPoiResource.map). Present with full detail on list/page reads; map_id-only stub or null in editor/broadcast contexts that already carry the map separately.
+    properties:
+      id:
+        type: integer
+      slug:
+        type: string
+        nullable: true
+      title:
+        type: string
+      price_cents:
+        type: integer
+        nullable: true
+        description: Integer minor units (cents), never a float
+      currency:
+        type: string
+        example: USD
+    required:
+      - id
+      - currency
   basic:
     $ref: ./PoiBasic.yaml
   category:

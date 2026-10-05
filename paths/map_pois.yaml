@@ -15,8 +15,9 @@ get:
     returned as locked teaser pins (`LockedPoiResource`: coordinates plus
     parent map buy context only — no name, no details) unless the caller is
     the map's owner or has purchased the map. POIs of free or individually
-    published maps are returned in full (`PoiResource`). POI/MAP scope only —
-    no other content types carry geo data.
+    published maps are returned in full (`PoiResource`, including the parent
+    `map` identity block so pins deep-link to `/map/{id}`). POI/MAP scope
+    only — no other content types carry geo data.
   security: []
   parameters:
     - name: bbox

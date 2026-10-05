@@ -37,8 +37,9 @@ get:
     Identical to `/u/{username}/{slug}`:
 
     - **Free maps**: all POIs fully visible.
-    - **Paid maps (no access)**: featured POIs (up to 2) visible as a preview;
-      the rest locked teaser pins (coordinates + parent map buy context, no name).
+    - **Paid maps (no access)**: featured POIs (up to 2) visible as a preview
+      (with parent map identity); the rest locked teaser pins (coordinates +
+      parent map buy context, no name).
     - **Paid maps (with access)**: all POIs visible. Purchasers are served from
       their immutable snapshot.
 
