@@ -1,0 +1,85 @@
+get:
+  tags:
+    - Feedback
+  summary: Merged item reviews (comments + ratings + summary)
+  description: |
+    Public, single-call replacement for the three per-detail reads
+    (…/comments, …/ratings, …/ratings/summary), which stay live. Each
+    section is produced by the same service call as its standalone
+    endpoint, so visibility and pagination semantics are identical:
+    hidden rows excluded, owner-disabled sections render empty with 200.
+    `page`/`per_page` drive the comments paginator (default 15, max 50);
+    `ratings_per_page` sizes the ratings list (default 15, max 50);
+    `include_replies=1` attaches one level of visible replies.
+    Draft/unpublished items and globally killed sections 404 (never 403).
+    Reviewable types: `map`, `blog_post`, `masterclass`, `podcast_episode`,
+    `media_asset`, `consultation`.
+  operationId: getItemReviews
+  parameters:
+    - name: type
+      in: path
+      required: true
+      schema:
+        type: string
+        enum: [map, blog_post, masterclass, podcast_episode, media_asset, consultation]
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+    - name: include_replies
+      in: query
+      required: false
+      schema:
+        type: boolean
+    - name: per_page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 15
+        maximum: 50
+    - name: ratings_per_page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 15
+        maximum: 50
+  responses:
+    '200':
+      description: Merged comments, ratings, and rating summary
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  comments:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: ../components/schemas/Comment.yaml
+                      total:
+                        type: integer
+                      per_page:
+                        type: integer
+                      current_page:
+                        type: integer
+                  ratings:
+                    type: array
+                    items:
+                      $ref: ../components/schemas/Rating.yaml
+                  summary:
+                    $ref: ../components/schemas/RatingSummary.yaml
+    '404':
+      description: Content not found (missing, draft, or disabled)
+    '422':
+      description: Invalid type
