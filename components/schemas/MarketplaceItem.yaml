@@ -116,6 +116,10 @@ properties:
         type: string
         format: uri
         nullable: true
+      avatar_thumbhash:
+        type: string
+        nullable: true
+        description: Base64 ThumbHash LQIP placeholder for the embedded creator avatar. Null when the creator has no avatar or no hash row.
       verified:
         type: boolean
       location:
