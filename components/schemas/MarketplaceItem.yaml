@@ -80,10 +80,18 @@ properties:
         type: string
         nullable: true
         description: Raw stored path before S3 URL resolution
+      thumbhash:
+        type: string
+        nullable: true
+        description: Base64 ThumbHash LQIP placeholder for the image (decode client-side for instant blur preview while the full asset loads). Null until the encoder job has run.
   cover:
     type: string
     format: uri
     nullable: true
+  thumbhash:
+    type: string
+    nullable: true
+    description: Base64 ThumbHash LQIP placeholder for the image (decode client-side for instant blur preview while the full asset loads). Null until the encoder job has run.
   thumbnailUrl:
     type: string
     format: uri

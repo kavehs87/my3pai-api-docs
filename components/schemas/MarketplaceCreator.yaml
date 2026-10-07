@@ -14,6 +14,10 @@ properties:
     type: string
     format: uri
     nullable: true
+  avatar_thumbhash:
+    type: string
+    nullable: true
+    description: Base64 ThumbHash LQIP placeholder for the avatar. Null until the encoder job has run.
   logo:
     type: string
     format: uri

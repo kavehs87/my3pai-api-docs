@@ -40,6 +40,10 @@ properties:
         format: uri
         nullable: true
         description: Public intro thumbnail
+      cover_thumbhash:
+        type: string
+        nullable: true
+        description: Base64 ThumbHash LQIP placeholder for the spotlight cover. Null until the encoder job has run.
       price_cents:
         type: integer
         minimum: 0
