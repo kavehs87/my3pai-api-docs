@@ -42,32 +42,58 @@ post:
           $ref: ../components/schemas/BookAndPayRequest.yaml
   responses:
     '201':
-      description: Booking and checkout session created successfully
+      description: >
+        For a paid consultation, the booking and checkout session are created
+        successfully. For a free consultation (consultation.price_cents = 0),
+        the booking is confirmed without a checkout session.
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-              redirect_url:
-                type: string
-                format: uri
-                description: Stripe Checkout Session URL - redirect user to this URL to complete payment
-              order_id:
-                type: integer
-                description: Order ID
-              order_number:
-                type: string
-                description: Order number
-              booking_id:
-                type: integer
-                description: Booking ID
-              checkout_session_id:
-                type: string
-                description: Stripe Checkout Session ID
+            oneOf:
+              - type: object
+                description: Paid consultation — checkout session created
+                properties:
+                  success:
+                    type: boolean
+                  redirect_url:
+                    type: string
+                    format: uri
+                    description: Stripe Checkout Session URL - redirect user to this URL to complete payment
+                  order_id:
+                    type: integer
+                    description: Order ID
+                  order_number:
+                    type: string
+                    description: Order number
+                  booking_id:
+                    type: integer
+                    description: Booking ID
+                  checkout_session_id:
+                    type: string
+                    description: Stripe Checkout Session ID
+              - type: object
+                description: Free consultation — booking confirmed, no payment step
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      booking:
+                        $ref: ../components/schemas/ConsultationBooking.yaml
+                      paymentIntent:
+                        type: 'null'
+                        description: Always null for free consultations — no payment step
+                      order_id:
+                        type: integer
+                        description: Order ID
+                      order_number:
+                        type: string
+                        description: Order number
+                  message:
+                    type: string
     '400':
-      description: Cannot book own consultation or influencer not set up
+      description: Cannot book own consultation or malformed input
       content:
         application/json:
           schema:
@@ -92,9 +118,11 @@ post:
             $ref: ../components/schemas/ErrorResponse.yaml
     '422':
       description: >
-        Validation error. A restricted creator Stripe account is refused
-        with error code `CREATOR_PAYMENT_NOT_READY` (the pending booking +
-        order are rolled back).
+        Validation error. A paid consultation from a payment-unready creator is
+        refused with error code `CREATOR_PAYMENT_NOT_READY` for every unready
+        state (Stripe account not connected, not active, or restricted) — the
+        refusal happens before any booking/order row is written. Free
+        consultations (consultation.price_cents = 0) are never refused here.
       content:
         application/json:
           schema:

@@ -46,21 +46,27 @@ post:
                   booking:
                     $ref: ../components/schemas/ConsultationBooking.yaml
                   paymentIntent:
-                    type: object
-                    properties:
-                      clientSecret:
-                        type: string
-                        description: Stripe payment intent client secret
-                      amount_cents:
-                        type: integer
-                        description: Amount in cents
-                      currency:
-                        type: string
-                        description: Currency code (e.g., usd)
+                    oneOf:
+                      - type: object
+                        properties:
+                          clientSecret:
+                            type: string
+                            description: Stripe payment intent client secret
+                          amount_cents:
+                            type: integer
+                            description: Amount in cents
+                          currency:
+                            type: string
+                            description: Currency code (e.g., usd)
+                      - type: 'null'
+                    description: >
+                      Stripe payment intent for paid consultations. `null` for free
+                      consultations (consultation.price_cents = 0) — no payment step,
+                      the booking is confirmed immediately with paymentStatus "paid".
               message:
                 type: string
     '400':
-      description: Cannot book own consultation or influencer not set up
+      description: Cannot book own consultation or malformed input
       content:
         application/json:
           schema:
@@ -85,9 +91,11 @@ post:
             $ref: ../components/schemas/ErrorResponse.yaml
     '422':
       description: >
-        Validation error. A restricted creator Stripe account is refused
-        with error code `CREATOR_PAYMENT_NOT_READY` (the pending booking +
-        order are rolled back).
+        Validation error. A paid consultation from a payment-unready creator is
+        refused with error code `CREATOR_PAYMENT_NOT_READY` for every unready
+        state (Stripe account not connected, not active, or restricted) — the
+        refusal happens before any booking/order row is written. Free
+        consultations (consultation.price_cents = 0) are never refused here.
       content:
         application/json:
           schema:
