@@ -6,6 +6,8 @@ post:
     Customer purchases a premium blog post via Stripe Checkout Session.
     Optional `return_url` / `cancel_url` body fields replace the default
     website success/cancel URLs (website or PWA origin only, else 422).
+    Free posts (price_cents = 0) purchase without a creator Stripe account
+    and without a checkout session.
   parameters:
     - name: username
       in: path
@@ -36,23 +38,46 @@ post:
               description: Optional Stripe cancel_url override (website or PWA origin only; else 422).
   responses:
     '201':
-      description: Checkout session created
+      description: >
+        For a paid post, the checkout session is created. For a free post
+        (price_cents = 0), the purchase completes with no payment step.
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-              redirect_url:
-                type: string
-                format: uri
-              order_id:
-                type: integer
-              order_number:
-                type: string
-              checkout_session_id:
-                type: string
+            oneOf:
+              - type: object
+                description: Paid post — checkout session created
+                properties:
+                  success:
+                    type: boolean
+                  redirect_url:
+                    type: string
+                    format: uri
+                  order_id:
+                    type: integer
+                  order_number:
+                    type: string
+                  checkout_session_id:
+                    type: string
+              - type: object
+                description: Free post — purchase completed, no payment step
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      purchase:
+                        $ref: ../components/schemas/BlogPostPurchase.yaml
+                      paymentIntent:
+                        type: 'null'
+                        description: Always null for free posts — no payment step
+                  order_id:
+                    type: integer
+                  order_number:
+                    type: string
+                  message:
+                    type: string
     '400':
       description: >
         Cannot purchase (not published, not premium, no price, self-purchase,
